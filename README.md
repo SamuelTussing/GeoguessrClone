@@ -1,2 +1,1 @@
-"# GeoguessrClone" 
-"# GeoguessrClone" 
+"# Freeguessr" 
