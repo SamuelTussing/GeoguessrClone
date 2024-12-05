@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="./styles.css" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon freeguessr.png">
+    <title>GeoGuessr Like Game</title>
+</head>
+<body>
+    <div id="header">
+        <img src="./logo freeguessr.png" id="logo" width="10%"/>
+        <span id="player-name"></span>
+        <span id="round-info"></span>
+        <span id="current-score"></span>
+    </div>
+    <div id="street-view">
+        <img id="compass" src="compass.png" alt="Compass">
+    </div>
+    <div id="homepage">
+        <div id="game-choice">
+            <button id="classique-mode-button">SOLO CLASSIQUE</button>
+            <button id="chrono-mode-button">SOLO CHRONO</button>
+            <button id="flags-mode-button">SOLO DRAPEAUX</button>
+        </div>
+        <div id="start-screen">
+            <h1 id="mode-title">MODE DE JEU</h1>
+            <label for="location-select">Choisissez une région :</label>
+            <select id="location-select">
+                <option value="world">Monde</option>
+                <option value="Strasbourg">Strasbourg</option>
+                <option value="europe">Europe</option>
+                <option value="north-america">Amérique du Nord</option>
+                <option value="south-america">Amérique du Sud</option>
+                <option value="africa">Afrique</option>
+                <option value="asia-oceania">Asie / Océanie</option>
+                <option value="famous">famous</option>
+            </select>
+            <label for="player-input">Entrez votre pseudo :</label>
+            <input type="text" id="player-input">
+            <button id="start-button">C'EST PARTI !</button>
+            <span id="regles"> Essayez de réaliser le plus gros score en trouvant 5 localisations sur Google Maps</span>
+
+    <div id="region-select" style="display: none;">
+        <label for="region">Choisissez une région:</label>
+        <select id="region">
+            <option value="world">Monde</option>
+            <option value="famous">Lieux connus</option>
+            <option value="americas">Amérique</option>
+            <option value="europe">Europe</option>
+            <option value="asia">Asie</option>
+            <option value="africa">Afrique</option>
+            <option value="oceania">Océanie</option>
+        </select>
+        <button id="start-flag-game-button">Commencer le jeu</button>
+    </div>
+        </div>
+
+        <div id="flag-game" style="display: none;">
+            <img id="country-flag" src="" alt="Drapeau">
+            <span id="resultat"></span> <!-- Fixed ID here -->
+            <div id="country-options">
+                <button class="country-button"></button>
+                <button class="country-button"></button>
+                <button class="country-button"></button>
+                <button class="country-button"></button>
+            </div>
+            <button id="next-button" style="display: none;">Suivant</button>
+            <span id="score-drapeau">Score : 0</span> <!-- Initial score set to 0 -->
+            <div id="message"></div>
+        </div>
+        
+        
+    </div>
+
+    
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
+    <button id="new-game-button">Nouvelle partie</button>
+    <div id="highscores">
+        <h2>Top 5 des Meilleurs Scores</h2>
+        <ol id="highscore-list"></ol>
+    </div>
+    <div id="result">Total Score: 0</div>
+    <div id="footer">
+        <h2 id="nameplace"></h2>
+        <div id="score-banner">Score: 0 (Distance: 0 km)</div>
+        <button id="continue-button">Continuer</button>
+        <button id="ok-button">Deviner</button> 
+        <div id="timer-display"></div>
+    </div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&libraries=geometry" async defer></script>
+    <script src="./localisation.js"></script>
+    <script src="./flagsdata.js"></script>
+    <script src="./flags.js"></script>
+    <script src="./script.js"></script>
+</body>
+</html>

@@ -1,0 +1,357 @@
+#street-view {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  #login-register{
+    display: flex;
+    gap: 30px;
+  }
+
+  /* Styles pour le bandeau en header */
+  #header {
+    background-color: #001f3f; /* Bleu foncé */
+    color: white;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    position: relative;
+    z-index: 3;
+    height: 5%;
+    align-items: center;
+    justify-content: space-around;
+    font-weight: 900;
+    opacity: .85;
+  }
+
+  #header span {
+    margin-right: 20px;
+  }
+
+  #map-container {
+    position: absolute;
+  bottom: 15%;
+  right: 10px;
+  width: 30%;
+  height: 30%;
+  overflow: hidden;
+  z-index: 5;
+  transition: width 0.3s ease, height 0.3s ease; /* Ajoutez 'ease' ici pour une animation plus fluide */
+  border-radius: 10px;
+}
+  .gm-iv-address {
+    cursor: crosshair;
+    display: none;
+ }
+ .mapHover {
+  width: 60% !important; /* Utilisez !important pour surcharger les autres styles */
+  height: 70% !important;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+  #map {
+    width: 100%;
+    height: 100%;
+  }
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  #regles{
+    margin-top: 20px;
+    width: 60%;
+    font-style: italic;
+    opacity: .8;
+  }
+  #ok-button, #new-game-button{
+    position: absolute;
+    background: white;
+    padding: 100px;
+    z-index: 3;
+    border: 1px solid black;
+    font-size: 16px;
+  }
+ 
+  #ok-button {
+    bottom: 30%;
+    left: 75%;
+    transform: translateX(-50%);
+    display: none;
+  }
+  #ok-button:hover{
+    background-color: black;
+  }
+
+  #continue-button:hover{
+    background-color: black;
+  }
+  body {
+    font-family: 'Arial Rounded MT Bold', sans-serif; /* Police arrondie */
+    background-color: #05071e; /* Couleur de fond bleu nuit */
+    color: white; /* Couleur de texte blanche */
+  }
+
+  button {
+    background-color: #606060; /* Couleur de fond grise pour les boutons */
+    color: white; /* Couleur de texte blanche pour les boutons */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px; /* Bords arrondis */
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+  }
+
+  button:hover {
+    background-color: #404040; /* Couleur de fond grise plus sombre au survol */
+  }
+
+  #score-banner, #start-screen, #ok-button, #continue-button, #new-game-button, #result {
+    font-size: 18px; /* Taille de police pour les autres éléments */
+    border-radius: 10px; /* Bords arrondis */
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.7); /* Fond semi-transparent */
+    text-align: center;
+  }
+  #continue-button, #ok-button,#score-banner{
+    display: none;
+    font-size: 30px;
+    font-weight: 700;
+  }
+  #continue-button{
+    color: yellow;
+  }
+
+  #start-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(56 151 137);
+  }
+
+  #new-game-button {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    z-index: 6;
+  }
+
+  #result {
+    position: absolute;
+    top: 70%;
+    right: 30%;
+    display: none;
+    background-color: red;
+    font-size: 35px;
+  }
+  #footer {
+    width: 100%;
+    height: 8%;
+    background-color: rgb(30, 47, 63);
+    z-index: 3;
+    position: absolute;
+    bottom: 0%;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    opacity: .85;
+  }
+  
+  #highscores {
+    background-color: #001f3f;
+    color: white;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 5px;
+    width: 30%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 600;
+    position: relative;
+    left: 70%;
+    height: 70%;
+  }
+  
+  #highscores h2 {
+    font-size: 30px;
+    margin-bottom: 10px;
+  }
+  
+  #highscore-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  #highscore-list li {
+    margin-bottom: 5px;
+  }
+  #compass {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    width: 70px;
+    height: 70px;
+    z-index: 5;
+    transform-origin: 50% 50%;
+}
+#location-select, #player-input{
+  border-radius: 20px;
+  border: none;
+  padding: 5px 10px;
+  margin: 15px;
+}
+#start-button{
+  color: #43a6b1;
+  font-weight: 700;
+  background-color: white;
+}
+#homepage{
+  display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 80%;
+
+}
+#game-choice{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+#classique-mode-button, #chrono-mode-button, #flags-mode-button{
+  background-color: #60606000;
+  font-size: 50px;
+  font-weight: 700;
+  font-style: italic;
+}
+#classique-mode-button:hover{
+  color:#43a6b1;
+}
+#chrono-mode-button:hover{
+  color:#43a6b1;
+}
+#flags-mode-button:hover{
+  color:#43a6b1;
+}
+#timer-display{
+  display: block;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.popup-content {
+  background-color: #357f78;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 400px;
+  position: relative;
+}
+
+.popup-content h2 {
+  text-align: center;
+}
+
+.popup-content input[type="text"],
+.popup-content input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.popup-content button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.popup-content button:hover {
+  opacity: 0.8;
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+#flag-game{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.country-button, #next-button{
+  background-color: rgba(0, 0, 0, 0.7);
+  font-size: 18px; /* Taille de police pour les autres éléments */
+  border-radius: 10px; /* Bords arrondis */
+  padding: 15px;
+  border: 1px solid black;
+}
+#next-button:hover{
+  background-color: #606060;
+}
+#resultat, #score-drapeau{
+  font-size: 20px;
+  font-weight: 600;
+  margin: 10px;
+}
+
+
+@media only screen and (max-width : 768px) {
+  #homepage{
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 50px;
+  }
+  #game-choice{
+    gap:50px;
+    margin-bottom: 50px;
+  }
+  .map-container{
+    width: 50%;
+    height: 25%;
+  }
+  #compass{
+    top:100px;
+  }
+}
