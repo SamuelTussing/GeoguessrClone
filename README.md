@@ -1,2 +1,1 @@
 "# Freeguessr" 
-"# GeoguessrClone" 
