@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Par exemple, vous pouvez stocker ce nom dans le localStorage
                     localStorage.setItem('playerName', playerName);                    
 
-                    // Rediriger vers index.html
-                    window.location.href = 'index.html';
+                    // Rediriger vers home.html
+                    window.location.href = 'home.html';
                 } else {
                     // Si la réponse n'est pas au format JSON, loguer l'erreur
                     throw new Error("Réponse invalide du serveur. Attendu JSON, reçu HTML.");

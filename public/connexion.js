@@ -34,7 +34,7 @@ document.getElementById('signup-form').addEventListener('submit', async function
         console.log('Inscription réussie:', result);
 
         // Rediriger vers la page de connexion après inscription
-        window.location.href = 'index.html'; // Redirection vers login.html après inscription réussie
+        window.location.href = 'home.html'; // Redirection vers login.html après inscription réussie
 
     } catch (error) {
         console.error(error);
