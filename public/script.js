@@ -31,6 +31,14 @@ let timerInterval; // Intervalle pour le compte à rebours
 let timeLeft = roundTimeLimit; // Initialiser globalement avec la limite de temps
 let preCountdown = 5;
 
+// Charger dynamiquement la clé API
+fetch('/api/google-maps-key')
+  .then((response) => response.json())
+  .then((data) => {
+    const script = document.getElementById('google-maps-script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&libraries=geometry`;
+  })
+  .catch((error) => console.error('Erreur lors du chargement de la clé API:', error));
 
 function getLocationType() {
     const selectElement = document.getElementById('location-select');
