@@ -827,7 +827,7 @@ document.getElementById("chronodiv-fixe").addEventListener("click", () => activa
 document.getElementById("chronodiv-mouvement").addEventListener("click", () => activateModeDeplacement("mouvement"));
 
 // Bouton pour démarrer un round
-startButton.addEventListener("click", startRound);
+startButton.addEventListener("click", startNewRound);
 
 // Initialiser avec les sélections par défaut
 activateChrono("infini"); // Activer chrono infini par défaut
