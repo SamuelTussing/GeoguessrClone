@@ -1,0 +1,17 @@
+[
+  {
+    "username": "player1",
+    "email": "player1@example.com",
+    "password": "iujhygfd14526"
+  },
+  {
+    "username": "player2",
+    "email": "player2@example.com",
+    "password": "13654789655"
+  },
+  {
+    "username": "sam",
+    "email": "sml.tussing@gmail.com",
+    "password": "$2b$10$5Fm3OtJT5OKYJblwSQUQiuDCJb5bZKhXr7/9/OU1VID7RS0xM/tfy"
+  }
+]
