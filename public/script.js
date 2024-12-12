@@ -36,7 +36,7 @@ fetch('/api/google-maps-key')
   .then((response) => response.json())
   .then((data) => {
     const script = document.getElementById('google-maps-script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&libraries=geometry`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAyLL0_201kOZ_7XflG2VVmI0XF7NWMwXk&callback=initMap&libraries=geometry`;
   })
   .catch((error) => console.error('Erreur lors du chargement de la clé API:', error));
 
