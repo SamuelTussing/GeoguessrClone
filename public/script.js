@@ -57,6 +57,7 @@ function initMap() {
             position: google.maps.ControlPosition.LEFT_TOP
         }
     });
+    window.initMap = initMap;
 
     document.getElementById('clear-storage-button').addEventListener('click', () => {
         if (confirm("Êtes-vous sûr de vouloir vider tous les scores enregistrés ?")) {
@@ -112,7 +113,6 @@ document.getElementById('start-button').addEventListener('click', () => {
     });
 }
 
-window.initMap = initMap;
 
 function updateCompass(heading) {
     compass.style.transform = `rotate(${heading}deg)`;
@@ -135,6 +135,10 @@ okButton.addEventListener('click', () => {
 });
 
 function clearMap() {
+    if (!map) {
+        console.error('La carte (map) n’est pas initialisée.');
+        return;
+    }
     if (playerMarker) {
         playerMarker.setMap(null); // Supprime le marqueur du joueur de la carte
         playerMarker = null;
@@ -152,6 +156,10 @@ function clearMap() {
 }
 
 function clearMapStrasbourg() {
+    if (!map) {
+        console.error('La carte (map) n’est pas initialisée.');
+        return;
+    }
     if (playerMarker) {
         playerMarker.setMap(null); // Supprime le marqueur du joueur de la carte
         playerMarker = null;
@@ -169,6 +177,10 @@ function clearMapStrasbourg() {
     map.setZoom(13); // Zoom adapté pour Strasbourg
 }
 function clearMapNorthAmerica() {
+    if (!map) {
+        console.error('La carte (map) n’est pas initialisée.');
+        return;
+    }
     if (playerMarker) {
         playerMarker.setMap(null); // Supprime le marqueur du joueur de la carte
         playerMarker = null;
