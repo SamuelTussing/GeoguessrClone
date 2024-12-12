@@ -136,8 +136,11 @@ okButton.addEventListener('click', () => {
 
 function clearMap() {
     if (!map) {
-        console.error('La carte (map) n’est pas initialisée.');
-        return;
+        console.log('La carte n’est pas initialisée, création en cours...');
+        map = new google.maps.Map(document.getElementById('map-container'), {
+            center: { lat: 0, lng: 0 },
+            zoom: 2,
+        });
     }
     if (playerMarker) {
         playerMarker.setMap(null); // Supprime le marqueur du joueur de la carte
@@ -157,8 +160,11 @@ function clearMap() {
 
 function clearMapStrasbourg() {
     if (!map) {
-        console.error('La carte (map) n’est pas initialisée.');
-        return;
+        console.log('La carte n’est pas initialisée, création en cours...');
+        map = new google.maps.Map(document.getElementById('map-container'), {
+            center: { lat: 0, lng: 0 },
+            zoom: 2,
+        });
     }
     if (playerMarker) {
         playerMarker.setMap(null); // Supprime le marqueur du joueur de la carte
@@ -178,8 +184,11 @@ function clearMapStrasbourg() {
 }
 function clearMapNorthAmerica() {
     if (!map) {
-        console.error('La carte (map) n’est pas initialisée.');
-        return;
+        console.log('La carte n’est pas initialisée, création en cours...');
+        map = new google.maps.Map(document.getElementById('map-container'), {
+            center: { lat: 0, lng: 0 },
+            zoom: 2,
+        });
     }
     if (playerMarker) {
         playerMarker.setMap(null); // Supprime le marqueur du joueur de la carte
@@ -239,7 +248,6 @@ function startNewRound(locationType) {
         clearMap(); // Réinitialise la carte de manière classique
     }
     updateHeader();
-    updateFooter();
     document.getElementById('street-view').style.display = 'block';
     document.getElementById('highscores').style.display = 'none';
     document.getElementById('map-container').style.display = 'block';
@@ -383,7 +391,6 @@ function endGame() {
 
     // Réinitialiser le jeu
     resetGame();
-    updateFooter();
 }
 
 function resetGame() {
@@ -694,17 +701,7 @@ function updateHeader() {
     document.getElementById('current-score').textContent = `Score Actuel: ${totalScore}`;
 }
 
-function updateFooter() {
-    if (gameMode === 'chrono') {
-        document.getElementById('timer-display').style.display = 'block';
-    } else {
-        document.getElementById('timer-display').style.display = 'none';
-    }
-    // Masquer le chronomètre après la fin des 5 manches
-    if (attempts >= maxAttempts) {
-        document.getElementById('timer-display').style.display = 'none';
-    }
-}
+
 
 
   closeHighscores.addEventListener('click',()=>{
