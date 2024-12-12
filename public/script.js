@@ -110,6 +110,11 @@ document.getElementById('start-button').addEventListener('click', () => {
         document.getElementById('location-select').style.display = 'block';
         document.getElementById('player-input').style.display = 'block';
         document.getElementById('start-button').style.display = 'block';
+    
+        // Ajoutez un message pour indiquer que la carte est en cours de chargement
+        if (!map) {
+            console.warn("La carte n’est pas encore initialisée.");
+        }
     });
 }
 
