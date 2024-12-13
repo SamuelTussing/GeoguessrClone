@@ -107,11 +107,7 @@ app.post('/login', async (req, res) => {
     }
 });
 
-// Démarrer le serveur
-const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Serveur en cours d'exécution sur le port ${PORT}`);
-});
+
 
 // Chemin du fichier JSON
 const highScoresFilePath = path.join(__dirname, 'highscores.json');
