@@ -39,28 +39,26 @@ app.get('/api/google-maps-key', (req, res) => {
 app.use(bodyParser.json());
 
 // Route POST pour l'inscription
-export default async function handler(req, res) {
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Méthode non autorisée' });
-    }
-
+app.post('/signup', async (req, res) => {
     const { username, email, password } = req.body;
 
+    // Validation des champs
     if (!username || !email || !password) {
         return res.status(400).json({ error: 'Champs manquants' });
     }
 
     try {
+        // Hacher le mot de passe
         const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Charger les utilisateurs existants
         let users = [];
+
+        // Vérifiez si le fichier existe et chargez les utilisateurs
         if (await fs.access(USERS_FILE).then(() => true).catch(() => false)) {
             const data = await fs.readFile(USERS_FILE, 'utf8');
             users = JSON.parse(data);
         }
 
-        // Vérifier si l'utilisateur existe déjà
+        // Vérifiez si l'utilisateur existe déjà
         if (users.find(user => user.email === email)) {
             return res.status(400).json({ error: 'Utilisateur déjà existant' });
         }
@@ -71,32 +69,32 @@ export default async function handler(req, res) {
 
         res.status(201).json({ message: 'Utilisateur enregistré avec succès' });
     } catch (err) {
-        console.error(err);
+        console.error('Erreur lors de l\'inscription:', err);
         res.status(500).json({ error: 'Erreur lors de l\'inscription' });
     }
-}
+});
 
-
-export default async function handler(req, res) {
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Méthode non autorisée' });
-    }
-
+// Route POST pour la connexion
+app.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
+    // Validation des champs
     if (!email || !password) {
         return res.status(400).json({ error: 'Email et mot de passe sont requis' });
     }
 
     try {
+        // Charger les utilisateurs depuis le fichier
         const data = await fs.readFile(USERS_FILE, 'utf8');
         const users = JSON.parse(data);
 
+        // Trouver l'utilisateur correspondant à l'email
         const user = users.find(user => user.email === email);
         if (!user) {
             return res.status(400).json({ error: 'Utilisateur non trouvé' });
         }
 
+        // Vérifiez le mot de passe haché
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
         if (!isPasswordCorrect) {
             return res.status(400).json({ error: 'Mot de passe incorrect' });
@@ -104,11 +102,16 @@ export default async function handler(req, res) {
 
         res.json({ message: 'Connexion réussie', user: { email: user.email, username: user.username } });
     } catch (err) {
-        console.error(err);
+        console.error('Erreur lors de la connexion:', err);
         res.status(500).json({ error: 'Erreur interne du serveur' });
     }
-}
+});
 
+// Démarrer le serveur
+const PORT = 3000;
+app.listen(PORT, () => {
+    console.log(`Serveur en cours d'exécution sur le port ${PORT}`);
+});
 
 // Chemin du fichier JSON
 const highScoresFilePath = path.join(__dirname, 'highscores.json');
