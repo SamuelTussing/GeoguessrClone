@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import fs from 'fs/promises';
 import path from 'path';
 
-const USERS_FILE = path.join(process.cwd(), 'public', 'users.json'); // Utilisation du dossier public pour Vercel
+const USERS_FILE = path.join(process.cwd(), 'users.json'); // Utilisation de 'users.json' à la racine du projet pour Vercel
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {

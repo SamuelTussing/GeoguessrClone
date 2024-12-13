@@ -1,6 +1,3 @@
-
-
-
 document.getElementById('signup-form').addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -18,11 +15,11 @@ document.getElementById('signup-form').addEventListener('submit', async function
 
     try {
         // Données à envoyer au serveur pour l'inscription
-        const signupData = { username, email, password }; // Vérifiez que cette ligne existe
+        const signupData = { username, email, password };
+
         console.log('Données pour l\'inscription:', signupData);
 
-
-        // Envoi de la requête POST pour l'inscription
+        // URL pour la production sur Vercel
         const response = await fetch('https://geoguessr-clone-five.vercel.app/api/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

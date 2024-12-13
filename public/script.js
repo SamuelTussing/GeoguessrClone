@@ -415,7 +415,7 @@ function resetGame() {
 
 async function saveHighScore(name, score, locationType) {
     try {
-        const response = await fetch('http://localhost:3000/save-score', {
+        const response = await fetch('https://geoguessr-clone-five.vercel.app/save-score', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, score, locationType }),
@@ -434,7 +434,7 @@ async function saveHighScore(name, score, locationType) {
 
 async function displayHighScores(locationType) {
     try {
-        const response = await fetch('http://localhost:3000/high-scores');
+        const response = await fetch('https://geoguessr-clone-five.vercel.app/high-scores');
         if (!response.ok) {
             throw new Error('Erreur lors de la récupération des scores');
         }
