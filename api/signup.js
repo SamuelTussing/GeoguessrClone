@@ -1,3 +1,9 @@
+import bcrypt from 'bcryptjs';
+import fs from 'fs/promises';
+import path from 'path';
+
+const USERS_FILE = path.join(process.cwd(), 'users.json'); // Fichier JSON
+
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         console.log("Méthode HTTP non autorisée");
@@ -12,6 +18,9 @@ export default async function handler(req, res) {
     }
 
     try {
+        console.log("Données reçues pour inscription:", { username, email, password });
+
+        // Hachage du mot de passe
         const hashedPassword = await bcrypt.hash(password, 10);
         console.log("Mot de passe haché:", hashedPassword);
 
@@ -24,16 +33,18 @@ export default async function handler(req, res) {
         } catch (err) {
             if (err.code !== 'ENOENT') {
                 console.error("Erreur lors de la lecture du fichier:", err);
-                throw err;
+                return res.status(500).json({ error: 'Erreur lors de la lecture du fichier des utilisateurs' });
             }
             console.log("Fichier users.json non trouvé, initialisation d'une liste vide.");
         }
 
+        // Vérifier si l'utilisateur existe déjà
         if (users.find(user => user.email === email)) {
             console.log("Email déjà utilisé:", email);
             return res.status(400).json({ error: 'Utilisateur déjà existant' });
         }
 
+        // Ajouter le nouvel utilisateur
         users.push({ username, email, password: hashedPassword });
         await fs.writeFile(USERS_FILE, JSON.stringify(users, null, 2));
         console.log("Nouvel utilisateur enregistré avec succès:", { username, email });

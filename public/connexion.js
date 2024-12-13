@@ -28,6 +28,7 @@ document.getElementById('signup-form').addEventListener('submit', async function
 
         if (!response.ok) {
             const errorText = await response.text(); // Lire le texte brut de la réponse en cas d'erreur
+            console.error("Erreur côté serveur:", errorText);
             throw new Error(errorText || 'Erreur lors de l\'inscription');
         }
 
