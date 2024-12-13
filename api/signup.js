@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt');
 const fs = require('fs').promises;
 const path = require('path');
+const bcrypt = require('bcryptjs');
+
 
 const USERS_FILE = path.join(process.cwd(), 'users.json'); // Fichier JSON stocké à la racine du projet
 

@@ -18,5 +18,10 @@
     "username": "test",
     "email": "marketing@gmail.com",
     "password": "$2b$10$7ArK3mcJcYGPOD6TxM.TqecR/c1MQkM3QYCQ8McjDIEldhYQMGtMG"
+  },
+  {
+    "username": "test2",
+    "email": "test@gmail.com",
+    "password": "$2b$10$kKUByCT.kjZtcyCfDXCBYudEmy4G6OP8wRLS9y3Bn9LRQ4DIEIeJW"
   }
 ]
