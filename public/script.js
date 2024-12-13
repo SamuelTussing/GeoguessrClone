@@ -31,22 +31,15 @@ let timerInterval; // Intervalle pour le compte à rebours
 let timeLeft = roundTimeLimit; // Initialiser globalement avec la limite de temps
 let preCountdown = 5;
 
-// Charger dynamiquement la clé API
-fetch('./api/google-maps-key')
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error('Erreur lors de la récupération de la clé API');
-    }
-    return response.json();
-  })
-  .then((data) => {
-    const googleMapsScript = document.createElement('script');
-    googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=${data.key}&callback=initMap&libraries=geometry`;
-    googleMapsScript.async = true;
-    googleMapsScript.defer = true;
-    document.body.appendChild(googleMapsScript);
-  })
-  .catch((error) => console.error('Erreur lors du chargement de la clé API:', error));
+// Remplacer ceci par votre vraie clé API
+const googleMapsApiKey = 'AIzaSyAUPG5ygE36Pd45w23U157bjffFqJ0Obcg'; // Remplacez par la clé exacte obtenue depuis Google Cloud Console
+
+// Charger directement le script Google Maps
+const googleMapsScript = document.createElement('script');
+googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&callback=initMap&libraries=geometry`;
+googleMapsScript.async = true;
+googleMapsScript.defer = true;
+document.body.appendChild(googleMapsScript);
 
 
 function getLocationType() {
@@ -56,6 +49,7 @@ function getLocationType() {
 }
 
 function initMap() {
+    console.log('Google Maps a été chargé avec succès !');
     // Initialize the map
     map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 0, lng: 0 },

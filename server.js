@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs').promises;
 const cors = require('cors');
+const dotenv = require('dotenv');
 
 
 const app = express();
@@ -13,6 +14,25 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 const USERS_FILE = path.join(__dirname, 'users.json');
 const HIGHSCORES_FILE = path.join(__dirname, 'highscores.json');
+
+
+// Servir les fichiers statiques (HTML, CSS, JS)
+app.use(express.static(path.join(__dirname, 'public')));
+
+// API pour obtenir la clé Google Maps
+app.get('/api/google-maps-key', (req, res) => {
+  const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+
+  if (!apiKey) {
+    return res.status(500).json({ error: 'La clé API est manquante.' });
+  }
+
+  res.status(200).json({ key: apiKey });
+});
+
+
+
+
 
 // Route POST pour l'inscription
 const bcrypt = require('bcrypt');
