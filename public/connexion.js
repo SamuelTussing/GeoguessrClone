@@ -18,7 +18,7 @@ document.getElementById('signup-form').addEventListener('submit', async function
         const signupData = { username, email, password };
 
         // Envoi de la requête POST pour l'inscription
-        const response = await fetch('https://vercel.com/samuel-tussings-projects/geoguessr-clone/signup', {
+        const response = await fetch('http://localhost:3000/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(signupData),
