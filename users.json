@@ -13,5 +13,10 @@
     "username": "sam",
     "email": "sml.tussing@gmail.com",
     "password": "$2b$10$5Fm3OtJT5OKYJblwSQUQiuDCJb5bZKhXr7/9/OU1VID7RS0xM/tfy"
+  },
+  {
+    "username": "test",
+    "email": "marketing@gmail.com",
+    "password": "$2b$10$7ArK3mcJcYGPOD6TxM.TqecR/c1MQkM3QYCQ8McjDIEldhYQMGtMG"
   }
 ]
