@@ -52,6 +52,6 @@ export default async function handler(req, res) {
         res.status(201).json({ message: 'Utilisateur enregistré avec succès' });
     } catch (err) {
         console.error("Erreur interne du serveur:", err);
-        res.status(500).json({ error: 'Erreur interne du serveur' });
+        return res.status(500).json({ error: 'Erreur interne du serveur', details: err.message });
     }
 }
