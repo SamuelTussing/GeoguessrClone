@@ -32,13 +32,22 @@ let timeLeft = roundTimeLimit; // Initialiser globalement avec la limite de temp
 let preCountdown = 5;
 
 // Charger dynamiquement la clé API
-fetch('/api/google-maps-key')
-  .then((response) => response.json())
+fetch('./api/google-maps-key')
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error('Erreur lors de la récupération de la clé API');
+    }
+    return response.json();
+  })
   .then((data) => {
-    const script = document.getElementById('google-maps-script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyBldc68hP1JRwaraC3f06dG6F4b2JGUhYQ&callback=initMap&libraries=geometry`;
+    const googleMapsScript = document.createElement('script');
+    googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=${data.key}&callback=initMap&libraries=geometry`;
+    googleMapsScript.async = true;
+    googleMapsScript.defer = true;
+    document.body.appendChild(googleMapsScript);
   })
   .catch((error) => console.error('Erreur lors du chargement de la clé API:', error));
+
 
 function getLocationType() {
     const selectElement = document.getElementById('location-select');
