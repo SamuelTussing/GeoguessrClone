@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     body: JSON.stringify(loginData),
                 });
 
-                // Vérifiez le type de réponse
+                // Vérifiez le type de réponse.
                 const contentType = response.headers.get("content-type");
                 if (contentType && contentType.includes("application/json")) {
                     const result = await response.json();
