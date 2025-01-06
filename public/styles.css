@@ -78,7 +78,7 @@ body{
     border-radius: 38px;
     width: 640px;
     margin: 10vh 20px 80px 80vh;
-    height: auto;
+    height: 75%;
     backdrop-filter: blur(10px); /* Flou de 10px */
     -webkit-backdrop-filter: blur(10px); /* Compatibilité avec les anciens navigateurs */
   }
@@ -410,6 +410,7 @@ label{
     height: 80%;
     width: 100%;
     margin: 60px;
+    gap: 50px;
 
 }
 #gamemodetitle{
@@ -457,7 +458,6 @@ label{
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  width: 50%;
 }
 .classementcontainer{
   display: flex;
@@ -519,6 +519,7 @@ label{
   font-weight: 700;
   font-style: italic;
   height: auto;
+  width: 100%;
 }
 #classique-mode-button:hover{
   background-color:rgba(67, 166, 177, 0.479);
