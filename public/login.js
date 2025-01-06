@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const loginData = { email, password };
 
                 // Envoi de la requête POST pour la connexion
-                const response = await fetch('https://geoguessr-clone-five.vercel.app/login', {
+                const response = await fetch('/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(loginData),
