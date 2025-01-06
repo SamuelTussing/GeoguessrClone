@@ -75,37 +75,7 @@ app.post('/signup', async (req, res) => {
 });
 
 // Route POST pour la connexion
-app.post('/login', async (req, res) => {
-    const { email, password } = req.body;
 
-    // Validation des champs
-    if (!email || !password) {
-        return res.status(400).json({ error: 'Email et mot de passe sont requis' });
-    }
-
-    try {
-        // Charger les utilisateurs depuis le fichier
-        const data = await fs.readFile(USERS_FILE, 'utf8');
-        const users = JSON.parse(data);
-
-        // Trouver l'utilisateur correspondant à l'email
-        const user = users.find(user => user.email === email);
-        if (!user) {
-            return res.status(400).json({ error: 'Utilisateur non trouvé' });
-        }
-
-        // Vérifiez le mot de passe haché
-        const isPasswordCorrect = await bcrypt.compare(password, user.password);
-        if (!isPasswordCorrect) {
-            return res.status(400).json({ error: 'Mot de passe incorrect' });
-        }
-
-        res.json({ message: 'Connexion réussie', user: { email: user.email, username: user.username } });
-    } catch (err) {
-        console.error('Erreur lors de la connexion:', err);
-        res.status(500).json({ error: 'Erreur interne du serveur' });
-    }
-});
 
 
 
