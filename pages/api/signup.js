@@ -1,6 +1,5 @@
 import fs from 'fs/promises';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import path from 'path';
 
 const USERS_FILE = path.join('/tmp', 'users.json'); // Utilisez /tmp pour le stockage temporaire sur Vercel
@@ -44,12 +43,8 @@ export default async function handler(req, res) {
         // Sauvegarder dans le fichier temporaire
         await fs.writeFile(USERS_FILE, JSON.stringify(users, null, 2));
 
-        // Générer un token
-        const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
 
-        s
-
-        res.status(201).json({ message: 'Utilisateur enregistré avec succès', token });
+        res.status(201).json({ message: 'Utilisateur enregistré avec succès'});
     } catch (err) {
         console.error('Erreur lors de l\'inscription:', err);
         res.status(500).json({ error: 'Erreur lors de l\'inscription' });

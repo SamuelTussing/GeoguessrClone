@@ -1,6 +1,5 @@
 import fs from 'fs/promises';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 import path from 'path';
 
 const USERS_FILE = path.join('/tmp', 'users.json');
@@ -30,9 +29,7 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: 'Mot de passe incorrect' });
         }
 
-        const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
-
-        res.json({ message: 'Connexion réussie', user: { email: user.email, username: user.username }, token });
+        res.json({ message: 'Connexion réussie', user: { email: user.email, username: user.username } });
     } catch (err) {
         console.error('Erreur lors de la connexion:', err);
         res.status(500).json({ error: 'Erreur interne du serveur' });
