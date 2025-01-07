@@ -134,20 +134,6 @@
     <script src="./flagsdata.js"></script>
     <script src="./flags.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-    <script> const token = sessionStorage.getItem('token');
-
-if (!token) {
-    // Redirigez vers la page d'inscription si aucun token n'est trouvé
-    window.location.href = 'index.html';
-} else {
-    console.log("connecté")
-}
-
-// Déconnexion
-document.getElementById('logout').addEventListener('click', function () {
-    sessionStorage.removeItem('token'); // Supprimer le token
-    window.location.href = 'index.html'; // Rediriger vers la page d'inscription
-});
 </script>
 </body>
 </html>
