@@ -1,5 +1,5 @@
 import fs from 'fs/promises';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs'; // Remplacez bcrypt par bcryptjs
 import path from 'path';
 
 const USERS_FILE = path.join('/tmp', 'users.json');
