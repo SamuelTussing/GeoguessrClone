@@ -19,8 +19,8 @@ document.getElementById('signup-form').addEventListener('submit', async function
 
         console.log('Données pour l\'inscription:', signupData);
 
-        // URL pour la production sur Vercel
-        const response = await fetch('https://geoguessr-clone-five.vercel.app/connexion', {
+        // URL pour la production sur Vercel : route api/connexion
+        const response = await fetch('/api/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(signupData), // signupData est utilisé ici
