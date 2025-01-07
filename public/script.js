@@ -869,7 +869,7 @@ document.getElementById('signup-form').addEventListener('submit', async function
         // Données d'inscription
         const signupData = { username, email, password };
 
-        const response = await fetch('https://<votre-domaine-vercel>.vercel.app/api/signup', {
+        const response = await fetch('https://geoguessr-clone-five.vercel.app/api/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(signupData),
@@ -885,7 +885,7 @@ document.getElementById('signup-form').addEventListener('submit', async function
         console.log('Inscription réussie:', result);
 
         // Stocker le token dans le stockage local
-        localStorage.setItem('token', result.token);
+        sessionStorage.setItem('token', result.token);
 
         // Rediriger vers la page d'accueil ou une autre page
         window.location.href = 'home.html';
