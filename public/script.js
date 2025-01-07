@@ -42,6 +42,7 @@ googleMapsScript.defer = true;
 document.body.appendChild(googleMapsScript);
 
 
+
 document.getElementById('signup-form').addEventListener('submit', async function (e) {
     e.preventDefault(); // Empêche le comportement par défaut (rechargement de la page)
 
@@ -80,9 +81,6 @@ document.getElementById('signup-form').addEventListener('submit', async function
         errorDiv.style.display = 'block';
     }
 });
-
-
-
 
 
 
@@ -894,4 +892,6 @@ startButton.addEventListener("click", startNewRound);
 // Initialiser avec les sélections par défaut
 activateChrono("infini"); // Activer chrono infini par défaut
 activateModeDeplacement("mouvement"); // Mode de déplacement mouvement par défaut
+
+
 
