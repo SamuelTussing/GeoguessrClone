@@ -39,7 +39,7 @@ app.get('/api/google-maps-key', (req, res) => {
 app.use(bodyParser.json());
 
 // Route POST pour l'inscription
-app.post('/signup', async (req, res) => {
+app.post('/connexion', async (req, res) => {
     const { username, email, password } = req.body;
 
     // Validation des champs
