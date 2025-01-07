@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     // Stocker le nom du joueur dans une variable globale ou session
                     // Par exemple, vous pouvez stocker ce nom dans le localStorage
-                    localStorage.setItem('playerName', playerName);                    
+                    sessionStorage.setItem('playerName', playerName);                    
 
                     // Rediriger vers home.html
                     window.location.href = 'home.html';

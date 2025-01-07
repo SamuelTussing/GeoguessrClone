@@ -47,7 +47,7 @@ export default async function handler(req, res) {
         // Générer un token
         const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
 
-        window.location.href = 'index.html';
+        s
 
         res.status(201).json({ message: 'Utilisateur enregistré avec succès', token });
     } catch (err) {
