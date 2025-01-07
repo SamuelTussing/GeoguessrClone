@@ -850,3 +850,49 @@ startButton.addEventListener("click", startNewRound);
 activateChrono("infini"); // Activer chrono infini par défaut
 activateModeDeplacement("mouvement"); // Mode de déplacement mouvement par défaut
 
+
+document.getElementById('signup-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const username = document.getElementById('signup-username').value.trim();
+    const email = document.getElementById('signup-email').value.trim();
+    const password = document.getElementById('signup-password').value.trim();
+    const errorDiv = document.getElementById('signup-error');
+
+    if (!username || !email || !password) {
+        errorDiv.textContent = "Tous les champs sont requis.";
+        errorDiv.style.display = 'block';
+        return;
+    }
+
+    try {
+        // Données d'inscription
+        const signupData = { username, email, password };
+
+        const response = await fetch('https://<votre-domaine-vercel>.vercel.app/api/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(signupData),
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(errorText || 'Erreur lors de l\'inscription');
+        }
+
+        // Réponse réussie, afficher un message ou rediriger
+        const result = await response.json();
+        console.log('Inscription réussie:', result);
+
+        // Stocker le token dans le stockage local
+        localStorage.setItem('token', result.token);
+
+        // Rediriger vers la page d'accueil ou une autre page
+        window.location.href = 'home.html';
+
+    } catch (error) {
+        console.error("Erreur lors de l'inscription:", error);
+        errorDiv.textContent = error.message || "Une erreur est survenue lors de l'inscription.";
+        errorDiv.style.display = 'block';
+    }
+});

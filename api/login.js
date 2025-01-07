@@ -1,8 +1,9 @@
-import bcrypt from 'bcryptjs';
 import fs from 'fs/promises';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import path from 'path';
 
-const USERS_FILE = path.join(process.cwd(), 'users.json'); // Utilisation de 'users.json' à la racine du projet pour Vercel
+const USERS_FILE = path.join('/tmp', 'users.json');
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -16,25 +17,24 @@ export default async function handler(req, res) {
     }
 
     try {
-        // Charger les utilisateurs existants
         const data = await fs.readFile(USERS_FILE, 'utf8');
         const users = JSON.parse(data);
 
-        // Trouver l'utilisateur par email
         const user = users.find(user => user.email === email);
         if (!user) {
             return res.status(400).json({ error: 'Utilisateur non trouvé' });
         }
 
-        // Vérifier le mot de passe
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
         if (!isPasswordCorrect) {
             return res.status(400).json({ error: 'Mot de passe incorrect' });
         }
 
-        res.status(200).json({ message: 'Connexion réussie', user: { username: user.username, email: user.email } });
+        const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+
+        res.json({ message: 'Connexion réussie', user: { email: user.email, username: user.username }, token });
     } catch (err) {
-        console.error(err);
+        console.error('Erreur lors de la connexion:', err);
         res.status(500).json({ error: 'Erreur interne du serveur' });
     }
 }

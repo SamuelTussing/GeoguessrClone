@@ -1,4 +1,4 @@
-document.getElementById('signup-form').addEventListener('submit', async function (e) {
+document.getElementById('signup-form2').addEventListener('submit', async function (e) {
     e.preventDefault();
 
     const username = document.getElementById('signup-username').value.trim(); // Récupérer le nom d'utilisateur

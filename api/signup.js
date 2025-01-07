@@ -1,10 +1,9 @@
-import bcrypt from 'bcryptjs';
 import fs from 'fs/promises';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
 
-// Utilisation du répertoire temporaire de Vercel pour stocker le fichier users.json
-const USERS_FILE = path.join('/tmp', 'users.json');
+const USERS_FILE = path.join('/tmp', 'users.json'); // Utilisez /tmp pour le stockage temporaire sur Vercel
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -13,16 +12,8 @@ export default async function handler(req, res) {
 
     const { username, email, password } = req.body;
 
-    // Validation des champs
     if (!username || !email || !password) {
-        return res.status(400).json({ error: 'Tous les champs sont requis' });
-    }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        return res.status(400).json({ error: 'Email invalide' });
-    }
-    if (password.length < 8) {
-        return res.status(400).json({ error: 'Le mot de passe doit contenir au moins 8 caractères.' });
+        return res.status(400).json({ error: 'Champs manquants' });
     }
 
     try {
@@ -32,7 +23,7 @@ export default async function handler(req, res) {
             const data = await fs.readFile(USERS_FILE, 'utf8');
             users = JSON.parse(data);
         } catch (err) {
-            if (err.code !== 'ENOENT') {  // Si le fichier n'existe pas encore
+            if (err.code !== 'ENOENT') {
                 console.error("Erreur lors de la lecture du fichier:", err);
                 throw err;
             }
@@ -41,22 +32,24 @@ export default async function handler(req, res) {
 
         // Vérifier si l'utilisateur existe déjà
         if (users.find(user => user.email === email)) {
-            return res.status(400).json({ error: 'Échec de l\'enregistrement, veuillez réessayer.' });
+            return res.status(400).json({ error: 'Utilisateur déjà existant' });
         }
 
         // Hachage du mot de passe
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Ajouter l'utilisateur au tableau
-        users.push({ id: uuidv4(), username, email, password: hashedPassword });
+        users.push({ username, email, password: hashedPassword });
 
         // Sauvegarder dans le fichier temporaire
         await fs.writeFile(USERS_FILE, JSON.stringify(users, null, 2));
-        console.log("Nouvel utilisateur enregistré");
 
-        return res.status(201).json({ message: 'Utilisateur enregistré avec succès' });
+        // Générer un token
+        const token = jwt.sign({ email }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
+
+        res.status(201).json({ message: 'Utilisateur enregistré avec succès', token });
     } catch (err) {
-        console.error('Erreur interne du serveur:', err);
-        return res.status(500).json({ error: 'Erreur interne du serveur', details: err.message });
+        console.error('Erreur lors de l\'inscription:', err);
+        res.status(500).json({ error: 'Erreur lors de l\'inscription' });
     }
 }
