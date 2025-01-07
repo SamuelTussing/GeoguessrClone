@@ -16,7 +16,7 @@ let totalScore = 0;
 let attempts = 0;
 const maxAttempts = 5;
 let playerName = 'TEST';
-let currentRound = 1;
+let currentRound = 0;
 let locationType
 const compass = document.getElementById('compass');
 let chronoMode = "infini"; // Par défaut
@@ -409,7 +409,7 @@ function resetGame() {
     document.getElementById('highscores').style.display = 'block';
     totalScore = 0;
     attempts = 0;
-    currentRound = 1;
+    currentRound = 0;
     playerName = '';
 }
 
