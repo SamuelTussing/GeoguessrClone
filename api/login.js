@@ -35,6 +35,7 @@ export default async function handler(req, res) {
             process.env.JWT_SECRET_KEY,
             { expiresIn: '1h' }
         );
+        console.log("JWT Secret Key:", process.env.JWT_SECRET_KEY);
 
         res.status(200).json({ message: 'Connexion réussie', token });
     } catch (err) {
