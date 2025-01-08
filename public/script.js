@@ -393,9 +393,7 @@ function endGame() {
     nameplace.style.display = 'none';
 
     // Sauvegarder le score et afficher le classement
-    saveHighScore(playerName, totalScore, locationType).then(() => {
-        displayHighScores(locationType);
-    });
+    submitScore(playerName, totalScore, locationType);
 
     // Réinitialiser le jeu
     resetGame();
@@ -851,4 +849,61 @@ activateChrono("infini"); // Activer chrono infini par défaut
 activateModeDeplacement("mouvement"); // Mode de déplacement mouvement par défaut
 
 
+async function submitScore(username, email, score) {
+    try {
+        const response = await fetch('/api/score', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, email, score }),
+        });
 
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Erreur lors de l\'enregistrement du score');
+        }
+
+        const result = await response.json();
+        console.log('Score enregistré avec succès :', result);
+
+        // Afficher le top 5 (facultatif)
+        console.log('Top 5 des scores :', result.topScores);
+    } catch (error) {
+        console.error('Erreur lors de l\'envoi du score :', error);
+    }
+}
+
+
+
+async function fetchAndDisplayTopScores() {
+    const dataContainer = document.getElementById('dataContainer');
+    try {
+        // Récupérer les scores depuis l'API
+        const response = await fetch('/api/top-scores');
+        if (!response.ok) {
+            throw new Error('Erreur lors de la récupération des scores');
+        }
+
+        const topScores = await response.json();
+
+        // Vider le conteneur pour éviter les doublons
+        dataContainer.innerHTML = '';
+
+        // Ajouter chaque score au conteneur
+        topScores.forEach((score, index) => {
+            const scoreElement = document.createElement('div');
+            scoreElement.classList.add('score-item'); // Ajouter une classe CSS si nécessaire
+            scoreElement.innerHTML = `
+                <div class="rank">${index + 1}</div>
+                <div class="username">${score.username}</div>
+                <div class="score">${score.score}</div>
+            `;
+            dataContainer.appendChild(scoreElement);
+        });
+    } catch (error) {
+        console.error('Erreur lors de l\'affichage des scores :', error);
+        dataContainer.innerHTML = '<p>Impossible de charger les scores. Réessayez plus tard.</p>';
+    }
+}
+
+// Appeler la fonction dès que la page est chargée ou quand la liste doit être actualisée
+document.addEventListener('DOMContentLoaded', fetchAndDisplayTopScores);
