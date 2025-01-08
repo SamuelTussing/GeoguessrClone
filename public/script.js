@@ -849,28 +849,36 @@ activateChrono("infini"); // Activer chrono infini par défaut
 activateModeDeplacement("mouvement"); // Mode de déplacement mouvement par défaut
 
 
-async function submitScore(username, email, score) {
+async function submitScore(username, score) {
     try {
-        const response = await fetch('/api/score', {
+        const response = await fetch('/api/submit-score', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, email, score }),
+            body: JSON.stringify({ username, score })
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Erreur lors de l\'enregistrement du score');
-        }
-
         const result = await response.json();
-        console.log('Score enregistré avec succès :', result);
 
-        // Afficher le top 5 (facultatif)
-        console.log('Top 5 des scores :', result.topScores);
+        if (response.ok) {
+            console.log(result.message);
+            if (result.newTopScores) {
+                console.log('Nouveau top 5 :', result.newTopScores);
+            }
+        } else {
+            console.error('Erreur :', result.error);
+        }
     } catch (error) {
-        console.error('Erreur lors de l\'envoi du score :', error);
+        console.error('Erreur lors de la soumission du score :', error);
+    }
+    if (result.newTopScores) {
+        fetchAndDisplayTopScores(); // Rafraîchit automatiquement le classement
     }
 }
+
+// Exemple : Appeler la fonction avec le score du joueur
+// Remplacez `playerUsername` et `playerScore` par vos variables
+submitScore(playerUsername, playerScore);
+
 
 
 
