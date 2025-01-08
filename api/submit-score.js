@@ -32,7 +32,7 @@ export default async function handler(req, res) {
                 username,
                 score,
                 date: new Date() // Stocker la date du score
-            };
+            }; 
 
             await scoresCollection.insertOne(newScore);
 
