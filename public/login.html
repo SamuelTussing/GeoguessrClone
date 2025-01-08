@@ -18,7 +18,7 @@
 <!-- Formulaire de connexion -->
 <div class="login-page">  
     <h1>Connexion</h1>
-    <form id="login-form">
+    <form id="login-form" method="POST">
         <label for="login-email">Adresse email :</label>
         <input type="email" id="login-email" name="email" required>
         <br>
@@ -42,6 +42,7 @@
         <div id="timer-display"></div>
     </div> 
     <script src="./script.js"></script>
+    <script src="./loginform.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script src="../api/login.js"></script>
 </body>

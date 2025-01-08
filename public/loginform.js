@@ -1,5 +1,6 @@
 document.getElementById('login-form').addEventListener('submit', async function (e) {
     e.preventDefault(); // Empêche le rechargement de la page
+    console.log("Formulaire intercepté !");
 
     const email = document.getElementById('login-email').value.trim();
     const password = document.getElementById('login-password').value.trim();
