@@ -1,8 +1,6 @@
-import fs from 'fs/promises';
-import bcrypt from 'bcryptjs'; // Remplacez bcrypt par bcryptjs
-import path from 'path';
-
-const USERS_FILE = path.join('/tmp', 'users.json');
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import clientPromise from '../../lib/mongodb';
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -12,26 +10,35 @@ export default async function handler(req, res) {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        return res.status(400).json({ error: 'Email et mot de passe sont requis' });
+        return res.status(400).json({ error: 'Champs manquants' });
     }
 
     try {
-        const data = await fs.readFile(USERS_FILE, 'utf8');
-        const users = JSON.parse(data);
+        const client = await clientPromise;
+        const db = client.db("geoguessr_clone");
 
-        const user = users.find(user => user.email === email);
+        // Rechercher l'utilisateur dans la base de données
+        const user = await db.collection('users').findOne({ email });
         if (!user) {
             return res.status(400).json({ error: 'Utilisateur non trouvé' });
         }
 
+        // Vérifier le mot de passe
         const isPasswordCorrect = await bcrypt.compare(password, user.password);
         if (!isPasswordCorrect) {
             return res.status(400).json({ error: 'Mot de passe incorrect' });
         }
 
-        res.json({ message: 'Connexion réussie', user: { email: user.email, username: user.username } });
+        // Générer un token JWT
+        const token = jwt.sign(
+            { email: user.email, username: user.username },
+            process.env.JWT_SECRET_KEY,
+            { expiresIn: '1h' }
+        );
+
+        res.status(200).json({ message: 'Connexion réussie', token });
     } catch (err) {
-        console.error('Erreur lors de la connexion:', err);
+        console.error("Erreur lors de la connexion :", err);
         res.status(500).json({ error: 'Erreur interne du serveur' });
     }
 }

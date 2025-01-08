@@ -1,8 +1,5 @@
-import fs from 'fs/promises';
-import bcrypt from 'bcryptjs'; // Remplacez bcrypt par bcryptjs
-import path from 'path';
-
-const USERS_FILE = path.join('/tmp', 'users.json'); // Utilisez /tmp pour le stockage temporaire sur Vercel
+import bcrypt from 'bcryptjs';
+import clientPromise from '../lib/mondodb';
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -16,37 +13,29 @@ export default async function handler(req, res) {
     }
 
     try {
-        // Charger les utilisateurs existants
-        let users = [];
-        try {
-            const data = await fs.readFile(USERS_FILE, 'utf8');
-            users = JSON.parse(data);
-        } catch (err) {
-            if (err.code !== 'ENOENT') {
-                console.error("Erreur lors de la lecture du fichier:", err);
-                throw err;
-            }
-            console.log("Fichier users.json non trouvé, initialisation d'une liste vide.");
-        }
+        const client = await clientPromise;
+        const db = client.db("geoguessr_clone"); // Nom de la base de données
 
         // Vérifier si l'utilisateur existe déjà
-        if (users.find(user => user.email === email)) {
+        const existingUser = await db.collection('users').findOne({ email });
+        if (existingUser) {
             return res.status(400).json({ error: 'Utilisateur déjà existant' });
         }
 
-        // Hachage du mot de passe
+        // Hacher le mot de passe
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Ajouter l'utilisateur au tableau
-        users.push({ username, email, password: hashedPassword });
+        // Ajouter l'utilisateur dans la base de données
+        await db.collection('users').insertOne({
+            username,
+            email,
+            password: hashedPassword,
+            createdAt: new Date(),
+        });
 
-        // Sauvegarder dans le fichier temporaire
-        await fs.writeFile(USERS_FILE, JSON.stringify(users, null, 2));
-
-
-        res.status(201).json({ message: 'Utilisateur enregistré avec succès'});
+        res.status(201).json({ message: 'Utilisateur enregistré avec succès' });
     } catch (err) {
-        console.error('Erreur lors de l\'inscription:', err);
-        res.status(500).json({ error: 'Erreur lors de l\'inscription' });
+        console.error("Erreur lors de l'inscription :", err);
+        res.status(500).json({ error: 'Erreur interne du serveur' });
     }
 }
