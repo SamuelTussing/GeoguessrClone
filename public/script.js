@@ -15,7 +15,7 @@ let newGameButton = document.getElementById('new-game-button');
 let totalScore = 0;
 let attempts = 0;
 const maxAttempts = 5;
-let username = localStorage.getItem("username");
+const username = localStorage.getItem('username');
 let currentRound = 0;
 let locationType
 const compass = document.getElementById('compass');
