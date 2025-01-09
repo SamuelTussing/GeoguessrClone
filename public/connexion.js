@@ -6,6 +6,7 @@ document.getElementById('signup-form').addEventListener('submit', async function
     const password = document.getElementById('signup-password').value.trim();
     const errorDiv = document.getElementById('signup-error');
 
+    // Validation des champs
     if (!username || !email || !password) {
         errorDiv.textContent = "Tous les champs sont requis.";
         errorDiv.style.display = 'block';
@@ -27,6 +28,8 @@ document.getElementById('signup-form').addEventListener('submit', async function
         const result = await response.json();
         console.log('Inscription réussie:', result);
 
+        // Stocker le token dans sessionStorage
+        sessionStorage.setItem('authToken', result.token);
 
         // Rediriger vers home.html
         window.location.href = 'home.html';

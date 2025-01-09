@@ -1,8 +1,12 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import clientPromise from '../lib/mongodb';
+import cors, { runMiddleware } from '../lib/middleware/corsMiddleware';
 
 export default async function handler(req, res) {
+    // Exécuter le middleware CORS
+    await runMiddleware(req, res, cors);
+
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Méthode non autorisée' });
     }
@@ -15,7 +19,7 @@ export default async function handler(req, res) {
 
     try {
         const client = await clientPromise;
-        const db = client.db("geoguessr_clone"); // Nom de la base de données
+        const db = client.db("geoguessr_clone");
 
         // Vérifier si l'utilisateur existe déjà
         const existingUser = await db.collection('users').findOne({ email });
@@ -37,11 +41,10 @@ export default async function handler(req, res) {
         // Générer un token JWT
         const token = jwt.sign(
             { userId: result.insertedId, email },
-            "secret_key", // Remplace par une clé sécurisée dans les variables d'environnement
+            process.env.JWT_SECRET || "secret_key",
             { expiresIn: "1h" }
         );
 
-        // Retourner la réponse avec le token et l'ID utilisateur
         res.status(201).json({
             message: 'Utilisateur enregistré avec succès',
             userId: result.insertedId,
