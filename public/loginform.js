@@ -32,6 +32,7 @@ document.getElementById('login-form').addEventListener('submit', async function 
         // Stocker le token dans sessionStorage ou localStorage
         localStorage.setItem('userId', result.userId);
         localStorage.setItem('authToken', result.token);
+        localStorage.setItem('username', result.username);
 
         // Rediriger vers home.html
         window.location.href = 'home.html';
