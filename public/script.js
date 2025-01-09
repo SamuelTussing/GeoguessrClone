@@ -15,7 +15,7 @@ let newGameButton = document.getElementById('new-game-button');
 let totalScore = 0;
 let attempts = 0;
 const maxAttempts = 5;
-let playerName = 'TEST';
+let playerName = localStorage.getItem("username");
 let currentRound = 0;
 let locationType
 const compass = document.getElementById('compass');
@@ -90,7 +90,6 @@ function initMap() {
 // Initialisation du jeu lorsque le bouton "Lancer une partie" est cliqué
 document.getElementById('start-button').addEventListener('click', () => {
     // Récupérer le nom du joueur depuis le localStorage
-    const playerName = "conso";
 
     // Maintenant, vous pouvez utiliser playerName et passer à la suite
     getLocationType();
@@ -439,7 +438,6 @@ function resetGame() {
     totalScore = 0;
     attempts = 0;
     currentRound = 0;
-    playerName = '';
 }
 
 

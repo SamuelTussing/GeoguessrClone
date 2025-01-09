@@ -31,6 +31,7 @@ document.getElementById('signup-form').addEventListener('submit', async function
         // Stocker le token dans sessionStorage
         localStorage.setItem('userId', result.userId);
         localStorage.setItem('authToken', result.token);
+        localStorage.setItem('username', result.username);
 
 
         // Rediriger vers home.html
