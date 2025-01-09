@@ -384,7 +384,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-function endGame() {
+async function endGame() {
     const locationType = document.getElementById('location-select').value;
     result.textContent = `Jeu terminé ! Votre score total est de : ${totalScore}`;
     document.getElementById('result').style.display = 'block';
@@ -392,8 +392,29 @@ function endGame() {
     scoreBanner.style.display = 'none';
     nameplace.style.display = 'none';
 
-    // Sauvegarder le score et afficher le classement
-    submitScore(playerName, totalScore, locationType);
+     // Préparer les données pour l'API
+     const userId = "677e4e703c919365f865e942"; // Récupérer dynamiquement si possible
+     const score = totalScore;
+ 
+     try {
+         const response = await fetch('/api/updateScore', {
+             method: 'POST',
+             headers: {
+                 'Content-Type': 'application/json',
+             },
+             body: JSON.stringify({ userId, score }),
+         });
+ 
+         if (response.ok) {
+             const data = await response.json();
+             console.log("Score enregistré avec succès :", data);
+         } else {
+             console.error("Erreur lors de l'enregistrement du score");
+         }
+     } catch (error) {
+         console.error("Erreur réseau :", error);
+     }
+
 
     // Réinitialiser le jeu
     resetGame();
@@ -411,48 +432,6 @@ function resetGame() {
     playerName = '';
 }
 
-async function saveHighScore(name, score, locationType) {
-    try {
-        const response = await fetch('https://geoguessr-clone-five.vercel.app/save-score', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, score, locationType }),
-        });
-
-        if (!response.ok) {
-            throw new Error('Erreur lors de la sauvegarde du score');
-        }
-
-        const result = await response.json();
-        console.log('Scores mis à jour :', result.highScores);
-    } catch (error) {
-        console.error('Erreur :', error);
-    }
-}
-
-async function displayHighScores(locationType) {
-    try {
-        const response = await fetch('https://geoguessr-clone-five.vercel.app/high-scores');
-        if (!response.ok) {
-            throw new Error('Erreur lors de la récupération des scores');
-        }
-
-        const highScores = await response.json();
-        const highscoreList = document.getElementById('highscore-list');
-        highscoreList.innerHTML = '';
-
-        // Filtrer les scores selon le locationType (si nécessaire)
-        const filteredScores = highScores.filter(entry => entry.locationType === locationType);
-
-        filteredScores.forEach((entry, index) => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `${index + 1}. ${entry.name} - ${entry.score} - ${entry.locationType}`;
-            highscoreList.appendChild(listItem);
-        });
-    } catch (error) {
-        console.error('Erreur :', error);
-    }
-}
 
 let currentPlaceName = ""; // Variable globale pour le nom du lieu
 
@@ -849,69 +828,4 @@ activateChrono("infini"); // Activer chrono infini par défaut
 activateModeDeplacement("mouvement"); // Mode de déplacement mouvement par défaut
 
 
-async function submitScore(username, score) {
-    try {
-        const response = await fetch('/api/submit-score', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, score })
-        });
 
-        const result = await response.json();
-
-        if (response.ok) {
-            console.log(result.message);
-            if (result.newTopScores) {
-                console.log('Nouveau top 5 :', result.newTopScores);
-            }
-        } else {
-            console.error('Erreur :', result.error);
-        }
-    } catch (error) {
-        console.error('Erreur lors de la soumission du score :', error);
-    }
-    if (result.newTopScores) {
-        fetchAndDisplayTopScores(); // Rafraîchit automatiquement le classement
-    }
-}
-
-// Exemple : Appeler la fonction avec le score du joueur
-// Remplacez `playerUsername` et `playerScore` par vos variables
-submitScore(playerUsername, playerScore);
-
-
-
-
-async function fetchAndDisplayTopScores() {
-    const dataContainer = document.getElementById('dataContainer');
-    try {
-        // Récupérer les scores depuis l'API
-        const response = await fetch('/api/top-scores');
-        if (!response.ok) {
-            throw new Error('Erreur lors de la récupération des scores');
-        }
-
-        const topScores = await response.json();
-
-        // Vider le conteneur pour éviter les doublons
-        dataContainer.innerHTML = '';
-
-        // Ajouter chaque score au conteneur
-        topScores.forEach((score, index) => {
-            const scoreElement = document.createElement('div');
-            scoreElement.classList.add('score-item'); // Ajouter une classe CSS si nécessaire
-            scoreElement.innerHTML = `
-                <div class="rank">${index + 1}</div>
-                <div class="username">${score.username}</div>
-                <div class="score">${score.score}</div>
-            `;
-            dataContainer.appendChild(scoreElement);
-        });
-    } catch (error) {
-        console.error('Erreur lors de l\'affichage des scores :', error);
-        dataContainer.innerHTML = '<p>Impossible de charger les scores. Réessayez plus tard.</p>';
-    }
-}
-
-// Appeler la fonction dès que la page est chargée ou quand la liste doit être actualisée
-document.addEventListener('DOMContentLoaded', fetchAndDisplayTopScores);
