@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   
       try {
         const client = await clientPromise;
-        const db = client.db("gameApp");
+        const db = client.db("geoguessr_clone");
   
         // Mettre à jour le document : ajouter les champs `lastScore` et `scores` s'ils n'existent pas
         const result = await db.collection("users").updateOne(
