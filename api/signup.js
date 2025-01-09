@@ -1,4 +1,5 @@
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import clientPromise from '../lib/mongodb';
 
 export default async function handler(req, res) {
@@ -26,14 +27,26 @@ export default async function handler(req, res) {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Ajouter l'utilisateur dans la base de données
-        await db.collection('users').insertOne({
+        const result = await db.collection('users').insertOne({
             username,
             email,
             password: hashedPassword,
             createdAt: new Date(),
         });
 
-        res.status(201).json({ message: 'Utilisateur enregistré avec succès' });
+        // Générer un token JWT
+        const token = jwt.sign(
+            { userId: result.insertedId, email },
+            "secret_key", // Remplace par une clé sécurisée dans les variables d'environnement
+            { expiresIn: "1h" }
+        );
+
+        // Retourner la réponse avec le token et l'ID utilisateur
+        res.status(201).json({
+            message: 'Utilisateur enregistré avec succès',
+            userId: result.insertedId,
+            token,
+        });
     } catch (err) {
         console.error("Erreur lors de l'inscription :", err);
         res.status(500).json({ error: 'Erreur interne du serveur' });

@@ -393,35 +393,38 @@ async function endGame() {
     nameplace.style.display = 'none';
 
     const userId = localStorage.getItem("userId");
-  const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-  if (!userId || !token) {
-    console.error("Utilisateur non authentifié. Impossible d'enregistrer le score.");
-    return;
-  }
-
-  const score = totalScore;
-
-  try {
-    const response = await fetch("/api/updateScore", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`, // Ajouter le token dans l'en-tête
-      },
-      body: JSON.stringify({ userId, score }),
-    });
-
-    const data = await response.json();
-
-    if (response.ok) {
-      console.log("Score enregistré avec succès :", data);
-    } else {
-      console.error("Erreur lors de l'enregistrement du score :", data.message);
+    if (!userId || !token) {
+        console.error("Utilisateur non authentifié. Impossible d'enregistrer le score.");
+        console.log("userId dans localStorage :", userId);
+        console.log("token dans localStorage :", token);
+        return;
     }
-  } catch (error) {
-    console.error("Erreur réseau :", error);
-  }
+
+    const score = totalScore;
+
+    try {
+        const response = await fetch("/api/updateScore", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify({ userId, score }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log("Score enregistré avec succès :", data);
+        } else {
+            console.error("Erreur lors de l'enregistrement du score :", data.message);
+        }
+    } catch (error) {
+        console.error("Erreur réseau :", error);
+    }
+
 
     // Réinitialiser le jeu
     resetGame();
