@@ -3,43 +3,42 @@ import jwt from 'jsonwebtoken';
 import clientPromise from '../lib/mongodb';
 
 export default async function handler(req, res) {
-    if (req.method !== 'POST') {
-        return res.status(405).json({ error: 'Méthode non autorisée' });
-    }
-
-    const { email, password } = req.body;
-
-    if (!email || !password) {
-        return res.status(400).json({ error: 'Champs manquants' });
-    }
-
-    try {
+    if (req.method === "POST") {
+      const { email, password } = req.body;
+  
+      try {
         const client = await clientPromise;
-        const db = client.db("geoguessr_clone");
-
-        // Rechercher l'utilisateur dans la base de données
-        const user = await db.collection('users').findOne({ email });
+        const db = client.db("gameApp");
+        const user = await db.collection("users").findOne({ email });
+  
         if (!user) {
-            return res.status(400).json({ error: 'Utilisateur non trouvé' });
+          return res.status(404).json({ message: "Utilisateur non trouvé" });
         }
-
-        // Vérifier le mot de passe
-        const isPasswordCorrect = await bcrypt.compare(password, user.password);
-        if (!isPasswordCorrect) {
-            return res.status(400).json({ error: 'Mot de passe incorrect' });
+  
+        const passwordMatch = await bcrypt.compare(password, user.password);
+  
+        if (!passwordMatch) {
+          return res.status(401).json({ message: "Mot de passe incorrect" });
         }
-
+  
         // Générer un token JWT
         const token = jwt.sign(
-            { email: user.email, username: user.username },
-            process.env.JWT_SECRET_KEY,
-            { expiresIn: '1h' }
+          { userId: user._id, email: user.email },
+          "secret_key", // Remplace par une clé sécurisée dans les variables d'environnement
+          { expiresIn: "1h" }
         );
-        console.log("JWT Secret Key:", process.env.JWT_SECRET_KEY);
-
-        res.status(200).json({ message: 'Connexion réussie', token });
-    } catch (err) {
-        console.error("Erreur lors de la connexion :", err);
-        res.status(500).json({ error: 'Erreur interne du serveur' });
+  
+        res.status(200).json({
+          userId: user._id,
+          username: user.username,
+          email: user.email,
+          token,
+        });
+      } catch (error) {
+        console.error("Erreur lors de l'authentification :", error);
+        res.status(500).json({ message: "Erreur serveur" });
+      }
+    } else {
+      res.status(405).json({ message: "Méthode non autorisée" });
     }
-}
+  }

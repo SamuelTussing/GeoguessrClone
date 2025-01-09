@@ -392,29 +392,36 @@ async function endGame() {
     scoreBanner.style.display = 'none';
     nameplace.style.display = 'none';
 
-     // Préparer les données pour l'API
-     const userId = "677e4e703c919365f865e942"; // Récupérer dynamiquement si possible
-     const score = totalScore;
- 
-     try {
-         const response = await fetch('/api/updateScore', {
-             method: 'POST',
-             headers: {
-                 'Content-Type': 'application/json',
-             },
-             body: JSON.stringify({ userId, score }),
-         });
- 
-         if (response.ok) {
-             const data = await response.json();
-             console.log("Score enregistré avec succès :", data);
-         } else {
-             console.error("Erreur lors de l'enregistrement du score");
-         }
-     } catch (error) {
-         console.error("Erreur réseau :", error);
-     }
+    const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
 
+  if (!userId || !token) {
+    console.error("Utilisateur non authentifié. Impossible d'enregistrer le score.");
+    return;
+  }
+
+  const score = totalScore;
+
+  try {
+    const response = await fetch("/api/updateScore", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`, // Ajouter le token dans l'en-tête
+      },
+      body: JSON.stringify({ userId, score }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log("Score enregistré avec succès :", data);
+    } else {
+      console.error("Erreur lors de l'enregistrement du score :", data.message);
+    }
+  } catch (error) {
+    console.error("Erreur réseau :", error);
+  }
 
     // Réinitialiser le jeu
     resetGame();
@@ -828,4 +835,30 @@ activateChrono("infini"); // Activer chrono infini par défaut
 activateModeDeplacement("mouvement"); // Mode de déplacement mouvement par défaut
 
 
+
+async function login(username, password) {
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        // Stocke le userId et le token dans localStorage
+        localStorage.setItem("userId", data.userId);
+        localStorage.setItem("token", data.token);
+        console.log("Utilisateur connecté :", data.username);
+      } else {
+        console.error("Erreur de connexion :", data.message);
+      }
+    } catch (error) {
+      console.error("Erreur réseau :", error);
+    }
+  }
+  
 
