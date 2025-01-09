@@ -30,7 +30,8 @@ document.getElementById('login-form').addEventListener('submit', async function 
         console.log('Connexion réussie:', result);
 
         // Stocker le token dans sessionStorage ou localStorage
-        sessionStorage.setItem('authToken', result.token); // Ou utilisez localStorage si nécessaire
+        localStorage.setItem('userId', result.userId);
+        localStorage.setItem('authToken', result.token);
 
         // Rediriger vers home.html
         window.location.href = 'home.html';
