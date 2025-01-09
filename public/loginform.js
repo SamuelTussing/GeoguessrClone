@@ -21,18 +21,23 @@ document.getElementById('login-form').addEventListener('submit', async function 
             body: JSON.stringify({ email, password }),
         });
 
+        const result = await response.json();
+        console.log('Réponse API:', result); // Vérifiez les données retournées par l'API
+
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Erreur lors de la connexion');
+            throw new Error(result.message || 'Erreur lors de la connexion');
         }
 
-        const result = await response.json();
-        console.log('Connexion réussie:', result);
-
-        // Stocker le token dans sessionStorage ou localStorage
+        // Stocker les données dans localStorage
         localStorage.setItem('userId', result.userId);
         localStorage.setItem('authToken', result.token);
-        localStorage.setItem('username', result.username);
+        localStorage.setItem('username', result.username); // Stocke le username
+
+        console.log("Données stockées dans localStorage :", {
+            userId: result.userId,
+            token: result.token,
+            username: result.username,
+        });
 
         // Rediriger vers home.html
         window.location.href = 'home.html';

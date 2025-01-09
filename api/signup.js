@@ -36,6 +36,10 @@ export default async function handler(req, res) {
             email,
             password: hashedPassword,
             createdAt: new Date(),
+            lastScore,
+            scores : [],
+            experience : 0,
+            level : 1,
         });
 
         // Générer un token JWT
@@ -48,6 +52,7 @@ export default async function handler(req, res) {
         res.status(201).json({
             message: 'Utilisateur enregistré avec succès',
             userId: result.insertedId,
+            username,
             token,
         });
     } catch (err) {

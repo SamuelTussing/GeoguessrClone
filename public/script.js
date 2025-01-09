@@ -458,7 +458,6 @@ function getRandomStreetViewLocation(locationType) {
                 if (data.location.pano && data.links.length > 0) {
                     actualLocation = data.location.latLng;
                     panorama.setPosition(actualLocation);
-                    currentRound++; // Mise à jour du compteur de round
                 } else {
                     getRandomStreetViewLocation('world'); // Réessayer
                 }
