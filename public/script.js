@@ -393,7 +393,7 @@ async function endGame() {
     nameplace.style.display = 'none';
 
     const userId = localStorage.getItem("userId");
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("authToken");
 
     if (!userId || !token) {
         console.error("Utilisateur non authentifié. Impossible d'enregistrer le score.");
