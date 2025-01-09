@@ -384,12 +384,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 async function endGame() {
-    const locationType = document.getElementById('location-select').value;
+    const locationType = document.getElementById("location-select").value;
     result.textContent = `Jeu terminé ! Votre score total est de : ${totalScore}`;
-    document.getElementById('result').style.display = 'block';
-    document.getElementById('continue-button').style.display = 'none';
-    scoreBanner.style.display = 'none';
-    nameplace.style.display = 'none';
+    document.getElementById("result").style.display = "block";
+    document.getElementById("continue-button").style.display = "none";
+    scoreBanner.style.display = "none";
+    nameplace.style.display = "none";
 
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("authToken");
@@ -423,6 +423,7 @@ async function endGame() {
     } catch (error) {
         console.error("Erreur réseau :", error);
     }
+
 
 
     // Réinitialiser le jeu
