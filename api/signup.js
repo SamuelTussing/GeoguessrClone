@@ -36,10 +36,10 @@ export default async function handler(req, res) {
             email,
             password: hashedPassword,
             createdAt: new Date(),
-            lastScore,
-            scores : [],
-            experience : 0,
-            level : 1,
+            experience: 0, // Initialise à 0
+            level: 1, // Niveau initial
+            lastscore: 0, // Score initial
+            scores: [], // Liste des meilleurs scores (vide au début)
         });
 
         // Générer un token JWT
