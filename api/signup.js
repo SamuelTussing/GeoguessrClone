@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import clientPromise from '../lib/mondodb';
+import clientPromise from '../lib/mongodb';
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
