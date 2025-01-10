@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const User = require("./models/User"); // Remplace par ton modèle d'utilisateur
+const User = require("../models/User"); // Remplace par ton modèle d'utilisateur
 
 // Route pour récupérer le top 10 des scores
 router.get("/api/topScores", async (req, res) => {
