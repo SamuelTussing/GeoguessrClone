@@ -444,6 +444,39 @@ function resetGame() {
 
 let currentPlaceName = ""; // Variable globale pour le nom du lieu
 
+
+
+async function fetchTopScores() {
+    try {
+        const response = await fetch("/api/topScores");
+        if (!response.ok) {
+            throw new Error("Erreur lors de la récupération des scores");
+        }
+
+        const topScores = await response.json();
+        const dataContainer = document.getElementById("dataContainer");
+
+        // Vide le container avant d'ajouter de nouveaux scores
+        dataContainer.innerHTML = "";
+
+        // Ajoute les scores dans la liste
+        topScores.forEach((user, index) => {
+            const position = index + 1;
+            const username = user.username;
+            const score = user.score;
+
+            const listItem = document.createElement("div");
+            listItem.classList.add("classement-item");
+            listItem.textContent = `${position}ᵉ ${username} - ${score} points`;
+
+            dataContainer.appendChild(listItem);
+        });
+    } catch (error) {
+        console.error("Erreur lors de la récupération des scores :", error);
+    }
+}
+
+
 function getRandomStreetViewLocation(locationType) {
     const svService = new google.maps.StreetViewService();
 
@@ -703,6 +736,7 @@ function updateHeader() {
 
   OpenHighscore.addEventListener('click', () => {
     highscoresContainer.classList.remove('hidden');
+    fetchTopScores(); // Récupère les scores à chaque ouverture
   });
 
 // Fonction pour démarrer un timer
