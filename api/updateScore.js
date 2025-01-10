@@ -1,5 +1,5 @@
 import clientPromise from "../lib/mongodb";
-import { ObjectId } from "mongodb"; // Importer ObjectId pour convertir userId en ObjectId
+import { ObjectId } from "mongodb";
 
 export default async function handler(req, res) {
     if (req.method === "POST") {
@@ -16,40 +16,41 @@ export default async function handler(req, res) {
             await db.collection("users").updateOne(
                 { _id: objectId },
                 {
-                    $set: { lastscore: score }, // Mettre à jour le dernier score
-                    $push: { scores: score }, // Ajouter le score à l'historique
+                    $set: { lastscore: score },
+                    $push: { scores: score },
                 }
             );
 
-            // Récupérer le top 10 des scores actuels dans la collection `scores`
+            // Récupérer le top 10 des scores actuels
             const scoresCollection = db.collection("scores");
             const topScores = await scoresCollection
                 .find({})
-                .sort({ score: -1 }) // Tri par score décroissant
+                .sort({ score: -1 })
                 .limit(10)
                 .toArray();
 
-            // Vérifier si le score actuel peut entrer dans le top 10
+            // Vérifier si le score peut entrer dans le top 10
             if (
-                topScores.length < 10 || // Moins de 10 scores dans le classement
-                score > topScores[topScores.length - 1].score // Score actuel supérieur au plus bas du top 10
+                topScores.length < 10 ||
+                score > topScores[topScores.length - 1].score
             ) {
-                // Ajouter le nouveau score dans la collection `scores`
+                // Ajouter le score avec le `username` au classement
                 await scoresCollection.insertOne({
                     userId: objectId,
-                    username: username || "Anonyme", // Utiliser "Anonyme" si le username est absent
+                    username: username || "Anonyme", // Utiliser le username reçu
                     score,
                     createdAt: new Date(),
                 });
 
-                // Nettoyer les scores hors top 10 (si nécessaire)
+                // Nettoyer les scores hors top 10
                 const updatedTopScores = await scoresCollection
                     .find({})
                     .sort({ score: -1 })
                     .limit(10)
                     .toArray();
 
-                const lowestTopScore = updatedTopScores[updatedTopScores.length - 1].score;
+                const lowestTopScore =
+                    updatedTopScores[updatedTopScores.length - 1].score;
 
                 // Supprimer les scores inférieurs au plus bas du top 10
                 await scoresCollection.deleteMany({ score: { $lt: lowestTopScore } });

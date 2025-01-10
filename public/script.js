@@ -393,6 +393,7 @@ async function endGame() {
 
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("authToken");
+    const username = localStorage.getItem("username"); // Ajout du username
 
     if (!userId || !token) {
         console.error("Utilisateur non authentifié. Impossible d'enregistrer le score.");
@@ -410,7 +411,7 @@ async function endGame() {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ userId, score }),
+            body: JSON.stringify({ userId, score, username }),
         });
 
         const data = await response.json();
