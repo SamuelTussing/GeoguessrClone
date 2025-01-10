@@ -424,6 +424,7 @@ async function endGame() {
     } catch (error) {
         console.error("Erreur réseau :", error);
     }
+    fetchTopScores()
 
 
 
@@ -456,9 +457,11 @@ async function fetchTopScores() {
 
         const topScores = await response.json();
         const dataContainer = document.getElementById("dataContainer");
+        const datahighscores = document.getElementById("highscores");
 
         // Vide le container avant d'ajouter de nouveaux scores
         dataContainer.innerHTML = "";
+        datahighscores.innerHTML = "";
 
         // Ajouter les scores dans la liste
         topScores.forEach((user, index) => {
