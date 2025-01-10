@@ -538,6 +538,10 @@ function getRandomStreetViewLocation(locationType) {
             case 'europe':
                 filteredLocations = locations.filter(location => location.continent === 'Europe');
                 break;
+            case 'Capitales':
+                filteredLocations = locations.filter(location => location.mode === 'Capitales');
+                radiusInKm = .2;
+                break;
             case 'Strasbourg':
                 filteredLocations = locations.filter(location => location.ville === 'Strasbourg');
                 radiusInKm = 0; // Rayon 0 pour Strasbourg
