@@ -450,7 +450,7 @@ async function fetchTopScores() {
     try {
         const response = await fetch("/api/topScores");
         if (!response.ok) {
-            throw new Error("Erreur lors de la récupération des scores");
+            throw new Error(`Erreur lors de la récupération des scores : ${response.statusText}`);
         }
 
         const topScores = await response.json();
@@ -459,7 +459,7 @@ async function fetchTopScores() {
         // Vide le container avant d'ajouter de nouveaux scores
         dataContainer.innerHTML = "";
 
-        // Ajoute les scores dans la liste
+        // Ajouter les scores dans la liste
         topScores.forEach((user, index) => {
             const position = index + 1;
             const username = user.username;
@@ -473,8 +473,11 @@ async function fetchTopScores() {
         });
     } catch (error) {
         console.error("Erreur lors de la récupération des scores :", error);
+        const dataContainer = document.getElementById("dataContainer");
+        dataContainer.innerHTML = `<p class="error">Impossible de récupérer les scores. Veuillez réessayer plus tard.</p>`;
     }
 }
+
 
 
 function getRandomStreetViewLocation(locationType) {
