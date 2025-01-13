@@ -394,39 +394,40 @@ async function endGame() {
     const token = localStorage.getItem("authToken");
 
     if (!userId || !token) {
-        console.error("Utilisateur non authentifié. Impossible d'enregistrer l'expérience.");
-        console.log("userId dans localStorage :", userId);
-        console.log("token dans localStorage :", token);
+        console.error("Utilisateur non authentifié. Impossible d'enregistrer le score.");
         return;
     }
 
     const score = totalScore;
 
     try {
-        // Appel de la nouvelle route API pour mettre à jour l'expérience et le niveau
         const response = await fetch("/api/updateScore", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`, // Inclure le token si nécessaire
+                "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ userId, score, username }),
+            body: JSON.stringify({ userId, score }),
         });
 
         const data = await response.json();
 
         if (response.ok) {
-            console.log(
-                `Expérience mise à jour avec succès ! Nouvelle expérience : ${data.newExperience}, Nouveau niveau : ${data.newLevel}`
-            );
+            console.log("Score enregistré avec succès :", data);
+
+            const { oldLevel, newLevel } = data;
+
+            // Si le joueur passe un niveau, afficher l'animation
+            if (newLevel > oldLevel) {
+                showLevelUpAnimation(oldLevel, newLevel);
+            }
         } else {
-            console.error("Erreur lors de la mise à jour de l'expérience :", data.error);
+            console.error("Erreur lors de l'enregistrement du score :", data.message);
         }
     } catch (error) {
         console.error("Erreur réseau :", error);
     }
 
-    // Actualiser le classement des scores
     fetchTopScores();
 
     // Réinitialiser le jeu
@@ -906,3 +907,24 @@ async function login(username, password) {
     }
   }
   
+  function showLevelUpAnimation(oldLevel, newLevel) {
+    const levelUpContainer = document.getElementById("levelupcontainer");
+    const oldLevelSpan = document.getElementById("oldlevel");
+    const newLevelSpan = document.getElementById("newlevel");
+    const nextButton = document.getElementById("Nextbutton");
+
+    // Mettre à jour dynamiquement les niveaux
+    oldLevelSpan.textContent = `Niv.${oldLevel}`;
+    newLevelSpan.textContent = `Niv.${newLevel}`;
+
+    // Afficher la div
+    levelUpContainer.style.display = "flex";
+
+    // Ajouter un événement au bouton "Suivant"
+    nextButton.addEventListener("click", () => {
+        levelUpContainer.style.display = "none";
+    });
+}
+
+// Exemple d'utilisation : appelez cette fonction lorsque le joueur passe un niveau
+// showLevelUpAnimation(1, 2);
