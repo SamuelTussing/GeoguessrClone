@@ -435,7 +435,6 @@ function resetGame() {
     document.getElementById('map-container').style.display = 'none';
     document.getElementById('timer-display').style.display = 'none';
     document.getElementById('ok-button').style.display = 'none';
-    document.getElementById('highscores').style.display = 'block';
     totalScore = 0;
     attempts = 0;
     currentRound = 0;
@@ -455,11 +454,9 @@ async function fetchTopScores() {
 
         const topScores = await response.json();
         const dataContainer = document.getElementById("dataContainer");
-        const datahighscores = document.getElementById("highscores");
 
         // Vide le container avant d'ajouter de nouveaux scores
         dataContainer.innerHTML = "";
-        datahighscores.innerHTML = "";
 
         // Ajouter les scores dans la liste
         topScores.forEach((user, index) => {
