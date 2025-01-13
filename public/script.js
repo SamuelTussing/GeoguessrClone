@@ -110,7 +110,6 @@ document.getElementById('start-button').addEventListener('click', () => {
         document.getElementById('mode-title').innerText = 'MODE DE JEU : SOLO CLASSIQUE';
         document.getElementById('start-screen').style.display = 'flex';
         document.getElementById('location-select').style.display = 'block';
-        document.getElementById('player-input').style.display = 'block';
         document.getElementById('start-button').style.display = 'block';
     
         // Ajoutez un message pour indiquer que la carte est en cours de chargement
@@ -256,7 +255,6 @@ function startNewRound(locationType) {
     }
     updateHeader();
     document.getElementById('street-view').style.display = 'block';
-    document.getElementById('highscores').style.display = 'none';
     document.getElementById('map-container').style.display = 'block';
     okButton.style.display = 'block';
     continueButton.style.display = 'none';
