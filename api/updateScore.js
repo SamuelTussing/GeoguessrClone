@@ -12,6 +12,24 @@ export default async function handler(req, res) {
             // Convertir userId en ObjectId
             const objectId = new ObjectId(userId);
 
+             // Ajouter le score à l'expérience
+        const newExperience = user.experience + score;
+
+        // Calculer le nouveau niveau
+        const newLevel = Math.floor(newExperience / 50000) + 1;
+
+        // Mettre à jour la base de données
+        await db.collection("users").updateOne(
+            { _id: objectId },
+            {
+                $set: {
+                    experience: newExperience,
+                    level: newLevel,
+                    lastscore: score,
+                },
+            }
+        );
+
             // Mettre à jour le champ `lastscore` et ajouter le score à l'historique
             await db.collection("users").updateOne(
                 { _id: objectId },

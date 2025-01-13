@@ -403,7 +403,7 @@ async function endGame() {
 
     try {
         // Appel de la nouvelle route API pour mettre à jour l'expérience et le niveau
-        const response = await fetch("/api/updateExperience", {
+        const response = await fetch("/api/updateScore", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
