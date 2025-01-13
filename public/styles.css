@@ -637,6 +637,26 @@ label{
 
 
 @media only screen and (max-width : 768px) {
+  #header{
+    height: 5vh;
+  }
+  #containerlogs {
+    display: flex;
+    overflow: hidden;
+    height: 85vh;
+    margin-top: 5vh;
+}
+#containerlogs img {
+  height: 85vh;
+}
+.signup-page{
+  width: 80vw;
+  margin: 10px 50px;
+  height: auto;
+}
+.buttonchoice{
+  flex-direction: column;
+}
   #homepage{
     flex-direction: column;
     justify-content: flex-start;
