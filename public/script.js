@@ -16,6 +16,7 @@ let totalScore = 0;
 let attempts = 0;
 const maxAttempts = 5;
 const username = localStorage.getItem('username');
+const level = localStorage.getItem('level');
 let currentRound = 0;
 let locationType
 const compass = document.getElementById('compass');
@@ -467,7 +468,6 @@ async function fetchTopScores() {
         topScores.forEach((user, index) => {
             const position = index + 1;
             const username = user.username;
-            const level = user.level
             const score = user.score;
 
             const listItem = document.createElement("div");

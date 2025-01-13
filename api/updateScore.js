@@ -27,7 +27,7 @@ export default async function handler(req, res) {
 
             // Optionnel : Mise à jour du niveau si nécessaire
             const user = await db.collection("users").findOne({ _id: objectId });
-            const newLevel = Math.floor(user.experience / 1000) + 1; // Exemple : 1000 XP par niveau
+            const newLevel = Math.floor(user.experience / 3000) + 1; // Exemple : 3000 XP par niveau
             if (newLevel !== user.level) {
                 await db.collection("users").updateOne(
                     { _id: objectId },

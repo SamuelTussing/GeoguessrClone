@@ -48,6 +48,8 @@ export default async function handler(req, res) {
             userId: user._id,
             username: user.username,
             email: user.email,
+            level: user.level,
+            experience: user.experience,
             token,
         });
     } catch (error) {

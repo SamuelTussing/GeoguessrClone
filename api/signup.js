@@ -53,6 +53,8 @@ export default async function handler(req, res) {
             message: 'Utilisateur enregistré avec succès',
             userId: result.insertedId,
             username,
+            experience,
+            level,
             token,
         });
     } catch (err) {
