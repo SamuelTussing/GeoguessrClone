@@ -392,6 +392,7 @@ async function endGame() {
 
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("authToken");
+    const username = localStorage.getItem("username");
 
     if (!userId || !token) {
         console.error("Utilisateur non authentifié. Impossible d'enregistrer le score.");
@@ -416,6 +417,9 @@ async function endGame() {
             console.log("Score enregistré avec succès :", data);
 
             const { oldLevel, newLevel } = data;
+
+            // Mettre à jour le localStorage avec le nouveau niveau
+            localStorage.setItem("level", newLevel);
 
             // Si le joueur passe un niveau, afficher l'animation
             if (newLevel > oldLevel) {
@@ -733,9 +737,12 @@ function processSVData(data, status) {
 }
 
 function updateHeader() {
-    document.getElementById('player-name').textContent = `Niv.${level} Joueur: ${username}`;
-    document.getElementById('round-info').textContent = `Manche: ${currentRound}/${maxAttempts}`;
-    document.getElementById('current-score').textContent = `Score Actuel: ${totalScore}`;
+    const username = localStorage.getItem("username") || "Anonyme";
+    const level = localStorage.getItem("level") || "0"; // Récupérer le niveau depuis localStorage
+
+    document.getElementById("player-name").textContent = `Niv.${level} Joueur: ${username}`;
+    document.getElementById("round-info").textContent = `Manche: ${currentRound}/${maxAttempts}`;
+    document.getElementById("current-score").textContent = `Score Actuel: ${totalScore}`;
 }
 
 
