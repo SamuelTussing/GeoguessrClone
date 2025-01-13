@@ -18,6 +18,9 @@ export default async function handler(req, res) {
                 return res.status(404).json({ message: "Utilisateur non trouvé" });
             }
 
+            // Utiliser le username depuis la base de données si non fourni
+            const resolvedUsername = username || user.username;
+
             // Ajouter le score à l'expérience
             const newExperience = user.experience + score;
 
@@ -50,10 +53,10 @@ export default async function handler(req, res) {
                 topScores.length < 10 ||
                 score > topScores[topScores.length - 1].score
             ) {
-                // Ajouter le score avec le `username` au classement
+                // Ajouter le score avec le `resolvedUsername` au classement
                 await scoresCollection.insertOne({
                     userId: objectId,
-                    username: username || "Anonyme", // Utiliser le username reçu
+                    username: resolvedUsername, // Utilise le username résolu
                     score,
                     createdAt: new Date(),
                 });

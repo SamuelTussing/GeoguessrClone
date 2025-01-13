@@ -16,6 +16,7 @@ let totalScore = 0;
 let attempts = 0;
 const maxAttempts = 5;
 const username = localStorage.getItem('username');
+const level = localStorage.getItem('level');
 let currentRound = 0;
 let locationType
 const compass = document.getElementById('compass');
@@ -409,7 +410,7 @@ async function endGame() {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`, // Inclure le token si nécessaire
             },
-            body: JSON.stringify({ userId, score }),
+            body: JSON.stringify({ userId, score, username }),
         });
 
         const data = await response.json();
@@ -731,7 +732,7 @@ function processSVData(data, status) {
 }
 
 function updateHeader() {
-    document.getElementById('player-name').textContent = `Joueur: ${username}`;
+    document.getElementById('player-name').textContent = `Niv.${level} Joueur: ${username}`;
     document.getElementById('round-info').textContent = `Manche: ${currentRound}/${maxAttempts}`;
     document.getElementById('current-score').textContent = `Score Actuel: ${totalScore}`;
 }
