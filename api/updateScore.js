@@ -12,30 +12,28 @@ export default async function handler(req, res) {
             // Convertir userId en ObjectId
             const objectId = new ObjectId(userId);
 
-             // Ajouter le score à l'expérience
-        const newExperience = user.experience + score;
-
-        // Calculer le nouveau niveau
-        const newLevel = Math.floor(newExperience / 50000) + 1;
-
-        // Mettre à jour la base de données
-        await db.collection("users").updateOne(
-            { _id: objectId },
-            {
-                $set: {
-                    experience: newExperience,
-                    level: newLevel,
-                    lastscore: score,
-                },
+            // Récupérer les données de l'utilisateur
+            const user = await db.collection("users").findOne({ _id: objectId });
+            if (!user) {
+                return res.status(404).json({ message: "Utilisateur non trouvé" });
             }
-        );
 
-            // Mettre à jour le champ `lastscore` et ajouter le score à l'historique
+            // Ajouter le score à l'expérience
+            const newExperience = user.experience + score;
+
+            // Calculer le nouveau niveau
+            const newLevel = Math.floor(newExperience / 50000) + 1;
+
+            // Mettre à jour l'utilisateur dans la base de données
             await db.collection("users").updateOne(
                 { _id: objectId },
                 {
-                    $set: { lastscore: score },
-                    $push: { scores: score },
+                    $set: {
+                        experience: newExperience,
+                        level: newLevel,
+                        lastscore: score,
+                    },
+                    $push: { scores: score }, // Ajouter le score à l'historique
                 }
             );
 
@@ -75,7 +73,11 @@ export default async function handler(req, res) {
             }
 
             // Réponse réussie
-            res.status(200).json({ message: "Score mis à jour avec succès" });
+            res.status(200).json({
+                message: "Score et expérience mis à jour avec succès",
+                newExperience,
+                newLevel,
+            });
         } catch (error) {
             console.error("Erreur lors de la mise à jour du score :", error);
             res.status(500).json({ message: "Erreur serveur", error });
