@@ -482,9 +482,14 @@ async function fetchTopScores() {
             // Ajouter une image pour la première position (index 0)
             if (index === 0) {
                 const crownImg = document.createElement("img");
-                crownImg.src = "./couronne.png";
+                crownImg.src = "./couronne.png";  // Assurez-vous du bon chemin ici
                 crownImg.alt = "Couronne";
                 crownImg.width = 30; // Taille de l'image
+
+                // Gestionnaire d'erreur de chargement
+                crownImg.onerror = function () {
+                    console.error("Erreur de chargement de l'image couronne.png");
+                };
 
                 // Ajouter l'image au début du div
                 listItem.appendChild(crownImg);
@@ -501,6 +506,7 @@ async function fetchTopScores() {
         dataContainer.innerHTML = `<p class="error">Impossible de récupérer les scores. Veuillez réessayer plus tard.</p>`;
     }
 }
+
 
 
 
