@@ -391,10 +391,9 @@ async function endGame() {
 
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("authToken");
-    const username = localStorage.getItem("username"); // Ajout du username
 
     if (!userId || !token) {
-        console.error("Utilisateur non authentifié. Impossible d'enregistrer le score.");
+        console.error("Utilisateur non authentifié. Impossible d'enregistrer l'expérience.");
         console.log("userId dans localStorage :", userId);
         console.log("token dans localStorage :", token);
         return;
@@ -403,32 +402,36 @@ async function endGame() {
     const score = totalScore;
 
     try {
-        const response = await fetch("/api/updateScore", {
+        // Appel de la nouvelle route API pour mettre à jour l'expérience et le niveau
+        const response = await fetch("/api/updateExperience", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`,
+                "Authorization": `Bearer ${token}`, // Inclure le token si nécessaire
             },
-            body: JSON.stringify({ userId, score, username }),
+            body: JSON.stringify({ userId, score }),
         });
 
         const data = await response.json();
 
         if (response.ok) {
-            console.log("Score enregistré avec succès :", data);
+            console.log(
+                `Expérience mise à jour avec succès ! Nouvelle expérience : ${data.newExperience}, Nouveau niveau : ${data.newLevel}`
+            );
         } else {
-            console.error("Erreur lors de l'enregistrement du score :", data.message);
+            console.error("Erreur lors de la mise à jour de l'expérience :", data.error);
         }
     } catch (error) {
         console.error("Erreur réseau :", error);
     }
-    fetchTopScores()
 
-
+    // Actualiser le classement des scores
+    fetchTopScores();
 
     // Réinitialiser le jeu
     resetGame();
 }
+
 
 function resetGame() {
     document.getElementById('street-view').style.display = 'none';
