@@ -16,7 +16,6 @@ let totalScore = 0;
 let attempts = 0;
 const maxAttempts = 5;
 const username = localStorage.getItem('username');
-const level = localStorage.getItem('level');
 let currentRound = 0;
 let locationType
 const compass = document.getElementById('compass');
@@ -734,7 +733,7 @@ function processSVData(data, status) {
 }
 
 function updateHeader() {
-    document.getElementById('player-name').textContent = `Niv:${level} Joueur: ${username}`;
+    document.getElementById('player-name').textContent = `Joueur: ${username}`;
     document.getElementById('round-info').textContent = `Manche: ${currentRound}/${maxAttempts}`;
     document.getElementById('current-score').textContent = `Score Actuel: ${totalScore}`;
 }
@@ -908,4 +907,3 @@ async function login(username, password) {
     }
   }
   
-
