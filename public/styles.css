@@ -339,6 +339,7 @@ label{
     background-color: red;
     font-size: 35px;
   }
+
   #footer {
     width: 100%;
     height: 10%;
@@ -558,7 +559,7 @@ label{
 .classementcontainer h2{
   display: flex;
   justify-content: center;
-  font-size: 35px;
+  font-size: 50px;
 }
 .classement-list{
   display: flex;
@@ -568,6 +569,24 @@ label{
   font-size: 20px;
   font-weight: 700;
 }
+.position-1{
+  font-size: 40px;
+  color: gold;
+}
+.classement-item img {
+  margin-right: 10px; /* Ajoute un espace entre l'image et le texte */
+  vertical-align: middle; /* Aligne l'image avec le texte */
+}
+.position-2{
+  font-size: 30px;
+  color: #c1c1c1;
+}
+.position-3{
+  font-size: 25px;
+  color: #d37777;
+  margin-bottom: 20px;
+}
+
 /* Styles pour chaque colonne */
 .column {
   flex: 1; /* Chaque colonne prend un espace égal */

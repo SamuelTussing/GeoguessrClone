@@ -475,6 +475,22 @@ async function fetchTopScores() {
 
             const listItem = document.createElement("div");
             listItem.classList.add("classement-item");
+
+            // Ajouter une classe spécifique basée sur l'index + 1
+            listItem.classList.add(`position-${position}`);
+
+            // Ajouter une image pour la première position (index 0)
+            if (index === 0) {
+                const crownImg = document.createElement("img");
+                crownImg.src = "./couronne.png";
+                crownImg.alt = "Couronne";
+                crownImg.width = 30; // Taille de l'image
+
+                // Ajouter l'image au début du div
+                listItem.appendChild(crownImg);
+            }
+
+            // Ajouter le texte du classement
             listItem.textContent = `${position}ᵉ ${username} - ${score} points`;
 
             dataContainer.appendChild(listItem);
@@ -485,6 +501,8 @@ async function fetchTopScores() {
         dataContainer.innerHTML = `<p class="error">Impossible de récupérer les scores. Veuillez réessayer plus tard.</p>`;
     }
 }
+
+
 
 
 
