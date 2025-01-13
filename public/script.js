@@ -467,6 +467,7 @@ async function fetchTopScores() {
         topScores.forEach((user, index) => {
             const position = index + 1;
             const username = user.username;
+            const level = user.level
             const score = user.score;
 
             const listItem = document.createElement("div");
@@ -733,7 +734,7 @@ function processSVData(data, status) {
 }
 
 function updateHeader() {
-    document.getElementById('player-name').textContent = `Joueur: ${username}`;
+    document.getElementById('player-name').textContent = `Niv:${level} Joueur: ${username}`;
     document.getElementById('round-info').textContent = `Manche: ${currentRound}/${maxAttempts}`;
     document.getElementById('current-score').textContent = `Score Actuel: ${totalScore}`;
 }
