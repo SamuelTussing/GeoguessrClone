@@ -1,47 +1,62 @@
-import clientPromise from "../lib/mongodb";
-import { ObjectId } from "mongodb";
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import clientPromise from '../lib/mongodb';
+import cors, { runMiddleware } from '../lib/middleware/corsMiddleware';
 
 export default async function handler(req, res) {
-    if (req.method === "POST") {
-        const { userId, score, username } = req.body;
+    // Exécuter le middleware CORS
+    await runMiddleware(req, res, cors);
 
-        try {
-            const client = await clientPromise;
-            const db = client.db("geoguessr_clone");
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Méthode non autorisée' });
+    }
 
-            // Convertir userId en ObjectId
-            const objectId = new ObjectId(userId);
+    const { username, email, password } = req.body;
 
-            // Calculer l'expérience gagnée
-            const experienceGained = Math.floor(score / 100);
+    if (!username || !email || !password) {
+        return res.status(400).json({ error: 'Champs manquants' });
+    }
 
-            // Mettre à jour `lastscore`, ajouter le score à l'historique et incrémenter l'expérience
-            const result = await db.collection("users").updateOne(
-                { _id: objectId },
-                {
-                    $set: { lastscore: score },
-                    $inc: { experience: experienceGained },
-                    $push: { scores: score },
-                }
-            );
+    try {
+        const client = await clientPromise;
+        const db = client.db("geoguessr_clone");
 
-            // Optionnel : Mise à jour du niveau si nécessaire
-            const user = await db.collection("users").findOne({ _id: objectId });
-            const newLevel = Math.floor(user.experience / 3000) + 1; // Exemple : 3000 XP par niveau
-            if (newLevel !== user.level) {
-                await db.collection("users").updateOne(
-                    { _id: objectId },
-                    { $set: { level: newLevel } }
-                );
-            }
-
-            // Réponse réussie
-            res.status(200).json({ message: "Score et expérience mis à jour avec succès" });
-        } catch (error) {
-            console.error("Erreur lors de la mise à jour du score :", error);
-            res.status(500).json({ message: "Erreur serveur", error });
+        // Vérifier si l'utilisateur existe déjà
+        const existingUser = await db.collection('users').findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ error: 'Utilisateur déjà existant' });
         }
-    } else {
-        res.status(405).json({ message: "Méthode non autorisée" });
+
+        // Hacher le mot de passe
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Ajouter l'utilisateur dans la base de données
+        const result = await db.collection('users').insertOne({
+            username,
+            email,
+            password: hashedPassword,
+            createdAt: new Date(),
+            experience: 0, // Initialise à 0
+            level: 1, // Niveau initial
+            lastscore: 0, // Score initial
+            scores: [], // Liste des meilleurs scores (vide au début)
+        });
+
+        // Générer un token JWT
+        const token = jwt.sign(
+            { userId: result.insertedId, email },
+            process.env.JWT_SECRET || "secret_key",
+            { expiresIn: "1h" }
+        );
+
+        res.status(201).json({
+            message: 'Utilisateur enregistré avec succès',
+            userId: result.insertedId,
+            username,
+            token,
+        });
+    } catch (err) {
+        console.error("Erreur lors de l'inscription :", err);
+        res.status(500).json({ error: 'Erreur interne du serveur' });
     }
 }
