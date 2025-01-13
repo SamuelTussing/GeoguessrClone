@@ -654,23 +654,35 @@ label{
   margin: 10px 50px;
   height: auto;
 }
+.login-page{
+  width: 80vw;
+  margin: 10px 50px;
+  height: auto;
+}
 .buttonchoice{
   flex-direction: column;
 }
-  #homepage{
-    flex-direction: column;
-    justify-content: flex-start;
-    margin-top: 50px;
-  }
+#homepage{
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 50px;
+}
+#main-game{
+  display: flex;
+  align-items: center;
+  height: 85vh;
+  margin-top: 5vh;
+  width: 100vw;
+}
   #game-choice{
     gap:50px;
     margin-bottom: 50px;
   }
-  .map-container{
+.map-container{
     width: 50%;
     height: 25%;
-  }
-  #compass{
+}
+#compass{
     top:100px;
   }
 }
