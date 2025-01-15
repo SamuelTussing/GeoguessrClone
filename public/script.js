@@ -975,6 +975,7 @@ const roundPlusButton = document.getElementById("plus");
 const roundMoinsButton = document.getElementById("moins");
 const hostcontainer = document.getElementById("hostcontainer");
 const lancermulti = document.getElementById("Feu");
+const lobby = document.getElementById("lobbycontainer");
 
 const timePlusButton = document.getElementById("tempsplus");
 const timeMoinsButton = document.getElementById("tempsmoins");
@@ -988,12 +989,19 @@ multiplayerMode.addEventListener("click", () =>{
     joinmultiform.style.display = 'none';
     audioPlayer.play(); // Joue le son
     hostcontainer.style.display = 'none';
+    lobby.style.display = 'none';
 
 });
 
-closemulti.addEventListener("click",()=>{
-    multiContainer.style.display = 'none';
-})
+document.getElementById("closemulti").addEventListener("click", () => {
+    // Cacher la section de jeu multi-joueurs
+    document.getElementById("multicontainer").style.display = 'none';
+    
+    // Émettre un signal au serveur pour fermer la salle
+    const roomCode = document.getElementById("roomcode").value; // Récupérer le code de la salle
+    
+    socket.emit('closeRoom', roomCode); // Envoyer une demande de fermeture au serveur
+});
 
 joinButton.addEventListener("click",()=>{
     multiMenu.style.display = 'none';
@@ -1046,6 +1054,17 @@ timePlusButton.addEventListener("click", () => {
 });
 
 
+function updatePlayerList(players) {
+    const playerListDiv = document.getElementById("playerlist");
+    playerListDiv.innerHTML = ''; // Réinitialise la liste des joueurs
+
+    players.forEach(player => {
+        const playerItem = document.createElement("div");
+        playerItem.textContent = player; // Affiche le nom du joueur
+        playerListDiv.appendChild(playerItem);
+    });
+}
+
 
 //HEBERGEMENT
 document.getElementById("hostroom").addEventListener("click", async () => {
@@ -1054,11 +1073,16 @@ document.getElementById("hostroom").addEventListener("click", async () => {
     const map = document.getElementById("location-select").value;
 
     try {
-        const response = await axios.post('/api/createRoom', { rounds, duration, map });
-        console.log(response); // Ajoutez ceci pour examiner la réponse
+        const response = await axios.post('/api/createRoom', { rounds, duration, map, playerName: username });
+        console.log(response);
         alert(`Partie créée avec succès ! Code de la salle : ${response.data.roomCode}`);
+        hostcontainer.style.display = 'none';
+        lobby.style.display = 'block';
+
+        // Met à jour la liste des joueurs avec l'hôte
+        updatePlayerList([username]); // Ajoute l'hôte dans la liste
     } catch (error) {
-        console.error(error); // Ajoutez ceci pour voir l'erreur complète
+        console.error(error);
         alert(`Erreur lors de la création de la salle : ${error.response?.data?.error || 'Erreur inconnue'}`);
     }
 });
@@ -1073,13 +1097,16 @@ document.getElementById("joinroom").addEventListener("click", async (e) => {
 
     const roomCode = document.getElementById("roomcode").value;
 
-    // Vérifiez si le nom d'utilisateur est disponible
     if (username) {
         try {
             const response = await axios.post('/api/joinRoom', { roomCode, playerName: username });
             alert(`Bonjour ${username}, vous avez rejoint la salle ${roomCode}`);
             document.getElementById("Feu").style.display = "block";
-            console.log("Joueurs dans la salle :", response.data.players);
+            joinmultiform.style.display = 'none';
+            lobby.style.display = 'block';
+
+            // Met à jour la liste des joueurs dans le lobby
+            updatePlayerList(response.data.players); // Mets à jour avec la liste des joueurs
         } catch (error) {
             alert(`Erreur : ${error.response?.data?.error || 'Erreur inconnue'}`);
         }

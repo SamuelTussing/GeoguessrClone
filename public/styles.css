@@ -387,6 +387,18 @@ label{
 #Feu:hover{
   background-color: #16D8B3;
 }
+#lobbycontainer{
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#playerlist{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
 #multimenu{
   display: flex;
