@@ -139,6 +139,7 @@ okButton.addEventListener('click', () => {
         document.getElementById('map-container').style.height = '75%';
     } else {
         alert('Veuillez placer un pin sur la carte.');
+        audioPlayer.play(); // Joue le son
     }
 });
 
@@ -971,13 +972,20 @@ const hostButton = document.getElementById("hostbutton");
 const joinButton = document.getElementById("joinbutton");
 const roundPlusButton = document.getElementById("plus");
 const roundMoinsButton = document.getElementById("moins");
+const hostcontainer = document.getElementById("hostcontainer");
+
+const timePlusButton = document.getElementById("tempsplus");
+const timeMoinsButton = document.getElementById("tempsmoins");
+const roundTimer = document.getElementById("roundtimer");
 let roundsToPlay = 5;
+let roundTime = 50;
 
 multiplayerMode.addEventListener("click", () =>{
     multiContainer.style.display = 'flex';
     multiMenu.style.display = 'flex';
     joinmultiform.style.display = 'none';
     audioPlayer.play(); // Joue le son
+    hostcontainer.style.display = 'none';
 
 });
 
@@ -988,6 +996,12 @@ closemulti.addEventListener("click",()=>{
 joinButton.addEventListener("click",()=>{
     multiMenu.style.display = 'none';
     joinmultiform.style.display = 'flex';
+})
+
+hostButton.addEventListener("click",()=>{
+    multiMenu.style.display = 'none';
+    joinmultiform.style.display = 'none';
+    hostcontainer.style.display = 'flex';
 })
 
 roundMoinsButton.addEventListener("click", () => {
@@ -1008,4 +1022,22 @@ roundPlusButton.addEventListener("click", () => {
         roundsToPlay++;      // Augmente de 1
     }
     roundNumber.textContent = `${roundsToPlay}`;
+});
+
+timeMoinsButton.addEventListener("click", () => {
+    if (roundTime <= 10) { 
+        roundTime = 5; // Fixe à 5 si roundTime est inférieur ou égal à 10
+    } else {
+        roundTime -= 10; // Diminue roundTime de 10
+    }
+    roundTimer.textContent = `${roundTime}`; // Met à jour le contenu de la div
+});
+
+timePlusButton.addEventListener("click", () => {
+    if (roundTime >= 90) { // Vérifie si roundsToPlay est déjà au maximum
+        roundTime = 90;   // Reste à 10
+    } else {
+        roundTime += 10;      
+    }
+    roundTimer.textContent = `${roundTime}`;
 });
