@@ -361,9 +361,61 @@ label{
     align-items: center;
     flex-direction: column;
     margin-top: 25vh;
-    justify-content: space-around;
+    justify-content: space-evenly;
     animation: scale-up-hor-center 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 }
+
+#multicontainer {
+  position: absolute;
+  display: none;
+  background-color: #0E566E;
+  width: 100vw;
+  height: 50vh;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 25vh;
+  justify-content: flex-start;
+  animation: scale-up-hor-center 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  gap: 5vh;
+}
+
+#multimenu{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+#hostcontainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+#roundcontainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1a7999;
+  border-radius: 15px;
+  width: 20vw;
+  height: 10vh;
+  gap: 10px;
+}
+#roundtitle{
+  font-size: 20px;
+  font-weight: 700;
+}
+.rounddiv{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  width: 10%;
+  height: 45%;
+  background-color: #0e566e;
+  margin-top: 0px;
+}
+
 
 @keyframes scale-up-hor-center {
   0% {
@@ -372,6 +424,31 @@ label{
   100% {
     transform: scaleX(1);
   }
+}
+
+.multititle{
+  font-size: 96px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+#hostbutton{
+  width: 10vw;
+}
+#hostbutton:hover{
+  background-color: #0d9b81;
+}
+#joinbutton{
+  width: 10vw;
+}
+#joinbutton:hover{
+  background-color: #0d9b81;
+}
+#closemulti{
+  display: flex;
+  justify-content: flex-start;
+  width: 90%;
+  margin-top: 2%;
 }
 
   .leveluptitle{

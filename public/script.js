@@ -957,5 +957,55 @@ async function login(username, password) {
     });
 }
 
-// Exemple d'utilisation : appelez cette fonction lorsque le joueur passe un niveau
-// showLevelUpAnimation(1, 2);
+//GESTION MODE MULTI
+
+const multiContainer = document.getElementById("multicontainer");
+const multiplayerMode = document.getElementById("chrono-mode-button");
+const audioPlayer = document.getElementById('audioPlayer');
+const multiMenu = document.getElementById("multimenu");
+const joinmultiform = document.getElementById("joinmulti-form");
+const roundNumber = document.getElementById("roundnumber");
+const closemulti = document.getElementById("arrowbackmulti");
+const hostButton = document.getElementById("hostbutton");
+const joinButton = document.getElementById("joinbutton");
+const roundPlusButton = document.getElementById("plus");
+const roundMoinsButton = document.getElementById("moins");
+let roundsToPlay = 5;
+
+multiplayerMode.addEventListener("click", () =>{
+    multiContainer.style.display = 'flex';
+    multiMenu.style.display = 'flex';
+    joinmultiform.style.display = 'none';
+    playSoundButton.addEventListener('click', () => {
+        audioPlayer.play(); // Joue le son
+    });
+});
+
+closemulti.addEventListener("click",()=>{
+    multiContainer.style.display = 'none';
+})
+
+joinButton.addEventListener("click",()=>{
+    multiMenu.style.display = 'none';
+    joinmultiform.style.display = 'flex';
+})
+
+roundMoinsButton.addEventListener("click", () => {
+    if (roundsToPlay <= 1) { // Vérifie si roundsToPlay est déjà au minimum
+        roundsToPlay = 1;   // Reste à 0
+    } else {
+        roundsToPlay--;     // Diminue de 1
+    }
+    roundNumber.textContent = `${roundsToPlay}`; // Met à jour le contenu de la div
+    console.log("moins")
+    console.log("Valeur actuelle de roundsToPlay :", roundsToPlay);
+});
+
+roundPlusButton.addEventListener("click", () => {
+    if (roundsToPlay >= 10) { // Vérifie si roundsToPlay est déjà au maximum
+        roundsToPlay = 10;   // Reste à 10
+    } else {
+        roundsToPlay++;      // Augmente de 1
+    }
+    roundNumber.textContent = `${roundsToPlay}`;
+});

@@ -6,6 +6,7 @@
     <title>Freeguessr</title>
 </head>
 <body>
+    <audio id="audioPlayer" src="son.m4a"></audio>
     <img id="fondplanete" src="./fondplanete2.jpg" alt="image">
     <div id="header">
         <img src="./logo freeguessr.png" id="logo" width="10%"/>
@@ -130,6 +131,31 @@
         <span id="newlevel">Niv.2</span>
     </div>
     <button id="Nextbutton">Suivant</button>
+
+</div>
+<div id="multicontainer">
+    <div id="closemulti">
+        <img id="arrowbackmulti" src="./arrow.png" alt="back" height="30px">
+    </div>
+    <span class="multititle">LEVEL UP</span>
+    <div id="multimenu">
+        <button id="hostbutton">Host</button>
+        <button id="joinbutton">Join</button>
+    </div>
+    <form id="joinmulti-form" method="POST">
+        <label for="joinroomcode">Identifiant de partie :</label>
+        <input type="text" id="roomcode" required>
+        <button id="joinroom">Rejoindre</button>
+    </form>
+    <div id="hostcontainer">
+        <div id="roundcontainer">
+            <span id="roundtitle">ROUNDS :</span>
+            <button class="rounddiv roundbutton" id="moins">-</button>
+            <div class="rounddiv" id="roundnumber">5</div>
+            <button class="rounddiv" id="plus">+</button>
+        </div>
+    </div>
+    
 
 </div>
     <div id="footer">
