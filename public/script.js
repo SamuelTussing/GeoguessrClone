@@ -1,4 +1,5 @@
 let map, panorama, polyline;
+import axios from 'axios';
 let playerMarker, actualMarker;
 let actualLocation;
 let scoreBanner = document.getElementById('score-banner');
