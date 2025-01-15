@@ -1002,6 +1002,7 @@ hostButton.addEventListener("click",()=>{
     multiMenu.style.display = 'none';
     joinmultiform.style.display = 'none';
     hostcontainer.style.display = 'flex';
+
 })
 
 roundMoinsButton.addEventListener("click", () => {
@@ -1041,3 +1042,46 @@ timePlusButton.addEventListener("click", () => {
     }
     roundTimer.textContent = `${roundTime}`;
 });
+
+//HEBERGEMENT
+document.getElementById("hostroom").addEventListener("click", async () => {
+    const rounds = parseInt(document.getElementById("roundnumber").textContent);
+    const duration = parseInt(document.getElementById("roundtimer").textContent);
+    const map = document.getElementById("location-select").value;
+
+    try {
+        const response = await axios.post('/api/createRoom', { rounds, duration, map });
+        alert(`Partie créée avec succès ! Code de la salle : ${response.data.roomCode}`);
+    } catch (error) {
+        alert(`Erreur lors de la création de la salle : ${error.response.data.error}`);
+    }
+});
+
+//REJOINDRE
+document.getElementById("joinroom").addEventListener("click", async (e) => {
+    e.preventDefault(); // Empêche le rechargement de la page
+
+    const roomCode = document.getElementById("roomcode").value;
+    const playerName = prompt("Entrez votre nom :");
+
+    try {
+        const response = await axios.post('/api/joinRoom', { roomCode, playerName });
+        alert(`Rejoint avec succès la salle ${roomCode}`);
+        console.log("Joueurs dans la salle :", response.data.players);
+    } catch (error) {
+        alert(`Erreur : ${error.response.data.error}`);
+    }
+});
+
+
+//DETAILS DE PARTIE
+const getRoomDetails = async (roomCode) => {
+    try {
+        const response = await axios.get(`/api/getRoom?roomCode=${roomCode}`);
+        console.log("Détails de la salle :", response.data);
+    } catch (error) {
+        console.error("Erreur lors de la récupération de la salle :", error);
+    }
+};
+
+
