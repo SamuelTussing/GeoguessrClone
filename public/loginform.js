@@ -5,11 +5,13 @@ document.getElementById('login-form').addEventListener('submit', async function 
     const email = document.getElementById('login-email').value.trim();
     const password = document.getElementById('login-password').value.trim();
     const errorDiv = document.getElementById('login-error');
+    const audioPlayer = document.getElementById('audioPlayer');
 
     // Validation des champs
     if (!email || !password) {
         errorDiv.textContent = "Tous les champs sont requis.";
         errorDiv.style.display = 'block';
+        audioPlayer.play(); // Joue le son
         return;
     }
 

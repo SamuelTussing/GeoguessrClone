@@ -19,6 +19,7 @@ const username = localStorage.getItem('username');
 const level = localStorage.getItem('level');
 let currentRound = 0;
 let locationType
+const audioPlayer = document.getElementById('audioPlayer');
 const compass = document.getElementById('compass');
 let chronoMode = "infini"; // Par défaut
 let timer; // Référence au timer
@@ -325,6 +326,7 @@ function startMainTimer() {
         if (timeLeft <= 0) {
             clearInterval(timerInterval); // Arrêter le chrono
             console.log("Le temps est écoulé !");
+            audioPlayer.play(); // Joue le son
             streetViewElement.classList.add('blur'); // Ajouter le flou
         }
     }, 1000); // Décrémenter chaque seconde
@@ -961,7 +963,6 @@ async function login(username, password) {
 
 const multiContainer = document.getElementById("multicontainer");
 const multiplayerMode = document.getElementById("chrono-mode-button");
-const audioPlayer = document.getElementById('audioPlayer');
 const multiMenu = document.getElementById("multimenu");
 const joinmultiform = document.getElementById("joinmulti-form");
 const roundNumber = document.getElementById("roundnumber");
