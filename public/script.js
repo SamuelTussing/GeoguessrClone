@@ -1072,14 +1072,19 @@ document.getElementById("joinroom").addEventListener("click", async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
 
     const roomCode = document.getElementById("roomcode").value;
-    const playerName = prompt("Entrez votre nom :");
 
-    try {
-        const response = await axios.post('/api/joinRoom', { roomCode, playerName });
-        alert(`Rejoint avec succès la salle ${roomCode}`);
-        console.log("Joueurs dans la salle :", response.data.players);
-    } catch (error) {
-        alert(`Erreur : ${error.response.data.error}`);
+    // Vérifiez si le nom d'utilisateur est disponible
+    if (username) {
+        try {
+            const response = await axios.post('/api/joinRoom', { roomCode, playerName: username });
+            alert(`Bonjour ${username}, vous avez rejoint la salle ${roomCode}`);
+            document.getElementById("Feu").style.display = "block";
+            console.log("Joueurs dans la salle :", response.data.players);
+        } catch (error) {
+            alert(`Erreur : ${error.response?.data?.error || 'Erreur inconnue'}`);
+        }
+    } else {
+        alert("Nom d'utilisateur non trouvé. Veuillez vous connecter.");
     }
 });
 
