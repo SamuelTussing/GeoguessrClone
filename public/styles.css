@@ -373,13 +373,19 @@ label{
   height: AUTO;
   align-items: center;
   flex-direction: column;
-  margin-top: 15vh;
+  margin-top: 5vh;
   justify-content: flex-start;
   animation: scale-up-hor-center 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
   gap: 5vh;
 }
 #joinmulti-form{
   padding-bottom: 150px;
+}
+#Feu{
+  display: none;
+}
+#Feu:hover{
+  background-color: #16D8B3;
 }
 
 #multimenu{
