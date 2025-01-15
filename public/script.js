@@ -1051,11 +1051,14 @@ document.getElementById("hostroom").addEventListener("click", async () => {
 
     try {
         const response = await axios.post('/api/createRoom', { rounds, duration, map });
+        console.log(response); // Ajoutez ceci pour examiner la réponse
         alert(`Partie créée avec succès ! Code de la salle : ${response.data.roomCode}`);
     } catch (error) {
-        alert(`Erreur lors de la création de la salle : ${error.response.data.error}`);
+        console.error(error); // Ajoutez ceci pour voir l'erreur complète
+        alert(`Erreur lors de la création de la salle : ${error.response?.data?.error || 'Erreur inconnue'}`);
     }
 });
+
 
 //REJOINDRE
 document.getElementById("joinroom").addEventListener("click", async (e) => {
