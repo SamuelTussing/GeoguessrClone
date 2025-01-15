@@ -974,6 +974,7 @@ const joinButton = document.getElementById("joinbutton");
 const roundPlusButton = document.getElementById("plus");
 const roundMoinsButton = document.getElementById("moins");
 const hostcontainer = document.getElementById("hostcontainer");
+const lancermulti = document.getElementById("Feu");
 
 const timePlusButton = document.getElementById("tempsplus");
 const timeMoinsButton = document.getElementById("tempsmoins");
@@ -1045,24 +1046,8 @@ timePlusButton.addEventListener("click", () => {
 });
 
 
-const socket = io('/api/socket');
 
-// Lorsque le joueur rejoint la salle
-socket.emit('joinRoom', { roomCode, playerId });  // Envoi d'un objet avec roomCode et playerId
-
-// Lorsque l'hôte appuie sur "Lancer la Partie"
-document.getElementById('Feu').addEventListener('click', () => {
-    socket.emit('startGame', roomCode);  // Notifie tous les joueurs que la partie commence
-});
-
-// Lorsque la partie commence
-socket.on('gameStarted', () => {
-    alert("La partie commence !");
-    startNewRound(locationType); 
-    // Lancer la logique du jeu simultané ici
-});
-
-// Hébergement de la partie
+//HEBERGEMENT
 document.getElementById("hostroom").addEventListener("click", async () => {
     const rounds = parseInt(document.getElementById("roundnumber").textContent);
     const duration = parseInt(document.getElementById("roundtimer").textContent);
@@ -1078,27 +1063,33 @@ document.getElementById("hostroom").addEventListener("click", async () => {
     }
 });
 
-// Rejoindre une salle
+lancermulti.addEventListener("click",()=>{
+    startNewRound(locationType)
+})
+
+//REJOINDRE
 document.getElementById("joinroom").addEventListener("click", async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
-    
+
     const roomCode = document.getElementById("roomcode").value;
+    const playerName = prompt("Entrez votre nom :");
 
     try {
-        // Requête au serveur pour rejoindre la salle
-        const response = await axios.post('/api/joinRoom', { roomCode });
-        
-        // Si le joueur rejoint la salle avec succès
-        if (response.data.success) {
-            alert("Vous avez rejoint la partie !");
-            
-            // Afficher le bouton "Lancer Partie"
-            document.getElementById("Feu").style.display = "block";
-        } else {
-            alert(`Impossible de rejoindre la partie : ${response.data.error}`);
-        }
+        const response = await axios.post('/api/joinRoom', { roomCode, playerName });
+        alert(`Rejoint avec succès la salle ${roomCode}`);
+        console.log("Joueurs dans la salle :", response.data.players);
     } catch (error) {
-        console.error(error);
-        alert("Erreur lors de la tentative de rejoindre la salle.");
+        alert(`Erreur : ${error.response.data.error}`);
     }
 });
+
+
+//DETAILS DE PARTIE
+const getRoomDetails = async (roomCode) => {
+    try {
+        const response = await axios.get(`/api/getRoom?roomCode=${roomCode}`);
+        console.log("Détails de la salle :", response.data);
+    } catch (error) {
+        console.error("Erreur lors de la récupération de la salle :", error);
+    }
+};
