@@ -1055,15 +1055,31 @@ timePlusButton.addEventListener("click", () => {
 
 
 function updatePlayerList(players) {
-    const playerListDiv = document.getElementById("playerlist");
-    playerListDiv.innerHTML = ''; // Réinitialise la liste des joueurs
+    const playerListElement = document.getElementById("playerlist");
+    
+    // Vérifiez si l'élément existe
+    if (!playerListElement) {
+        console.error("L'élément 'playerlist' est introuvable.");
+        return;
+    }
 
+    // Vérifiez que players est un tableau
+    if (!Array.isArray(players)) {
+        console.error("La liste des joueurs n'est pas valide :", players);
+        return;
+    }
+
+    // Réinitialisez le contenu de la liste
+    playerListElement.innerHTML = "";
+
+    // Ajoutez chaque joueur dans la liste
     players.forEach(player => {
-        const playerItem = document.createElement("div");
-        playerItem.textContent = player; // Affiche le nom du joueur
-        playerListDiv.appendChild(playerItem);
+        const playerElement = document.createElement("div");
+        playerElement.textContent = player;
+        playerListElement.appendChild(playerElement);
     });
 }
+
 
 
 //HEBERGEMENT

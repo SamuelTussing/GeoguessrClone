@@ -392,12 +392,15 @@ label{
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 25vh;
 }
 #playerlist{
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #1A2F44;
+  color: white;
 }
 
 #multimenu{
