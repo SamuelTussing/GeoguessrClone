@@ -6,34 +6,33 @@ export default function handler(req, res) {
         return;
     }
 
-    const io = new Server(res.socket.server);
+    // Créez une instance de Socket.IO
+    const io = new Server(res.socket.server, {
+        path: '/api/socket', // C'est ici que vous définissez le chemin pour votre serveur WebSocket
+    });
 
     io.on('connection', (socket) => {
         console.log(`Un joueur connecté avec l'ID : ${socket.id}`);
 
-        // Lorsqu'un joueur rejoint une salle
+        // Exemple de gestion de l'événement "joinRoom"
         socket.on('joinRoom', ({ roomCode, playerId }) => {
-            socket.join(roomCode);  // Le joueur rejoint la salle spécifiée
+            socket.join(roomCode);  // Le joueur rejoint la salle
             console.log(`${playerId} a rejoint la salle ${roomCode}`);
             
-            // Notifier tous les joueurs dans la salle
+            // Vous pouvez aussi notifier tous les joueurs de la salle que quelqu'un a rejoint
             io.to(roomCode).emit('playerJoined', playerId);
         });
 
-        // Lorsque l'hôte lance la partie
+        // Exemple de gestion de l'événement "startGame"
         socket.on('startGame', (roomCode) => {
             console.log(`La partie commence dans la salle ${roomCode}`);
-
-            // Notifier tous les joueurs que la partie commence
-            io.to(roomCode).emit('gameStarted');
+            io.to(roomCode).emit('gameStarted');  // Émet à tous les joueurs que la partie commence
         });
 
-        // Lorsqu'un joueur se déconnecte
         socket.on('disconnect', () => {
             console.log(`Un joueur s'est déconnecté avec l'ID : ${socket.id}`);
         });
     });
 
-    // Indiquer que la connexion a été établie avec succès
-    res.end();
+    res.end(); // Terminer la réponse pour la connexion
 }

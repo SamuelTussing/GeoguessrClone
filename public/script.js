@@ -1046,6 +1046,7 @@ timePlusButton.addEventListener("click", () => {
 
 
 const socket = io('/api/socket');
+import { io } from "socket.io-client";
 
 // Lorsque le joueur rejoint la salle
 socket.emit('joinRoom', { roomCode, playerId });  // Envoi d'un objet avec roomCode et playerId
