@@ -976,9 +976,8 @@ multiplayerMode.addEventListener("click", () =>{
     multiContainer.style.display = 'flex';
     multiMenu.style.display = 'flex';
     joinmultiform.style.display = 'none';
-    playSoundButton.addEventListener('click', () => {
-        audioPlayer.play(); // Joue le son
-    });
+    audioPlayer.play(); // Joue le son
+
 });
 
 closemulti.addEventListener("click",()=>{
