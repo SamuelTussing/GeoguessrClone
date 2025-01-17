@@ -399,7 +399,7 @@ async function endGame() {
         "south-america": 2000,
         "africa": 4000,
         "asia-oceania": 2500,
-        "famous": 25,
+        "famous": 1000,
         "Capitales": 1000,
     };
 
@@ -728,6 +728,7 @@ function calculateScore(playerLocation) {
     const distanceInMeters = google.maps.geometry.spherical.computeDistanceBetween(playerLocation, actualLocation);
     let roundScore;
 
+    // Calcul du score basé sur la distance
     if (distanceInMeters <= 5) {
         roundScore = 5000; // Score maximum si la distance est de 5 m ou moins
     } else if (distanceInMeters <= 2000) {
@@ -737,6 +738,20 @@ function calculateScore(playerLocation) {
         roundScore = Math.max(0, 5000 - 1995 - Math.floor(distanceInKm - 2)); // -1 point par kilomètre au-delà de 2000 m
     }
 
+    // Calcul du temps pris pour le round
+    const roundEndTime = Date.now();
+    const timeTaken = (roundEndTime - roundStartTime) / 1000; // Temps pris en secondes
+
+    // Calcul du malus basé sur le temps (100 points par seconde au-delà de 10 secondes)
+    let timePenalty = 0;
+    if (timeTaken > 10) {
+        timePenalty = Math.floor((timeTaken - 10) * 100);
+    }
+
+    // Appliquer le malus au score du round
+    roundScore = Math.max(0, roundScore - timePenalty);
+
+    // Mettre à jour le score total et incrémenter les tentatives
     totalScore += roundScore;
     attempts++;
 
@@ -746,7 +761,7 @@ function calculateScore(playerLocation) {
         : `${(distanceInMeters / 1000).toFixed(2)} km`;
 
     // Mettre à jour l'interface utilisateur avec le score et la distance
-    scoreBanner.textContent = `Score: ${roundScore} (Distance: ${distanceText})`;
+    scoreBanner.textContent = `Score: ${roundScore} (Distance: ${distanceText}, Temps: ${timeTaken.toFixed(1)}s, Malus: ${timePenalty} points)`;
     scoreBanner.style.display = 'block';
     nameplace.style.display = 'block';
 
