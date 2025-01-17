@@ -388,7 +388,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function endGame() {
     const locationType = document.getElementById("location-select").value;
-    result.textContent = `Jeu terminé ! Votre score total est de : ${totalScore}`;
+
+    // Points bonus en fonction du mode de jeu
+    const bonusPointsMap = {
+        "world": 3000,
+        "Strasbourg": 0,
+        "France": 1000,
+        "europe": 2000,
+        "north-america": 2000,
+        "south-america": 2000,
+        "africa": 4000,
+        "asia-oceania": 2500,
+        "famous": 25,
+        "Capitales": 1000,
+    };
+
+    // Définir les points bonus
+    const bonusPoints = bonusPointsMap[locationType] || 0;
+
+    // Ajouter les points bonus au score total
+    const finalScore = totalScore + bonusPoints;
+
+    // Afficher le résultat final
+    result.textContent = `Jeu terminé ! Votre score total est de : ${finalScore} (Bonus : ${bonusPoints} points)`;
     document.getElementById("result").style.display = "block";
     document.getElementById("continue-button").style.display = "none";
     scoreBanner.style.display = "none";
@@ -396,14 +418,11 @@ async function endGame() {
 
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("authToken");
-    const username = localStorage.getItem("username");
 
     if (!userId || !token) {
         console.error("Utilisateur non authentifié. Impossible d'enregistrer le score.");
         return;
     }
-
-    const score = totalScore;
 
     try {
         const response = await fetch("/api/updateScore", {
@@ -412,7 +431,7 @@ async function endGame() {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ userId, score }),
+            body: JSON.stringify({ userId, score: finalScore }),
         });
 
         const data = await response.json();
@@ -442,7 +461,6 @@ async function endGame() {
     resetGame();
 }
 
-
 function resetGame() {
     document.getElementById('street-view').style.display = 'none';
     document.getElementById('map-container').style.display = 'none';
@@ -452,6 +470,7 @@ function resetGame() {
     attempts = 0;
     currentRound = 0;
 }
+
 
 
 let currentPlaceName = ""; // Variable globale pour le nom du lieu
