@@ -3,6 +3,7 @@ let map, panorama, polyline;
 let playerMarker, actualMarker;
 let actualLocation;
 let scoreBanner = document.getElementById('score-banner');
+let roundStartTime; 
 let closeHighscores = document.getElementById('arrow');
 let OpenHighscore = document.getElementById('classement-button');
 let highscoresContainer = document.querySelector('.classementcontainer');
@@ -248,15 +249,17 @@ newGameButton.addEventListener('click', () => {
 });
 
 function startNewRound(locationType) {
-    
+    roundStartTime = Date.now(); // Enregistre l'heure de début du round
+
     // Réinitialisation selon le mode de jeu
     if (locationType === 'Strasbourg') {
         clearMapStrasbourg(); // Réinitialise et centre sur Strasbourg
     } else if (locationType === 'north-america') {
         clearMapNorthAmerica(); // Réinitialise et centre sur les États-Unis
-    }   else {
+    } else {
         clearMap(); // Réinitialise la carte de manière classique
     }
+
     updateHeader();
     document.getElementById('street-view').style.display = 'block';
     document.getElementById('map-container').style.display = 'block';
@@ -268,31 +271,23 @@ function startNewRound(locationType) {
     document.getElementById('map-container').style.height = '30%';
     getRandomStreetViewLocation(locationType);
 
-    
     // Ajouter un timer de pré-compte à rebours (par exemple, 5 secondes)
     preparationtimer.classList.remove("hidden");
     preparationtimer.textContent = `Préparation... ${preCountdown}s`; // Affiche le pré-compte à rebours
 
+    const preCountdownInterval = setInterval(() => {
+        preCountdown -= 1;
+        console.log(preCountdown);
+        preparationtimer.textContent = `Préparation... ${preCountdown}s`;
 
-    try {
-        const preCountdownInterval = setInterval(() => {
-            preCountdown -= 1;
-            console.log(preCountdown); 
-            preparationtimer.textContent = `Préparation... ${preCountdown}s`;
-    
-            if (preCountdown <= 1) {
-                clearInterval(preCountdownInterval); 
-                preparationtimer.classList.add("hidden");  
-                startMainTimer(); 
-            }
-        }, 1000);
-    } catch (error) {
-        console.error("Erreur dans le pré-compte à rebours :", error);
-    }
+        if (preCountdown <= 1) {
+            clearInterval(preCountdownInterval);
+            preparationtimer.classList.add("hidden");
+            startMainTimer();
+        }
+    }, 1000);
 
-
-
-  //GESTION DES MARQUEURS DE CARTES
+    // GESTION DES MARQUEURS DE CARTES
     currentRound++;
     if (playerMarker) {
         playerMarker.setMap(null); // Supprimer le marqueur du joueur de la carte
@@ -307,6 +302,7 @@ function startNewRound(locationType) {
         polyline = null; // Réinitialiser la polyline pour la nouvelle manche
     }
 }
+
 
 // Fonction pour démarrer le chronomètre principal
 function startMainTimer() {
@@ -723,26 +719,25 @@ function getRandomNorthAmericaCoordinates() {
     currentRound++; // Mise à jour du compteur de round
 }
 
-
 function calculateScore(playerLocation) {
     const distanceInMeters = google.maps.geometry.spherical.computeDistanceBetween(playerLocation, actualLocation);
     let roundScore;
 
     // Calcul du score basé sur la distance
     if (distanceInMeters <= 5) {
-        roundScore = 5000; // Score maximum si la distance est de 5 m ou moins
+        roundScore = 5000;
     } else if (distanceInMeters <= 2000) {
-        roundScore = Math.max(0, 5000 - Math.floor(distanceInMeters - 5)); // -1 point par mètre jusqu'à 2000 m
+        roundScore = Math.max(0, 5000 - Math.floor(distanceInMeters - 5));
     } else {
         const distanceInKm = distanceInMeters / 1000;
-        roundScore = Math.max(0, 5000 - 1995 - Math.floor(distanceInKm - 2)); // -1 point par kilomètre au-delà de 2000 m
+        roundScore = Math.max(0, 5000 - 1995 - Math.floor(distanceInKm - 2));
     }
 
     // Calcul du temps pris pour le round
     const roundEndTime = Date.now();
-    const timeTaken = (roundEndTime - roundStartTime) / 1000; // Temps pris en secondes
+    const timeTaken = (roundEndTime - roundStartTime) / 1000; // Temps en secondes
 
-    // Calcul du malus basé sur le temps (100 points par seconde au-delà de 10 secondes)
+    // Calcul du malus basé sur le temps
     let timePenalty = 0;
     if (timeTaken > 10) {
         timePenalty = Math.floor((timeTaken - 10) * 100);
@@ -751,30 +746,25 @@ function calculateScore(playerLocation) {
     // Appliquer le malus au score du round
     roundScore = Math.max(0, roundScore - timePenalty);
 
-    // Mettre à jour le score total et incrémenter les tentatives
     totalScore += roundScore;
     attempts++;
 
-    // Choisir le format d'affichage de la distance
     const distanceText = distanceInMeters < 1000
         ? `${distanceInMeters.toFixed(0)} m`
         : `${(distanceInMeters / 1000).toFixed(2)} km`;
 
-    // Mettre à jour l'interface utilisateur avec le score et la distance
     scoreBanner.textContent = `Score: ${roundScore} (Distance: ${distanceText}, Temps: ${timeTaken.toFixed(1)}s, Malus: ${timePenalty} points)`;
     scoreBanner.style.display = 'block';
     nameplace.style.display = 'block';
 
-    // Utiliser currentPlaceName pour le texte
     if (currentPlaceName) {
-        nameplace.textContent = currentPlaceName; // Afficher le nom du lieu si défini
+        nameplace.textContent = currentPlaceName;
     } else {
-        nameplace.textContent = ""; // Sinon, laisser 'nameplace' vide
+        nameplace.textContent = "";
     }
 
     resultElement.textContent = `Total Score: ${totalScore}`;
 }
-
 
 
 
