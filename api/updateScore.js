@@ -23,7 +23,7 @@ export default async function handler(req, res) {
             const newExperience = (user.experience || 0) + score; // Expérience par défaut si non définie
             const newLevel = Math.floor(newExperience / 50000) + 1;
 
-            // Mettre à jour la base de données pour l'utilisateur
+            // Mettre à jour l'utilisateur dans la collection `users`
             await db.collection("users").updateOne(
                 { _id: objectId },
                 {
@@ -36,27 +36,48 @@ export default async function handler(req, res) {
                 }
             );
 
-            // Gérer la collection des scores pour les high scores
-            const existingScore = await db.collection("scores").findOne({ userId });
+            // Vérifier si le score fait partie des 10 meilleurs scores
+            const topScores = await db.collection("scores").find({}) 
+                .sort({ score: -1 }) // Tri par score décroissant
+                .limit(10) // Limite aux 10 meilleurs scores
+                .toArray();
 
-            if (existingScore) {
-                // Si un score existe déjà pour cet utilisateur, on ne le met à jour que si le nouveau score est supérieur
-                if (existingScore.score < score) {
-                    await db.collection("scores").updateOne(
-                        { userId },
-                        { $set: { score, username: user.username } }
-                    );
+            // Si moins de 10 scores ou le score est supérieur au plus bas des 10 meilleurs
+            const lowestTopScore = topScores[topScores.length - 1]?.score || 0;
+            if (topScores.length < 10 || score > lowestTopScore) {
+                // Vérifier si l'utilisateur a déjà un score dans la collection `scores`
+                const existingScore = await db.collection("scores").findOne({ userId: objectId });
+
+                if (existingScore) {
+                    // Mettre à jour si le nouveau score est supérieur
+                    if (existingScore.score < score) {
+                        await db.collection("scores").updateOne(
+                            { userId: objectId },
+                            { $set: { score, username: user.username } }
+                        );
+                    }
+                } else {
+                    // Ajouter un nouveau score si l'utilisateur n'en a pas
+                    await db.collection("scores").insertOne({
+                        userId: objectId,
+                        username: user.username,
+                        score,
+                    });
                 }
-            } else {
-                // Si aucun score n'existe pour cet utilisateur, insérer un nouveau record
-                await db.collection("scores").insertOne({
-                    userId,
-                    username: user.username,
-                    score,
+
+                // Supprimer les scores en trop si on dépasse 10 scores
+                const updatedTopScores = await db.collection("scores")
+                    .find({})
+                    .sort({ score: -1 })
+                    .limit(10)
+                    .toArray();
+
+                const scoreIdsToKeep = updatedTopScores.map((s) => s._id);
+                await db.collection("scores").deleteMany({
+                    _id: { $nin: scoreIdsToKeep },
                 });
             }
 
-            // Réponse avec les infos nécessaires
             res.status(200).json({
                 message: "Score mis à jour avec succès",
                 oldLevel,
