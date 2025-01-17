@@ -66,13 +66,6 @@ function initMap() {
     });
     window.initMap = initMap;
 
-    document.getElementById('clear-storage-button').addEventListener('click', () => {
-        if (confirm("Êtes-vous sûr de vouloir vider tous les scores enregistrés ?")) {
-            localStorage.clear();
-            displayHighScores(); // Met à jour la liste des scores affichés (la vide)
-            alert("Le classement a été réinitialisé !");
-        }
-    });
 
     // Initialize the Street View panorama
     panorama = new google.maps.StreetViewPanorama(
@@ -984,6 +977,56 @@ async function login(username, password) {
         levelUpContainer.style.display = "none";
     });
 }
+
+const ArrowCompte = document.getElementById("arrowcompte");
+const compteContainer = document.getElementById("comptecontainer");
+
+ArrowCompte.addEventListener("click", () =>{
+    compteContainer.style.display = "none";
+});
+
+document.getElementById('clear-storage-button').addEventListener('click', () => {
+    compteContainer.style.display = "flex";
+});
+
+// Fonction pour récupérer les informations de l'utilisateur
+async function fetchUserInfo() {
+    const userId = localStorage.getItem("userId"); // Récupérer l'ID utilisateur stocké
+    const token = localStorage.getItem("authToken"); // Récupérer le token d'authentification
+
+    if (!userId || !token) {
+        console.error("Utilisateur non authentifié. Impossible de récupérer les informations.");
+        return;
+    }
+
+    try {
+        // Appel à l'API pour récupérer les informations utilisateur
+        const response = await fetch(`/api/getUserInfo/${userId}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error("Impossible de récupérer les informations utilisateur.");
+        }
+
+        const userInfo = await response.json();
+
+        // Insérez les informations dans les spans
+        document.querySelector("#infocomptecontainer #infosperso span:nth-child(1)").textContent = `Username : ${userInfo.username}`;
+        document.querySelector("#infocomptecontainer #infosperso span:nth-child(2)").textContent = `Niveau : ${userInfo.level}`;
+        document.querySelector("#infocomptecontainer #infosperso span:nth-child(3)").textContent = `Experience : ${userInfo.experience} points`;
+
+    } catch (error) {
+        console.error("Erreur lors de la récupération des informations utilisateur :", error);
+    }
+}
+
+// Appeler la fonction pour charger les informations lors du chargement de la page
+document.addEventListener("DOMContentLoaded", fetchUserInfo);
+
 
 //GESTION MODE MULTI
 

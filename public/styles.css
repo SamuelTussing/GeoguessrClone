@@ -443,6 +443,49 @@ label{
   margin-top: 0px;
 }
 
+#comptecontainer{
+  position: absolute;
+    display: none;
+    background-color: #0E566E;
+    width: 100vw;
+    height: AUTO;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 5vh;
+    justify-content: flex-start;
+    animation: scale-up-hor-center 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+    gap: 5vh;
+    z-index: 10;
+    padding: 50px;
+    top: 15vh;
+}
+#arrowcontainer{
+  display: flex;
+  justify-content: flex-start;
+  width: 90%;
+}
+
+#infocomptecontainer{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+}
+
+#information{
+  background-color: #1a7999;
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+
+#infosperso{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  justify-content: center;
+}
 
 @keyframes scale-up-hor-center {
   0% {
