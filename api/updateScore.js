@@ -19,11 +19,11 @@ export default async function handler(req, res) {
             }
 
             // Calculer les nouveaux niveaux et expérience
-            const oldLevel = user.level;
-            const newExperience = user.experience + score;
+            const oldLevel = user.level || 1; // Niveau par défaut si non défini
+            const newExperience = (user.experience || 0) + score; // Expérience par défaut si non définie
             const newLevel = Math.floor(newExperience / 50000) + 1;
 
-            // Mettre à jour la base de données
+            // Mettre à jour la base de données pour l'utilisateur
             await db.collection("users").updateOne(
                 { _id: objectId },
                 {
@@ -32,9 +32,29 @@ export default async function handler(req, res) {
                         level: newLevel,
                         lastscore: score,
                     },
-                    $push: { scores: score },
+                    $push: { scores: score }, // Ajout du score dans la liste des scores
                 }
             );
+
+            // Gérer la collection des scores pour les high scores
+            const existingScore = await db.collection("scores").findOne({ userId });
+
+            if (existingScore) {
+                // Si un score existe déjà pour cet utilisateur, on ne le met à jour que si le nouveau score est supérieur
+                if (existingScore.score < score) {
+                    await db.collection("scores").updateOne(
+                        { userId },
+                        { $set: { score, username: user.username } }
+                    );
+                }
+            } else {
+                // Si aucun score n'existe pour cet utilisateur, insérer un nouveau record
+                await db.collection("scores").insertOne({
+                    userId,
+                    username: user.username,
+                    score,
+                });
+            }
 
             // Réponse avec les infos nécessaires
             res.status(200).json({
