@@ -1,32 +1,27 @@
 const express = require("express");
 const router = express.Router();
-const User = require("./models/User"); // Modèle utilisateur dans MongoDB
-const jwt = require("jsonwebtoken");
-
-// Middleware d'authentification
-function authenticateToken(req, res, next) {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
-
-    if (!token) return res.status(401).json({ message: "Accès non autorisé." });
-
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        if (err) return res.status(403).json({ message: "Token invalide." });
-        req.user = user;
-        next();
-    });
-}
+const User = require("./models/User"); // Modèle utilisateur
 
 // Route pour récupérer les informations utilisateur
-router.get("/api/getUserInfo/:userId", authenticateToken, async (req, res) => {
+router.get("/api/getUserInfo/:userId", async (req, res) => {
     try {
-        const user = await User.findById(req.params.userId).select("-password"); // Exclure le mot de passe
+        const userId = req.params.userId;
+
+        // Vérifiez que l'ID est un ObjectId valide
+        if (!userId || userId.length !== 24) {
+            return res.status(400).json({ message: "ID utilisateur invalide." });
+        }
+        console.log(userId)
+
+        // Recherchez l'utilisateur dans la base de données
+        const user = await User.findById(userId).select("-password"); // Exclut le mot de passe
         if (!user) {
             return res.status(404).json({ message: "Utilisateur non trouvé." });
         }
+
         res.json(user);
     } catch (error) {
-        console.error("Erreur lors de la récupération des informations utilisateur :", error);
+        console.error("Erreur lors de la récupération de l'utilisateur :", error);
         res.status(500).json({ message: "Erreur serveur." });
     }
 });
