@@ -686,7 +686,7 @@ function getRandomNorthAmericaCoordinates() {
     ];
 
     // Probabilité de choisir une zone urbaine (ex. 70% pour urbain, 30% pour aléatoire)
-    const urbanBias = 0.7;
+    const urbanBias = 1;
 
     let targetLocation;
 
