@@ -1120,26 +1120,26 @@ timePlusButton.addEventListener("click", () => {
     roundTimer.textContent = `${roundTime}`;
 });
 
-
+// Fonction de mise à jour de la liste des joueurs
 function updatePlayerList(players) {
     const playerListElement = document.getElementById("playerlist");
     
-    // Vérifiez si l'élément existe
+    // Vérifie si l'élément existe
     if (!playerListElement) {
         console.error("L'élément 'playerlist' est introuvable.");
         return;
     }
 
-    // Vérifiez que players est un tableau
+    // Vérifie que players est un tableau
     if (!Array.isArray(players)) {
         console.error("La liste des joueurs n'est pas valide :", players);
         return;
     }
 
-    // Réinitialisez le contenu de la liste
+    // Réinitialise le contenu de la liste
     playerListElement.innerHTML = "";
 
-    // Ajoutez chaque joueur dans la liste
+    // Ajoute chaque joueur dans la liste
     players.forEach(player => {
         const playerElement = document.createElement("div");
         playerElement.textContent = player;
@@ -1147,9 +1147,25 @@ function updatePlayerList(players) {
     });
 }
 
+// Polling pour mettre à jour la liste des joueurs toutes les 2 secondes
+let pollingInterval;
 
+const startPolling = (roomCode) => {
+    pollingInterval = setInterval(async () => {
+        try {
+            const response = await axios.get(`/api/getRoom?roomCode=${roomCode}`);
+            updatePlayerList(response.data.players); // Met à jour la liste des joueurs
+        } catch (error) {
+            console.error("Erreur lors de la récupération des détails de la salle :", error);
+        }
+    }, 2000); // 2 secondes d'intervalle entre chaque mise à jour
+};
 
-//HEBERGEMENT
+const stopPolling = () => {
+    clearInterval(pollingInterval);
+};
+
+// HEBERGEMENT
 document.getElementById("hostroom").addEventListener("click", async () => {
     const rounds = parseInt(document.getElementById("roundnumber").textContent);
     const duration = parseInt(document.getElementById("roundtimer").textContent);
@@ -1164,17 +1180,20 @@ document.getElementById("hostroom").addEventListener("click", async () => {
 
         // Met à jour la liste des joueurs avec l'hôte
         updatePlayerList([username]); // Ajoute l'hôte dans la liste
+
+        // Démarre le polling pour mettre à jour la liste des joueurs toutes les 2 secondes
+        startPolling(response.data.roomCode);
     } catch (error) {
         console.error(error);
         alert(`Erreur lors de la création de la salle : ${error.response?.data?.error || 'Erreur inconnue'}`);
     }
 });
 
-lancermulti.addEventListener("click",()=>{
-    startNewRound(locationType)
-})
+lancermulti.addEventListener("click", () => {
+    startNewRound(locationType);
+});
 
-//REJOINDRE
+// REJOINDRE
 document.getElementById("joinroom").addEventListener("click", async (e) => {
     e.preventDefault(); // Empêche le rechargement de la page
 
@@ -1189,7 +1208,10 @@ document.getElementById("joinroom").addEventListener("click", async (e) => {
             lobby.style.display = 'block';
 
             // Met à jour la liste des joueurs dans le lobby
-            updatePlayerList(response.data.players); // Mets à jour avec la liste des joueurs
+            updatePlayerList(response.data.players);
+
+            // Démarre le polling pour mettre à jour la liste des joueurs pour l'hôte
+            startPolling(roomCode);
         } catch (error) {
             alert(`Erreur : ${error.response?.data?.error || 'Erreur inconnue'}`);
         }
@@ -1198,8 +1220,7 @@ document.getElementById("joinroom").addEventListener("click", async (e) => {
     }
 });
 
-
-//DETAILS DE PARTIE
+// Détails de la salle (pour obtenir les joueurs de la salle)
 const getRoomDetails = async (roomCode) => {
     try {
         const response = await axios.get(`/api/getRoom?roomCode=${roomCode}`);
