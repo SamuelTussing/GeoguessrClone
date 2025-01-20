@@ -587,14 +587,14 @@ function getRandomStreetViewLocation(locationType) {
                 break;
             case 'Strasbourg':
                 filteredLocations = locations.filter(location => location.ville === 'Strasbourg');
-                radiusInKm = 0; // Rayon 0 pour Strasbourg
+                radiusInKm = 0.1; // Rayon 0 pour Strasbourg
                 break;
             case 'France':
                 filteredLocations = locations.filter(location => location.pays === 'France');
                 radiusInKm = 2;
                 break;
             case 'famous':
-                filteredLocations = locations.filter(location => location.mode === 'famous');
+                filteredLocations = locations.filter(location => location.mode === 'famous'); 
                 radiusInKm = 0.05; // Rayon 0 pour famous
                 break;
             case 'south-america':
