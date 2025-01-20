@@ -378,7 +378,6 @@ document.addEventListener('DOMContentLoaded', () => {
 async function endGame() {
     const locationType = document.getElementById("location-select").value;
 
-    // Points bonus en fonction du mode de jeu
     const bonusPointsMap = {
         "world": 3000,
         "Strasbourg": 0,
@@ -392,13 +391,9 @@ async function endGame() {
         "Capitales": 1000,
     };
 
-    // Définir les points bonus
     const bonusPoints = bonusPointsMap[locationType] || 0;
-
-    // Ajouter les points bonus au score total
     const finalScore = totalScore + bonusPoints;
 
-    // Afficher le résultat final
     result.textContent = `Jeu terminé ! Votre score total est de : ${finalScore} (Bonus : ${bonusPoints} points)`;
     document.getElementById("result").style.display = "block";
     document.getElementById("continue-button").style.display = "none";
@@ -413,8 +408,10 @@ async function endGame() {
         return;
     }
 
+    console.log("Envoi des données pour l'enregistrement du score :", { userId, finalScore });
+
     try {
-        const response = await fetch("/api/updateScore", {
+        const response = await fetch("https://geoguessr-clone-five.vercel.app/api/updateScore", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -429,11 +426,8 @@ async function endGame() {
             console.log("Score enregistré avec succès :", data);
 
             const { oldLevel, newLevel } = data;
-
-            // Mettre à jour le localStorage avec le nouveau niveau
             localStorage.setItem("level", newLevel);
 
-            // Si le joueur passe un niveau, afficher l'animation
             if (newLevel > oldLevel) {
                 showLevelUpAnimation(oldLevel, newLevel);
             }
@@ -441,14 +435,13 @@ async function endGame() {
             console.error("Erreur lors de l'enregistrement du score :", data.message);
         }
     } catch (error) {
-        console.error("Erreur réseau :", error);
+        console.error("Erreur réseau ou de traitement :", error);
     }
 
     fetchTopScores();
-
-    // Réinitialiser le jeu
     resetGame();
 }
+
 
 function resetGame() {
     document.getElementById('street-view').style.display = 'none';
