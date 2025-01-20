@@ -732,8 +732,8 @@ function calculateScore(playerLocation) {
 
     // Calcul du malus basé sur le temps
     let timePenalty = 0;
-    if (timeTaken > 10) {
-        timePenalty = Math.floor((timeTaken - 10) * 50);
+    if (timeTaken > 15) {
+        timePenalty = Math.floor((timeTaken - 15) * 10);
     }
 
     // Appliquer le malus au score du round
@@ -1120,10 +1120,11 @@ timePlusButton.addEventListener("click", () => {
     roundTimer.textContent = `${roundTime}`;
 });
 
+
 // Fonction de mise à jour de la liste des joueurs
 function updatePlayerList(players) {
     const playerListElement = document.getElementById("playerlist");
-
+    
     // Vérifie si l'élément existe
     if (!playerListElement) {
         console.error("L'élément 'playerlist' est introuvable.");
@@ -1165,7 +1166,7 @@ const stopPolling = () => {
     clearInterval(pollingInterval);
 };
 
-// HEBERGEMENT : Création de la salle
+// HEBERGEMENT
 document.getElementById("hostroom").addEventListener("click", async () => {
     const rounds = parseInt(document.getElementById("roundnumber").textContent);
     const duration = parseInt(document.getElementById("roundtimer").textContent);
@@ -1179,7 +1180,7 @@ document.getElementById("hostroom").addEventListener("click", async () => {
         lobby.style.display = 'block';
 
         // Met à jour la liste des joueurs avec l'hôte
-        updatePlayerList([username]); // L'hôte est ajouté à la liste des joueurs
+        updatePlayerList([username]); // Ajoute l'hôte dans la liste
 
         // Démarre le polling pour mettre à jour la liste des joueurs toutes les 2 secondes
         startPolling(response.data.roomCode);
@@ -1187,6 +1188,10 @@ document.getElementById("hostroom").addEventListener("click", async () => {
         console.error(error);
         alert(`Erreur lors de la création de la salle : ${error.response?.data?.error || 'Erreur inconnue'}`);
     }
+});
+
+lancermulti.addEventListener("click", () => {
+    startNewRound(locationType);
 });
 
 // REJOINDRE
@@ -1221,7 +1226,6 @@ const getRoomDetails = async (roomCode) => {
     try {
         const response = await axios.get(`/api/getRoom?roomCode=${roomCode}`);
         console.log("Détails de la salle :", response.data);
-        updatePlayerList(response.data.players); // Met à jour la liste des joueurs
     } catch (error) {
         console.error("Erreur lors de la récupération de la salle :", error);
     }

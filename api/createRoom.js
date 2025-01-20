@@ -1,38 +1,54 @@
-// Création de la salle avec l'ajout de l'hôte
-const createRoom = async (req, res) => {
-    if (req.method === "POST") {
-        const { rounds, duration, map, playerName } = req.body;
+const { MongoClient } = require("mongodb");
 
-        const roomCode = generateRoomCode(); // Générez ou attribuez un code de salle unique
-        const client = new MongoClient(process.env.MONGODB_URI);
+module.exports = async (req, res) => {
+    if (req.method !== "POST") {
+        return res.status(405).json({ error: "Méthode non autorisée" });
+    }
 
-        try {
-            await client.connect();
-            const db = client.db("multiplayerApp");
-            const roomsCollection = db.collection("rooms");
+    const { rounds, duration, map } = req.body; // Informations pour la partie
 
-            // Créez la salle avec un joueur (l'hôte)
-            const newRoom = {
-                roomCode,
-                rounds,
-                duration,
-                map,
-                players: [playerName], // Ajoutez l'hôte dans la liste des joueurs
-                status: "open",
-                isActive: true,
-                createdAt: new Date(),
-            };
+    // Validation des entrées
+    if (
+        !rounds || typeof rounds !== "number" || rounds <= 0 ||
+        !duration || typeof duration !== "number" || duration <= 0 ||
+        !map || typeof map !== "string"
+    ) {
+        return res.status(400).json({ error: "Données invalides pour la création de la salle" });
+    }
 
-            // Insérez la salle dans la base de données
-            await roomsCollection.insertOne(newRoom);
+    const client = new MongoClient(process.env.MONGODB_URI);
 
-            // Retourner le code de la salle à l'utilisateur
-            res.status(200).json({ roomCode });
-        } catch (error) {
-            console.error("Erreur lors de la création de la salle :", error);
-            res.status(500).json({ error: "Erreur serveur" });
-        } finally {
-            await client.close();
-        }
+    try {
+        await client.connect();
+        const db = client.db("geoguessr_clone");
+        const roomsCollection = db.collection("rooms");
+
+        let roomCode;
+
+        // Assurez-vous que le code de la salle est unique
+        do {
+            roomCode = Math.floor(100000 + Math.random() * 900000).toString();
+        } while (await roomsCollection.findOne({ roomCode }));
+
+        // Crée une nouvelle salle
+        const newRoom = {
+            roomCode,
+            rounds,
+            duration,
+            map,
+            players: [], // Liste des joueurs (sera mise à jour lors du join)
+            status: "open", // État initial de la salle
+            isActive: true, // Utilisé pour vérifier si la salle est disponible
+            createdAt: new Date(),
+        };
+
+        await roomsCollection.insertOne(newRoom);
+
+        res.status(200).json({ roomCode }); // Retourne l'ID de la salle
+    } catch (error) {
+        console.error("Erreur lors de la création de la salle :", error);
+        res.status(500).json({ error: "Erreur serveur" });
+    } finally {
+        await client.close();
     }
 };
