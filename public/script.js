@@ -733,7 +733,7 @@ function calculateScore(playerLocation) {
     // Calcul du malus basé sur le temps
     let timePenalty = 0;
     if (timeTaken > 10) {
-        timePenalty = Math.floor((timeTaken - 10) * 100);
+        timePenalty = Math.floor((timeTaken - 10) * 50);
     }
 
     // Appliquer le malus au score du round
