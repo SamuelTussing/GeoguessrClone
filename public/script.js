@@ -1123,7 +1123,7 @@ timePlusButton.addEventListener("click", () => {
 // Fonction de mise à jour de la liste des joueurs
 function updatePlayerList(players) {
     const playerListElement = document.getElementById("playerlist");
-    
+
     // Vérifie si l'élément existe
     if (!playerListElement) {
         console.error("L'élément 'playerlist' est introuvable.");
@@ -1225,6 +1225,7 @@ const getRoomDetails = async (roomCode) => {
     try {
         const response = await axios.get(`/api/getRoom?roomCode=${roomCode}`);
         console.log("Détails de la salle :", response.data);
+        updatePlayerList(response.data.players); // Met à jour la liste des joueurs
     } catch (error) {
         console.error("Erreur lors de la récupération de la salle :", error);
     }
