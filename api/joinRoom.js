@@ -1,58 +1,40 @@
-const { MongoClient } = require("mongodb");
+const joinRoom = async (req, res) => {
+    if (req.method === "POST") {
+        const { roomCode, playerName } = req.body;
 
-module.exports = async (req, res) => {
-    if (req.method !== "POST") {
-        return res.status(405).json({ error: "Méthode non autorisée" });
-    }
+        const client = new MongoClient(process.env.MONGODB_URI);
 
-    const { roomCode, playerName } = req.body; // Informations pour rejoindre une salle
-    if (!roomCode || !playerName) {
-        return res.status(400).json({ error: "Code de salle ou nom du joueur manquant" });
-    }
+        try {
+            await client.connect();
+            const db = client.db("multiplayerApp");
+            const roomsCollection = db.collection("rooms");
 
-    const client = new MongoClient(process.env.MONGODB_URI);
+            // Trouver la salle par son code
+            const room = await roomsCollection.findOne({ roomCode });
 
-    try {
-        await client.connect();
-        const db = client.db("geoguessr_clone");
-        const roomsCollection = db.collection("rooms");
+            if (!room) {
+                return res.status(404).json({ error: "Salle introuvable" });
+            }
 
-        // Cherche la salle par roomCode
-        const room = await roomsCollection.findOne({ roomCode });
+            // Vérifier si le joueur est déjà dans la salle
+            if (room.players.includes(playerName)) {
+                return res.status(400).json({ error: "Le joueur est déjà dans la salle" });
+            }
 
-        if (!room) {
-            return res.status(404).json({ error: "Salle introuvable" });
+            // Ajouter le joueur à la liste des joueurs
+            await roomsCollection.updateOne(
+                { roomCode },
+                { $push: { players: playerName } } // Ajouter le joueur à la liste
+            );
+
+            // Renvoyer la liste des joueurs mise à jour
+            const updatedRoom = await roomsCollection.findOne({ roomCode });
+            res.status(200).json({ players: updatedRoom.players });
+        } catch (error) {
+            console.error("Erreur lors de la jonction de la salle :", error);
+            res.status(500).json({ error: "Erreur serveur" });
+        } finally {
+            await client.close();
         }
-
-        if (room.status === "closed") {
-            return res.status(400).json({ error: "La salle est fermée" });
-        }
-
-        if (room.players.length >= 2) {
-            return res.status(400).json({ error: "La salle est pleine" });
-        }
-
-        // Vérifie si le joueur est déjà dans la salle
-        const isPlayerInRoom = room.players.some(player => player.name === playerName);
-        if (isPlayerInRoom) {
-            return res.status(400).json({ error: "Vous êtes déjà dans cette salle" });
-        }
-
-        // Ajoute le joueur à la salle
-        const updatedPlayers = [...room.players, { name: playerName, score: 0 }];
-        await roomsCollection.updateOne(
-            { roomCode },
-            { $set: { players: updatedPlayers } }
-        );
-
-        res.status(200).json({ 
-            message: "Rejoint avec succès", 
-            players: updatedPlayers 
-        });
-    } catch (error) {
-        console.error("Erreur lors de la tentative de rejoindre une salle :", error);
-        res.status(500).json({ error: "Erreur serveur" });
-    } finally {
-        await client.close();
     }
 };

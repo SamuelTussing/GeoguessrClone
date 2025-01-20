@@ -1165,7 +1165,7 @@ const stopPolling = () => {
     clearInterval(pollingInterval);
 };
 
-// HEBERGEMENT
+// HEBERGEMENT : Création de la salle
 document.getElementById("hostroom").addEventListener("click", async () => {
     const rounds = parseInt(document.getElementById("roundnumber").textContent);
     const duration = parseInt(document.getElementById("roundtimer").textContent);
@@ -1179,7 +1179,7 @@ document.getElementById("hostroom").addEventListener("click", async () => {
         lobby.style.display = 'block';
 
         // Met à jour la liste des joueurs avec l'hôte
-        updatePlayerList([username]); // Ajoute l'hôte dans la liste
+        updatePlayerList([username]); // L'hôte est ajouté à la liste des joueurs
 
         // Démarre le polling pour mettre à jour la liste des joueurs toutes les 2 secondes
         startPolling(response.data.roomCode);
@@ -1187,10 +1187,6 @@ document.getElementById("hostroom").addEventListener("click", async () => {
         console.error(error);
         alert(`Erreur lors de la création de la salle : ${error.response?.data?.error || 'Erreur inconnue'}`);
     }
-});
-
-lancermulti.addEventListener("click", () => {
-    startNewRound(locationType);
 });
 
 // REJOINDRE
