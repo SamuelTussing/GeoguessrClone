@@ -36,9 +36,9 @@ module.exports = async (req, res) => {
             rounds,
             duration,
             map,
-            players: [], // Liste des joueurs (sera mise à jour lors du join)
-            status: "open", // État initial de la salle
-            isActive: true, // Utilisé pour vérifier si la salle est disponible
+            players: [{ name: playerName, score: 0 }], // Ajoute l'hôte dès la création
+            status: "open",
+            isActive: true,
             createdAt: new Date(),
         };
 

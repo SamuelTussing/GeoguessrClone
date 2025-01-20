@@ -1123,8 +1123,7 @@ timePlusButton.addEventListener("click", () => {
 
 function updatePlayerList(players) {
     const playerListElement = document.getElementById("playerlist");
-    
-    // Vérifiez si l'élément existe
+
     if (!playerListElement) {
         console.error("L'élément 'playerlist' est introuvable.");
         return;
@@ -1142,7 +1141,7 @@ function updatePlayerList(players) {
     // Ajoutez chaque joueur dans la liste
     players.forEach(player => {
         const playerElement = document.createElement("div");
-        playerElement.textContent = player;
+        playerElement.textContent = player.name; // Affiche le nom du joueur
         playerListElement.appendChild(playerElement);
     });
 }
