@@ -762,20 +762,29 @@ function calculateScore(playerLocation) {
     // Calcul du malus basé sur le temps
     let timePenalty = 0;
     if (timeTaken > 15) {
-        timePenalty = Math.floor((timeTaken - 15) * 10);
+        timePenalty = Math.floor((timeTaken - 15) * 5);
     }
 
-    // Appliquer le malus au score du round
-    roundScore = Math.max(0, roundScore - timePenalty);
+    // Calcul du bonus de rapidité
+    let speedBonus = 0;
+    if (timeTaken <= 15) {
+        speedBonus = Math.max(0, 1500 - Math.floor(timeTaken * 100)); // Réduit le bonus par tranche de 100 points par seconde
+    }
 
+    // Calcul final du score avec malus et bonus
+    roundScore = Math.max(0, roundScore - timePenalty + speedBonus);
+
+    // Mise à jour du score total et des tentatives
     totalScore += roundScore;
     attempts++;
 
+    // Texte pour afficher la distance
     const distanceText = distanceInMeters < 1000
         ? `${distanceInMeters.toFixed(0)} m`
         : `${(distanceInMeters / 1000).toFixed(2)} km`;
 
-    scoreBanner.textContent = `Score: ${roundScore} (Distance: ${distanceText}, Temps: ${timeTaken.toFixed(1)}s, Malus: ${timePenalty} points)`;
+    // Mise à jour de l'interface utilisateur
+    scoreBanner.textContent = `Score: ${roundScore} (Distance: ${distanceText}, Temps: ${timeTaken.toFixed(1)}s, Malus: ${timePenalty} points, Bonus: +${speedBonus} points)`;
     scoreBanner.style.display = 'block';
     nameplace.style.display = 'block';
 
