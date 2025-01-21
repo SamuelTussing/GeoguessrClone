@@ -3,8 +3,23 @@ const mongoose = require("mongoose"); // Nécessaire pour valider l'ObjectId
 const router = express.Router();
 const User = require("./models/User"); // Modèle utilisateur
 
+// Middleware pour valider le token d'authentification (exemple simplifié)
+function authMiddleware(req, res, next) {
+    const token = req.headers.authorization?.split(" ")[1]; // Récupérer le token
+    if (!token) {
+        return res.status(401).json({ message: "Token d'authentification manquant." });
+    }
+
+    // Exemple : validation du token (vous devez remplacer ceci par votre propre logique)
+    if (token !== "votre_token_securise") {
+        return res.status(403).json({ message: "Token invalide." });
+    }
+
+    next(); // Passer au middleware suivant
+}
+
 // Route pour récupérer les informations utilisateur
-router.get("/api/getUserInfo/:userId", async (req, res) => {
+router.get("/api/getUserInfo/:userId", authMiddleware, async (req, res) => {
     try {
         const userId = req.params.userId;
 
