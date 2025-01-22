@@ -389,6 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function endGame() {
     const locationType = document.getElementById("location-select")?.value;
+    console.log(locationType)
 
     // Vérification si le locationType est valide
     if (!locationType) {
@@ -493,6 +494,7 @@ let currentPlaceName = ""; // Variable globale pour le nom du lieu
 
 
 async function fetchTopScores(locationType) {
+    console.log(locationType)
     try {
         const response = await fetch(`/api/topScores?location=${locationType}`);
         if (!response.ok) {
