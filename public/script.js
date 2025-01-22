@@ -48,8 +48,19 @@ document.body.appendChild(googleMapsScript);
 
 function getLocationType() {
     const selectElement = document.getElementById('location-select');
-    locationType = selectElement.value;
+    const locationType = selectElement.value;
     console.log("Location type sélectionné : ", locationType);
+
+    // Appeler la fonction fetchTopScores avec le mode sélectionné
+    fetchTopScores(locationType);
+}
+
+// Ajouter un événement au bouton pour charger les scores
+document.getElementById('classement-button').addEventListener('click', getLocationType);
+
+// Fonction utilitaire pour capitaliser la première lettre d'une chaîne
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function initMap() {
@@ -467,18 +478,25 @@ let currentPlaceName = ""; // Variable globale pour le nom du lieu
 
 
 
-async function fetchTopScores() {
+async function fetchTopScores(locationType) {
     try {
-        const response = await fetch("/api/topScores");
+        // Modifier l'URL pour inclure le mode sélectionné
+        const response = await fetch(`/api/topScores?location=${locationType}`);
         if (!response.ok) {
             throw new Error(`Erreur lors de la récupération des scores : ${response.statusText}`);
         }
 
         const topScores = await response.json();
-        const dataContainer = document.getElementById("dataContainer");
+        const dataContainer = document.querySelector(`.list${locationType}`);
+        
+        // Vérifiez si la section existe
+        if (!dataContainer) {
+            console.error(`La section correspondant à ${locationType} n'existe pas.`);
+            return;
+        }
 
-        // Vide le container avant d'ajouter de nouveaux scores
-        dataContainer.innerHTML = "";
+        // Vide la liste avant d'ajouter les nouveaux scores
+        dataContainer.innerHTML = `<h3>${capitalizeFirstLetter(locationType)}</h3>`;
 
         // Ajouter les scores dans la liste
         topScores.forEach((user, index) => {
@@ -495,11 +513,10 @@ async function fetchTopScores() {
             // Ajouter une image pour la première position (index 0)
             if (index === 0) {
                 const crownImg = document.createElement("img");
-                crownImg.src = "./couronne.png";  // Assurez-vous du bon chemin ici
+                crownImg.src = "./couronne.png";
                 crownImg.alt = "Couronne";
-                crownImg.width = 30; // Taille de l'image
+                crownImg.width = 30;
 
-                // Gestionnaire d'erreur de chargement
                 crownImg.onerror = function () {
                     console.error("Erreur de chargement de l'image couronne.png");
                 };
@@ -509,14 +526,17 @@ async function fetchTopScores() {
             }
 
             // Ajouter le texte du classement
-            listItem.textContent = `${position}ᵉ ${username} - ${score} points`;
+            const scoreText = document.createTextNode(` ${position}ᵉ ${username} - ${score} points`);
+            listItem.appendChild(scoreText);
 
             dataContainer.appendChild(listItem);
         });
     } catch (error) {
         console.error("Erreur lors de la récupération des scores :", error);
-        const dataContainer = document.getElementById("dataContainer");
-        dataContainer.innerHTML = `<p class="error">Impossible de récupérer les scores. Veuillez réessayer plus tard.</p>`;
+        const dataContainer = document.querySelector(`.list${locationType}`);
+        if (dataContainer) {
+            dataContainer.innerHTML += `<p class="error">Impossible de récupérer les scores pour ${capitalizeFirstLetter(locationType)}. Veuillez réessayer plus tard.</p>`;
+        }
     }
 }
 
