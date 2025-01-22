@@ -388,7 +388,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 async function endGame() {
-    const locationType = document.getElementById("location-select").value;
+    const locationType = document.getElementById("location-select")?.value;
+
+    // Vérification si le locationType est valide
+    if (!locationType) {
+        console.error("Type de localisation non sélectionné. Impossible de calculer les points bonus.");
+        alert("Veuillez sélectionner un type de localisation avant de terminer le jeu.");
+        return;
+    }
 
     // Points bonus en fonction du mode de jeu
     const bonusPointsMap = {
@@ -420,23 +427,27 @@ async function endGame() {
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("authToken");
 
+    // Vérification des informations utilisateur
     if (!userId || !token) {
         console.error("Utilisateur non authentifié. Impossible d'enregistrer le score.");
+        alert("Vous devez être connecté pour enregistrer votre score.");
         return;
     }
 
     try {
-        const response = await fetch("/api/updateScore", {
+        // Envoi de la requête au serveur
+        const response = await fetch("/api/updatescore", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ userId, score: finalScore }),
+            body: JSON.stringify({ userId, score: finalScore, locationType }),
         });
 
         const data = await response.json();
 
+        // Gestion de la réponse du serveur
         if (response.ok) {
             console.log("Score enregistré avec succès :", data);
 
@@ -450,12 +461,15 @@ async function endGame() {
                 showLevelUpAnimation(oldLevel, newLevel);
             }
         } else {
-            console.error("Erreur lors de l'enregistrement du score :", data.message);
+            console.error("Erreur lors de l'enregistrement du score :", data.message || "Réponse invalide.");
+            alert(`Erreur lors de l'enregistrement du score : ${data.message || "Veuillez réessayer plus tard."}`);
         }
     } catch (error) {
         console.error("Erreur réseau :", error);
+        alert("Une erreur réseau s'est produite. Veuillez vérifier votre connexion et réessayer.");
     }
 
+    // Charger les meilleurs scores
     fetchTopScores();
 
     // Réinitialiser le jeu
