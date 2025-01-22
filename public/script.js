@@ -480,7 +480,6 @@ let currentPlaceName = ""; // Variable globale pour le nom du lieu
 
 async function fetchTopScores(locationType) {
     try {
-        // Modifier l'URL pour inclure le mode sélectionné
         const response = await fetch(`/api/topScores?location=${locationType}`);
         if (!response.ok) {
             throw new Error(`Erreur lors de la récupération des scores : ${response.statusText}`);
@@ -488,57 +487,32 @@ async function fetchTopScores(locationType) {
 
         const topScores = await response.json();
         const dataContainer = document.querySelector(`.list${locationType}`);
-        
-        // Vérifiez si la section existe
+
         if (!dataContainer) {
             console.error(`La section correspondant à ${locationType} n'existe pas.`);
             return;
         }
 
-        // Vide la liste avant d'ajouter les nouveaux scores
         dataContainer.innerHTML = `<h3>${capitalizeFirstLetter(locationType)}</h3>`;
 
-        // Ajouter les scores dans la liste
         topScores.forEach((user, index) => {
             const position = index + 1;
-            const username = user.username;
-            const score = user.score;
-
             const listItem = document.createElement("div");
-            listItem.classList.add("classement-item");
-
-            // Ajouter une classe spécifique basée sur l'index + 1
-            listItem.classList.add(`position-${position}`);
-
-            // Ajouter une image pour la première position (index 0)
-            if (index === 0) {
-                const crownImg = document.createElement("img");
-                crownImg.src = "./couronne.png";
-                crownImg.alt = "Couronne";
-                crownImg.width = 30;
-
-                crownImg.onerror = function () {
-                    console.error("Erreur de chargement de l'image couronne.png");
-                };
-
-                // Ajouter l'image au début du div
-                listItem.appendChild(crownImg);
-            }
-
-            // Ajouter le texte du classement
-            const scoreText = document.createTextNode(` ${position}ᵉ ${username} - ${score} points`);
-            listItem.appendChild(scoreText);
-
+            listItem.classList.add("classement-item", `position-${position}`);
+            listItem.textContent = `${position}ᵉ ${user.username} - ${user.score} points`;
             dataContainer.appendChild(listItem);
         });
     } catch (error) {
         console.error("Erreur lors de la récupération des scores :", error);
-        const dataContainer = document.querySelector(`.list${locationType}`);
-        if (dataContainer) {
-            dataContainer.innerHTML += `<p class="error">Impossible de récupérer les scores pour ${capitalizeFirstLetter(locationType)}. Veuillez réessayer plus tard.</p>`;
-        }
     }
 }
+
+// Ajouter un événement pour changer la liste affichée
+document.getElementById("location-select").addEventListener("change", (event) => {
+    const locationType = event.target.value;
+    fetchTopScores(locationType);
+});
+
 
 
 
