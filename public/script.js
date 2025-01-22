@@ -491,7 +491,6 @@ function resetGame() {
 let currentPlaceName = ""; // Variable globale pour le nom du lieu
 
 
-
 async function fetchTopScores(locationType) {
     if (!locationType) {
         console.error("locationType est requis pour fetchTopScores.");
