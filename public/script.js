@@ -48,7 +48,7 @@ document.body.appendChild(googleMapsScript);
 
 function getLocationType() {
     const selectElement = document.getElementById('location-select');
-    const locationType = selectElement.value;
+    const locationType = selectElement.value || "world"; // Défaut à "world" si aucune valeur sélectionnée
     console.log("Location type sélectionné : ", locationType);
 
     // Appeler la fonction fetchTopScores avec le mode sélectionné
@@ -494,7 +494,13 @@ let currentPlaceName = ""; // Variable globale pour le nom du lieu
 
 
 async function fetchTopScores(locationType) {
-    console.log(locationType)
+    if (!locationType) {
+        console.error("locationType est requis pour fetchTopScores.");
+        return;
+    }
+
+    console.log("LocationType :", locationType);
+
     try {
         const response = await fetch(`/api/topScores?location=${locationType}`);
         if (!response.ok) {
@@ -523,10 +529,18 @@ async function fetchTopScores(locationType) {
     }
 }
 
+// Initialisation au chargement de la page
+document.addEventListener("DOMContentLoaded", () => {
+    getLocationType();
+});
+
+// Appeler getLocationType lorsqu'un changement se produit dans le sélecteur
+document.getElementById("location-select").addEventListener("change", getLocationType);
+
 // Ajouter un événement pour changer la liste affichée
 document.getElementById("location-select").addEventListener("change", (event) => {
     const locationType = event.target.value;
-    fetchTopScores(locationType);
+    (locationType);
 });
 
 
