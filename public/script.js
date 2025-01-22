@@ -389,7 +389,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function endGame() {
     const locationType = document.getElementById("location-select")?.value;
-    console.log(locationType)
 
     // Vérification si le locationType est valide
     if (!locationType) {
@@ -471,7 +470,7 @@ async function endGame() {
     }
 
     // Charger les meilleurs scores
-    fetchTopScores();
+    fetchTopScores(locationType);
 
     // Réinitialiser le jeu
     resetGame();
