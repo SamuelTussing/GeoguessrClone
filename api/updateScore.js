@@ -6,11 +6,11 @@ export default async function handler(req, res) {
         return res.status(405).json({ message: "Méthode non autorisée" });
     }
 
-    const { userId, score, locationType } = req.body;
+    const { userId, score } = req.body;
 
     // Validation des données d'entrée
-    if (!userId || typeof score !== "number" || !locationType) {
-        console.error("Requête invalide : userId, score ou locationType manquant/incorrect", { userId, score, locationType });
+    if (!userId || typeof score !== "number") {
+        console.error("Requête invalide : userId ou score manquant/incorrect", { userId, score });
         return res.status(400).json({ message: "Données manquantes ou invalides" });
     }
 
@@ -46,34 +46,32 @@ export default async function handler(req, res) {
                     level: newLevel,
                     lastscore: score,
                 },
-                $push: { scores: { score, locationType } }, // Ajouter le score avec le locationType dans l'historique des scores
+                $push: { scores: score }, // Ajouter ce score dans l'historique des scores du joueur
             }
         );
 
-        // Ajouter le score dans la collection `scores` avec le locationType
+        // Ajouter le score dans la collection `scores`
         await db.collection("scores").insertOne({
             userId: userId,
             username: user.username,
             score,
-            locationType,
         });
 
-        // Récupérer les 10 meilleurs scores triés par score décroissant pour le locationType
+        // Récupérer les 10 meilleurs scores triés par score décroissant
         const topScores = await db.collection("scores")
-            .find({ locationType }) // Filtrer par locationType
+            .find({})
             .sort({ score: -1 })
             .limit(10)
             .toArray();
 
-        // Supprimer les scores excédentaires pour ce locationType
+        // Supprimer les scores excédentaires s'il y a plus de 10 scores
         const scoreIdsToKeep = topScores.map((s) => s._id);
         const deleteResult = await db.collection("scores").deleteMany({
-            locationType,
             _id: { $nin: scoreIdsToKeep },
         });
 
         if (deleteResult.deletedCount > 0) {
-            console.log(`Scores supprimés pour ${locationType} : ${deleteResult.deletedCount}`);
+            console.log(`Scores supprimés : ${deleteResult.deletedCount}`);
         }
 
         // Réponse réussie

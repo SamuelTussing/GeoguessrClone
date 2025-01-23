@@ -48,19 +48,8 @@ document.body.appendChild(googleMapsScript);
 
 function getLocationType() {
     const selectElement = document.getElementById('location-select');
-    const locationType = selectElement.value || "world"; // Défaut à "world" si aucune valeur sélectionnée
+    locationType = selectElement.value;
     console.log("Location type sélectionné : ", locationType);
-
-    // Appeler la fonction fetchTopScores avec le mode sélectionné
-    fetchTopScores(locationType);
-}
-
-// Ajouter un événement au bouton pour charger les scores
-document.getElementById('classement-button').addEventListener('click', getLocationType);
-
-// Fonction utilitaire pour capitaliser la première lettre d'une chaîne
-function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function initMap() {
@@ -388,14 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 async function endGame() {
-    const locationType = document.getElementById("location-select")?.value;
-
-    // Vérification si le locationType est valide
-    if (!locationType) {
-        console.error("Type de localisation non sélectionné. Impossible de calculer les points bonus.");
-        alert("Veuillez sélectionner un type de localisation avant de terminer le jeu.");
-        return;
-    }
+    const locationType = document.getElementById("location-select").value;
 
     // Points bonus en fonction du mode de jeu
     const bonusPointsMap = {
@@ -427,27 +409,23 @@ async function endGame() {
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("authToken");
 
-    // Vérification des informations utilisateur
     if (!userId || !token) {
         console.error("Utilisateur non authentifié. Impossible d'enregistrer le score.");
-        alert("Vous devez être connecté pour enregistrer votre score.");
         return;
     }
 
     try {
-        // Envoi de la requête au serveur
-        const response = await fetch("/api/updatescore", {
+        const response = await fetch("/api/updateScore", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ userId, score: finalScore, locationType }),
+            body: JSON.stringify({ userId, score: finalScore }),
         });
 
         const data = await response.json();
 
-        // Gestion de la réponse du serveur
         if (response.ok) {
             console.log("Score enregistré avec succès :", data);
 
@@ -461,16 +439,13 @@ async function endGame() {
                 showLevelUpAnimation(oldLevel, newLevel);
             }
         } else {
-            console.error("Erreur lors de l'enregistrement du score :", data.message || "Réponse invalide.");
-            alert(`Erreur lors de l'enregistrement du score : ${data.message || "Veuillez réessayer plus tard."}`);
+            console.error("Erreur lors de l'enregistrement du score :", data.message);
         }
     } catch (error) {
         console.error("Erreur réseau :", error);
-        alert("Une erreur réseau s'est produite. Veuillez vérifier votre connexion et réessayer.");
     }
 
-    // Charger les meilleurs scores
-    fetchTopScores(locationType);
+    fetchTopScores();
 
     // Réinitialiser le jeu
     resetGame();
@@ -491,56 +466,59 @@ function resetGame() {
 let currentPlaceName = ""; // Variable globale pour le nom du lieu
 
 
-async function fetchTopScores(locationType) {
-    if (!locationType) {
-        console.error("locationType est requis pour fetchTopScores.");
-        return;
-    }
 
-    console.log("LocationType :", locationType);
-
+async function fetchTopScores() {
     try {
-        const response = await fetch(`/api/topScores?location=${locationType}`);
+        const response = await fetch("/api/topScores");
         if (!response.ok) {
             throw new Error(`Erreur lors de la récupération des scores : ${response.statusText}`);
         }
 
         const topScores = await response.json();
-        const dataContainer = document.querySelector(`.list${locationType}`);
+        const dataContainer = document.getElementById("dataContainer");
 
-        if (!dataContainer) {
-            console.error(`La section correspondant à ${locationType} n'existe pas.`);
-            return;
-        }
+        // Vide le container avant d'ajouter de nouveaux scores
+        dataContainer.innerHTML = "";
 
-        dataContainer.innerHTML = `<h3>${capitalizeFirstLetter(locationType)}</h3>`;
-
+        // Ajouter les scores dans la liste
         topScores.forEach((user, index) => {
             const position = index + 1;
+            const username = user.username;
+            const score = user.score;
+
             const listItem = document.createElement("div");
-            listItem.classList.add("classement-item", `position-${position}`);
-            listItem.textContent = `${position}ᵉ ${user.username} - ${user.score} points`;
+            listItem.classList.add("classement-item");
+
+            // Ajouter une classe spécifique basée sur l'index + 1
+            listItem.classList.add(`position-${position}`);
+
+            // Ajouter une image pour la première position (index 0)
+            if (index === 0) {
+                const crownImg = document.createElement("img");
+                crownImg.src = "./couronne.png";  // Assurez-vous du bon chemin ici
+                crownImg.alt = "Couronne";
+                crownImg.width = 30; // Taille de l'image
+
+                // Gestionnaire d'erreur de chargement
+                crownImg.onerror = function () {
+                    console.error("Erreur de chargement de l'image couronne.png");
+                };
+
+                // Ajouter l'image au début du div
+                listItem.appendChild(crownImg);
+            }
+
+            // Ajouter le texte du classement
+            listItem.textContent = `${position}ᵉ ${username} - ${score} points`;
+
             dataContainer.appendChild(listItem);
         });
     } catch (error) {
         console.error("Erreur lors de la récupération des scores :", error);
+        const dataContainer = document.getElementById("dataContainer");
+        dataContainer.innerHTML = `<p class="error">Impossible de récupérer les scores. Veuillez réessayer plus tard.</p>`;
     }
 }
-
-// Initialisation au chargement de la page
-document.addEventListener("DOMContentLoaded", () => {
-    getLocationType();
-});
-
-// Appeler getLocationType lorsqu'un changement se produit dans le sélecteur
-document.getElementById("location-select").addEventListener("change", getLocationType);
-
-// Ajouter un événement pour changer la liste affichée
-document.getElementById("location-select").addEventListener("change", (event) => {
-    const locationType = event.target.value;
-    (locationType);
-});
-
 
 
 
