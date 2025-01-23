@@ -762,29 +762,20 @@ function calculateScore(playerLocation) {
     // Calcul du malus basé sur le temps
     let timePenalty = 0;
     if (timeTaken > 15) {
-        timePenalty = Math.floor((timeTaken - 15) * 5);
+        timePenalty = Math.floor((timeTaken - 15) * 10);
     }
 
-    // Calcul du bonus de rapidité
-    let speedBonus = 0;
-    if (timeTaken <= 15) {
-        speedBonus = Math.max(0, 1500 - Math.floor(timeTaken * 100)); // Réduit le bonus par tranche de 100 points par seconde
-    }
+    // Appliquer le malus au score du round
+    roundScore = Math.max(0, roundScore - timePenalty);
 
-    // Calcul final du score avec malus et bonus
-    roundScore = Math.max(0, roundScore - timePenalty + speedBonus);
-
-    // Mise à jour du score total et des tentatives
     totalScore += roundScore;
     attempts++;
 
-    // Texte pour afficher la distance
     const distanceText = distanceInMeters < 1000
         ? `${distanceInMeters.toFixed(0)} m`
         : `${(distanceInMeters / 1000).toFixed(2)} km`;
 
-    // Mise à jour de l'interface utilisateur
-    scoreBanner.textContent = `Score: ${roundScore} (Distance: ${distanceText}, Temps: ${timeTaken.toFixed(1)}s, Malus: ${timePenalty} points, Bonus: +${speedBonus} points)`;
+    scoreBanner.textContent = `Score: ${roundScore} (Distance: ${distanceText}, Temps: ${timeTaken.toFixed(1)}s, Malus: ${timePenalty} points)`;
     scoreBanner.style.display = 'block';
     nameplace.style.display = 'block';
 
@@ -1027,53 +1018,59 @@ document.getElementById('clear-storage-button').addEventListener('click', () => 
     compteContainer.style.display = "flex";
 });
 
-// Fonction pour récupérer les informations de l'utilisateur
-async function fetchUserInfo() {
-    const userId = localStorage.getItem("userId"); // Récupérer l'ID utilisateur stocké
-    const token = localStorage.getItem("authToken"); // Récupérer le token d'authentification
+// Fonction pour simuler le stockage des données utilisateur dans localStorage
+function saveUserToLocalStorage() {
+    // Exemple d'utilisateur à stocker
+    const userInfo = {
+        _id: "test",
+        username: "conso",
+        email: "consothebest@gmail.com",
+        createdAt: "2025-01-09T15:52:54.319+00:00",
+        experience: 100000,
+        level: 99,
+        lastscore: 26999,
+        scores: [21587, 15465, 15236, 14629, 12816, 6369, 16063, 11895], // Extrait d'un tableau de scores
+    };
 
-    if (!userId || !token) {
-        console.error("Utilisateur non authentifié. Impossible de récupérer les informations.");
+    // Convertir les données en chaîne JSON et les stocker dans localStorage
+    localStorage.setItem("userInfo", JSON.stringify(userInfo));
+}
+
+// Fonction pour récupérer les données utilisateur depuis localStorage et les afficher
+function loadUserFromLocalStorage() {
+    // Récupérer les données utilisateur depuis localStorage
+    const userInfoString = localStorage.getItem("userInfo");
+
+    if (!userInfoString) {
+        console.error("Aucune information utilisateur trouvée dans le localStorage.");
         return;
     }
 
-    try {
-        // Appel à l'API pour récupérer les informations utilisateur
-        const response = await fetch(`/api/getUserInfo/${userId}`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-            },
+    // Convertir la chaîne JSON en objet
+    const userInfo = JSON.parse(userInfoString);
+
+    // Insérez les informations utilisateur dans le HTML
+    document.querySelector("#infocomptecontainer #infosperso span:nth-child(1)").textContent = `Username : ${userInfo.username}`;
+    document.querySelector("#infocomptecontainer #infosperso span:nth-child(2)").textContent = `Niveau : ${userInfo.level}`;
+    document.querySelector("#infocomptecontainer #infosperso span:nth-child(3)").textContent = `Experience : ${userInfo.experience} points`;
+
+    // Optionnel : afficher la liste des scores dans un tableau ou une liste HTML
+    const scoreList = document.querySelector("#scoreList");
+    if (scoreList) {
+        scoreList.innerHTML = ""; // Vider la liste actuelle
+        userInfo.scores.forEach((score, index) => {
+            const scoreItem = document.createElement("li");
+            scoreItem.textContent = `Score ${index + 1}: ${score}`;
+            scoreList.appendChild(scoreItem);
         });
-
-        if (!response.ok) {
-            throw new Error("Impossible de récupérer les informations utilisateur.");
-        }
-
-        const userInfo = await response.json();
-
-        // Insérer les informations dans les spans
-        document.querySelector("#infocomptecontainer #infosperso span:nth-child(1)").textContent = `Username : ${userInfo.username}`;
-        document.querySelector("#infocomptecontainer #infosperso span:nth-child(2)").textContent = `Niveau : ${userInfo.level}`;
-        document.querySelector("#infocomptecontainer #infosperso span:nth-child(3)").textContent = `Experience : ${userInfo.experience} points`;
-
-        // Insérer les scores dynamiquement
-        const scoreList = document.querySelector("#scoreList");
-        if (scoreList) {
-            scoreList.innerHTML = ""; // Vider la liste actuelle
-            userInfo.scores.forEach((score, index) => {
-                const scoreItem = document.createElement("li");
-                scoreItem.textContent = `Score ${index + 1}: ${score}`;
-                scoreList.appendChild(scoreItem);
-            });
-        }
-    } catch (error) {
-        console.error("Erreur lors de la récupération des informations utilisateur :", error);
     }
 }
 
-// Appeler la fonction pour charger les informations lors du chargement de la page
-document.addEventListener("DOMContentLoaded", fetchUserInfo);
+// Sauvegarder les informations utilisateur au chargement de la page (exemple)
+document.addEventListener("DOMContentLoaded", () => {
+    saveUserToLocalStorage(); // Sauvegarde initiale (peut être omise si déjà fait)
+    loadUserFromLocalStorage(); // Charger les données et les afficher
+});
 
 
 //GESTION MODE MULTI
