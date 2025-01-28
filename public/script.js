@@ -377,7 +377,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 async function endGame() {
-    const locationType = document.getElementById("location-select").value;
+    const locationType = document.getElementById("region").value; // Récupérer la localisation sélectionnée
 
     // Points bonus en fonction du mode de jeu
     const bonusPointsMap = {
@@ -421,7 +421,7 @@ async function endGame() {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ userId, score: finalScore }),
+            body: JSON.stringify({ userId, score: finalScore, location: locationType }), // Ajouter la localisation
         });
 
         const data = await response.json();
@@ -450,6 +450,7 @@ async function endGame() {
     // Réinitialiser le jeu
     resetGame();
 }
+
 
 function resetGame() {
     document.getElementById('street-view').style.display = 'none';

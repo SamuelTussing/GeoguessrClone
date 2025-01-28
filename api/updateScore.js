@@ -6,11 +6,11 @@ export default async function handler(req, res) {
         return res.status(405).json({ message: "Méthode non autorisée" });
     }
 
-    const { userId, score } = req.body;
+    const { userId, score, location } = req.body; // Inclure la localisation dans les données
 
     // Validation des données d'entrée
-    if (!userId || typeof score !== "number") {
-        console.error("Requête invalide : userId ou score manquant/incorrect", { userId, score });
+    if (!userId || typeof score !== "number" || !location) {
+        console.error("Requête invalide : userId, score ou location manquant/incorrect", { userId, score, location });
         return res.status(400).json({ message: "Données manquantes ou invalides" });
     }
 
@@ -46,15 +46,16 @@ export default async function handler(req, res) {
                     level: newLevel,
                     lastscore: score,
                 },
-                $push: { scores: score }, // Ajouter ce score dans l'historique des scores du joueur
+                $push: { scores: { score, location } }, // Ajouter le score et la localisation dans l'historique des scores
             }
         );
 
-        // Ajouter le score dans la collection `scores`
+        // Ajouter le score et la localisation dans la collection `scores`
         await db.collection("scores").insertOne({
             userId: userId,
             username: user.username,
             score,
+            location, // Stocker la localisation avec le score
         });
 
         // Récupérer les 10 meilleurs scores triés par score décroissant
