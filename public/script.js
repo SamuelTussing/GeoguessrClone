@@ -421,7 +421,7 @@ async function endGame() {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ userId, score: finalScore, location: locationType }), // Ajouter la localisation
+            body: JSON.stringify({ userId, score: finalScore, locationSelect: locationType }), // Ajouter la localisation
         });
 
         const data = await response.json();

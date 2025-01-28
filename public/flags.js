@@ -8,7 +8,7 @@ function startFlagGame() {
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('flag-game').style.display = 'flex';
     score = 0;
-    updateScore();
+    updateScore1();
     getNextFlag();
 }
 
@@ -78,7 +78,7 @@ document.querySelectorAll('.country-button').forEach(button => {
             button.style.backgroundColor = 'green';
             resultSpan.innerText = `Bonne réponse ! Vous avez marqué ${scorePerCorrectAnswer} points.`;
             score += scorePerCorrectAnswer;
-            updateScore();
+            updateScore1();
             document.getElementById('next-button').style.display = 'block'; // Afficher le bouton suivant
         } else {
             button.style.backgroundColor = 'red';
@@ -112,6 +112,6 @@ document.getElementById('start-flag-game-button').onclick = () => {
     startFlagGame();
 };
 
-function updateScore() {
+function updateScore1() {
     document.getElementById('score-drapeau').innerText = `Score : ${score}`;
 }

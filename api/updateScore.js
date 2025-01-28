@@ -7,13 +7,14 @@ export default async function handler(req, res) {
     }
 
     // Extraction des données depuis le corps de la requête
-    const { userId, score, location } = req.body; // Inclure la localisation dans les données
+    const { userId, score, locationSelect } = req.body; // Inclure la localisation dans les données
+    console.log("Location type sélectionné : ", locationSelect);
 
-    console.log("Données reçues :", { userId, score, location }); // Log pour déboguer les données reçues
+    console.log("Données reçues :", { userId, score, locationSelect }); // Log pour déboguer les données reçues
 
     // Validation des données d'entrée
-    if (!userId || typeof score !== "number" || !location) {
-        console.error("Requête invalide : userId, score ou location manquant/incorrect", { userId, score, location });
+    if (!userId || typeof score !== "number" || !locationSelect) {
+        console.error("Requête invalide : userId, score ou location manquant/incorrect", { userId, score, locationSelect });
         return res.status(400).json({ message: "Données manquantes ou invalides" });
     }
 
@@ -51,7 +52,7 @@ export default async function handler(req, res) {
                     level: newLevel,
                     lastscore: score,
                 },
-                $push: { scores: { score, location } }, // Ajouter le score et la localisation dans l'historique des scores
+                $push: { scores: { score, locationSelect } }, // Ajouter le score et la localisation dans l'historique des scores
             }
         );
 
@@ -62,7 +63,7 @@ export default async function handler(req, res) {
             userId: userId,
             username: user.username,
             score,
-            location, // Stocker la localisation avec le score
+            locationSelect, // Stocker la localisation avec le score
         });
 
         console.log("Score inséré :", insertResult);
