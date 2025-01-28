@@ -6,7 +6,10 @@ export default async function handler(req, res) {
         return res.status(405).json({ message: "Méthode non autorisée" });
     }
 
+    // Extraction des données depuis le corps de la requête
     const { userId, score, location } = req.body; // Inclure la localisation dans les données
+
+    console.log("Données reçues :", { userId, score, location }); // Log pour déboguer les données reçues
 
     // Validation des données d'entrée
     if (!userId || typeof score !== "number" || !location) {
@@ -32,13 +35,15 @@ export default async function handler(req, res) {
             return res.status(404).json({ message: "Utilisateur introuvable" });
         }
 
+        console.log("Utilisateur trouvé :", user.username);
+
         // Calculer les nouveaux niveaux et expérience
         const oldLevel = user.level || 1;
         const newExperience = (user.experience || 0) + score;
         const newLevel = Math.floor(newExperience / 50000) + 1;
 
-        // Mettre à jour les informations de l'utilisateur
-        await db.collection("users").updateOne(
+        // Mise à jour des informations de l'utilisateur
+        const updateResult = await db.collection("users").updateOne(
             { _id: objectId },
             {
                 $set: {
@@ -50,13 +55,17 @@ export default async function handler(req, res) {
             }
         );
 
+        console.log("Mise à jour utilisateur :", updateResult);
+
         // Ajouter le score et la localisation dans la collection `scores`
-        await db.collection("scores").insertOne({
+        const insertResult = await db.collection("scores").insertOne({
             userId: userId,
             username: user.username,
             score,
             location, // Stocker la localisation avec le score
         });
+
+        console.log("Score inséré :", insertResult);
 
         // Récupérer les 10 meilleurs scores triés par score décroissant
         const topScores = await db.collection("scores")
@@ -64,6 +73,8 @@ export default async function handler(req, res) {
             .sort({ score: -1 })
             .limit(10)
             .toArray();
+
+        console.log("Top scores :", topScores);
 
         // Supprimer les scores excédentaires s'il y a plus de 10 scores
         const scoreIdsToKeep = topScores.map((s) => s._id);
