@@ -909,15 +909,14 @@ label{
 #containerlogs img {
   height: 85vh;
 }
-.signup-page{
-  width: 80vw;
+.login-page{
+  width: 100vw;
   margin: 10px 50px;
   height: auto;
 }
-.login-page{
-  width: 80vw;
-  margin: 10px 50px;
-  height: auto;
+.signup-page{
+  width:100vw;
+  margin: 5vw;
 }
 .buttonchoice{
   flex-direction: column;
