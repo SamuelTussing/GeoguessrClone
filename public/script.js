@@ -46,11 +46,7 @@ googleMapsScript.defer = true;
 document.body.appendChild(googleMapsScript);
 
 
-function getLocationType() {
-    const selectElement = document.getElementById('location-select');
-    locationType = selectElement.value;
-    console.log("Location type sélectionné : ", locationType);
-}
+
 
 function initMap() {
     console.log('Google Maps a été chargé avec succès !');
@@ -377,13 +373,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
 let selectedLocation = "world"; // Valeur par défaut
 
+function getLocationType() {
+    const selectElement = document.getElementById('location-select');
+    locationType = selectElement.value;
+    console.log("Location type sélectionné : ", locationType);
+}
+
 function locationsave(locationType) {
     selectedLocation = locationType; // Mettre à jour la variable globale
 }
 
 
 async function endGame() {
-    const locationType = document.getElementById("region").value; // Récupérer la localisation sélectionnée
+    const locationType = document.getElementById("location-select").value; // Récupérer la localisation sélectionnée
     locationsave(locationType); // Mettre à jour selectedLocation
 
     // Points bonus en fonction du mode de jeu
