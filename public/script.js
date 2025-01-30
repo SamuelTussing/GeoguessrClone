@@ -375,9 +375,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+let selectedLocation = "world"; // Valeur par défaut
+
+function locationsave(locationType) {
+    selectedLocation = locationType; // Mettre à jour la variable globale
+}
+
 
 async function endGame() {
     const locationType = document.getElementById("region").value; // Récupérer la localisation sélectionnée
+    locationsave(locationType); // Mettre à jour selectedLocation
 
     // Points bonus en fonction du mode de jeu
     const bonusPointsMap = {
@@ -393,18 +400,11 @@ async function endGame() {
         "Capitales": 1000,
     };
 
-    // Définir les points bonus
-    const bonusPoints = bonusPointsMap[locationType] || 0;
-
-    // Ajouter les points bonus au score total
+    const bonusPoints = bonusPointsMap[selectedLocation] || 0;
     const finalScore = totalScore + bonusPoints;
 
-    // Afficher le résultat final
     result.textContent = `Jeu terminé ! Votre score total est de : ${finalScore} (Bonus : ${bonusPoints} points)`;
     document.getElementById("result").style.display = "block";
-    document.getElementById("continue-button").style.display = "none";
-    scoreBanner.style.display = "none";
-    nameplace.style.display = "none";
 
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("authToken");
@@ -421,7 +421,7 @@ async function endGame() {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ userId, score: finalScore, locationSelect: locationType }), // Ajouter la localisation
+            body: JSON.stringify({ userId, score: finalScore, locationSelect: selectedLocation }), // Utilisation de selectedLocation
         });
 
         const data = await response.json();
@@ -430,11 +430,8 @@ async function endGame() {
             console.log("Score enregistré avec succès :", data);
 
             const { oldLevel, newLevel } = data;
-
-            // Mettre à jour le localStorage avec le nouveau niveau
             localStorage.setItem("level", newLevel);
 
-            // Si le joueur passe un niveau, afficher l'animation
             if (newLevel > oldLevel) {
                 showLevelUpAnimation(oldLevel, newLevel);
             }
@@ -446,10 +443,9 @@ async function endGame() {
     }
 
     fetchTopScores();
-
-    // Réinitialiser le jeu
     resetGame();
 }
+
 
 
 function resetGame() {
@@ -511,7 +507,7 @@ async function fetchTopScores() {
             }
 
             // Ajouter le texte du classement avec la localisation
-            listItem.textContent = `${position}ᵉ ${username} - ${score} points - Localisation : ${location}`;
+            listItem.textContent = `${position}ᵉ ${username} - ${score} points - ${locationSelect}`;
 
             dataContainer.appendChild(listItem);
         });

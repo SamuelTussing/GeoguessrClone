@@ -62,7 +62,7 @@ export default async function handler(req, res) {
             userId: userId,
             username: user.username,
             score,
-            locationSelect, // Stocker la localisation avec le score
+            location: locationSelect, // Stocker la localisation avec le score
         });
 
         console.log("Score inséré :", insertResult);
