@@ -482,7 +482,7 @@ async function fetchTopScores() {
             const position = index + 1;
             const username = user.username;
             const score = user.score;
-            const location = user.location || "aucune"; // Si pas de localisation, afficher "aucune"
+            const location = user.location || "aucune"; // Correction ici
 
             const listItem = document.createElement("div");
             listItem.classList.add("classement-item");
@@ -495,19 +495,17 @@ async function fetchTopScores() {
                 const crownImg = document.createElement("img");
                 crownImg.src = "./couronne.png";  // Assurez-vous du bon chemin ici
                 crownImg.alt = "Couronne";
-                crownImg.width = 30; // Taille de l'image
+                crownImg.width = 30;
 
-                // Gestionnaire d'erreur de chargement
                 crownImg.onerror = function () {
                     console.error("Erreur de chargement de l'image couronne.png");
                 };
 
-                // Ajouter l'image au début du div
                 listItem.appendChild(crownImg);
             }
 
-            // Ajouter le texte du classement avec la localisation
-            listItem.textContent = `${position}ᵉ ${username} - ${score} points - ${locationSelect}`;
+            // Correction : Utiliser la bonne variable location
+            listItem.textContent = `${position}ᵉ ${username} - ${score} points - ${location}`;
 
             dataContainer.appendChild(listItem);
         });
@@ -517,6 +515,7 @@ async function fetchTopScores() {
         dataContainer.innerHTML = `<p class="error">Impossible de récupérer les scores. Veuillez réessayer plus tard.</p>`;
     }
 }
+
 
 
 
