@@ -486,6 +486,7 @@ async function fetchTopScores() {
             const position = index + 1;
             const username = user.username;
             const score = user.score;
+            const location = user.location || "aucune"; // Si pas de localisation, afficher "aucune"
 
             const listItem = document.createElement("div");
             listItem.classList.add("classement-item");
@@ -509,8 +510,8 @@ async function fetchTopScores() {
                 listItem.appendChild(crownImg);
             }
 
-            // Ajouter le texte du classement
-            listItem.textContent = `${position}ᵉ ${username} - ${score} points`;
+            // Ajouter le texte du classement avec la localisation
+            listItem.textContent = `${position}ᵉ ${username} - ${score} points - Localisation : ${location}`;
 
             dataContainer.appendChild(listItem);
         });
@@ -520,6 +521,7 @@ async function fetchTopScores() {
         dataContainer.innerHTML = `<p class="error">Impossible de récupérer les scores. Veuillez réessayer plus tard.</p>`;
     }
 }
+
 
 
 

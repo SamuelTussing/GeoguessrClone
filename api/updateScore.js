@@ -8,7 +8,6 @@ export default async function handler(req, res) {
 
     // Extraction des données depuis le corps de la requête
     const { userId, score, locationSelect } = req.body; // Inclure la localisation dans les données
-    console.log("Location type sélectionné : ", locationSelect);
 
     console.log("Données reçues :", { userId, score, locationSelect }); // Log pour déboguer les données reçues
 
