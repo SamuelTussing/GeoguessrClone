@@ -601,9 +601,30 @@ function getRandomStreetViewLocation(locationType) {
             case 'south-america':
                 filteredLocations = locations.filter(location => location.continent === 'Amérique Centrale/Sud');
                 break;
-            case 'africa':
-                filteredLocations = locations.filter(location => location.continent === 'Africa');
-                break;
+                case 'africa':
+                    const randomAfricaLatLng = getRandomAfricaCoordinates();
+                    const latLngAfrica = new google.maps.LatLng(randomAfricaLatLng.lat, randomAfricaLatLng.lng);
+                
+                    svService.getPanorama(
+                        {
+                            location: latLngAfrica,
+                            radius: 50000, // Rayon de 50 km
+                            source: google.maps.StreetViewSource.OUTDOOR,
+                        },
+                        (data, status) => {
+                            if (status === 'OK' && data && data.location) {
+                                if (data.location.pano && data.links.length > 0) {
+                                    actualLocation = data.location.latLng;
+                                    panorama.setPosition(actualLocation);
+                                } else {
+                                    getRandomStreetViewLocation('africa'); // Réessayer si pas de Street View
+                                }
+                            } else {
+                                getRandomStreetViewLocation('africa'); // Réessayer si échec
+                            }
+                        }
+                    );
+                    break;
             case 'asia-oceania':
                 filteredLocations = locations.filter(location => location.continent === 'Asia' || location.continent === 'Australia' || location.continent === 'Oceania');
                 break;
@@ -621,7 +642,17 @@ function getRandomStreetViewLocation(locationType) {
         svService.getPanorama({ location: latLng, radius: 50000, source: google.maps.StreetViewSource.OUTDOOR }, processSVData);
     }
 }
+function getRandomAfricaCoordinates() {
+    const minLat = -35.0;
+    const maxLat = 37.0;
+    const minLng = -20.0;
+    const maxLng = 55.0;
 
+    const randomLat = Math.random() * (maxLat - minLat) + minLat;
+    const randomLng = Math.random() * (maxLng - minLng) + minLng;
+
+    return { lat: randomLat, lng: randomLng };
+}
 function getRandomNorthAmericaCoordinates() {
     // Définir des zones urbaines importantes avec leurs coordonnées approximatives
     const urbanAreas = [
