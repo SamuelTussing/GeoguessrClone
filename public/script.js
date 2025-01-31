@@ -468,45 +468,59 @@ let currentPlaceName = ""; // Variable globale pour le nom du lieu
 async function fetchTopScores() {
     try {
         const response = await fetch("/api/topScores");
+
         if (!response.ok) {
             throw new Error(`Erreur lors de la récupération des scores : ${response.statusText}`);
         }
 
-        const scoresByLocation = await response.json();
+        const topScoresByLocation = await response.json();
 
-        // On vide tous les classements avant d'ajouter les nouveaux scores
-        document.querySelectorAll(".classement-list").forEach(list => {
+        // Sélectionner le conteneur global des classements
+        const leaderboardsContainer = document.getElementById("leaderboards");
+
+        // Vérifier si le conteneur existe
+        if (!leaderboardsContainer) {
+            console.error("Erreur : Conteneur leaderboards introuvable !");
+            return;
+        }
+
+        // Vider les classements avant de les mettre à jour
+        leaderboardsContainer.querySelectorAll(".classement-list").forEach(list => {
             list.innerHTML = "";
         });
 
-        scoresByLocation.forEach(region => {
-            const location = region._id || "inconnu"; // Par défaut, "world"
-            const leaderboardElement = document.getElementById(`list-${location}`);
-
-            if (leaderboardElement) {
-                region.topScores.forEach((user, index) => {
-                    const position = index + 1;
-                    const listItem = document.createElement("div");
-                    listItem.classList.add("classement-item");
-
-                    if (index === 0) {
-                        const crownImg = document.createElement("img");
-                        crownImg.src = "./couronne.png";
-                        crownImg.alt = "Couronne";
-                        crownImg.width = 30;
-                        listItem.appendChild(crownImg);
-                    }
-
-                    listItem.textContent = `${position}ᵉ ${user.username} - ${user.score} points`;
-                    leaderboardElement.appendChild(listItem);
-                });
+        // Remplir chaque section avec les meilleurs scores
+        Object.keys(topScoresByLocation).forEach(location => {
+            const leaderboard = document.getElementById(`leaderboard-${location}`);
+            
+            // Vérifier si l'élément de la région existe
+            if (!leaderboard) {
+                console.warn(`Aucune section trouvée pour la localisation : ${location}`);
+                return;
             }
+
+            const classementList = leaderboard.querySelector(".classement-list");
+
+            // Ajouter les scores à la liste
+            topScoresByLocation[location].forEach((user, index) => {
+                const position = index + 1;
+                const listItem = document.createElement("div");
+                listItem.classList.add("classement-item");
+
+                // Ajouter la médaille si le joueur est dans le top 3
+                if (index === 0) {
+                    listItem.innerHTML = `<img src="./couronne.png" alt="🏆" width="30"> ${position}ᵉ ${user.username} - ${user.score} points`;
+                } else {
+                    listItem.textContent = `${position}ᵉ ${user.username} - ${user.score} points`;
+                }
+
+                classementList.appendChild(listItem);
+            });
         });
 
     } catch (error) {
         console.error("Erreur lors de la récupération des scores :", error);
-        document.getElementById("dataContainer").innerHTML =
-            `<p class="error">Impossible de récupérer les scores. Veuillez réessayer plus tard.</p>`;
+        document.getElementById("leaderboards").innerHTML = `<p class="error">Impossible de récupérer les scores. Veuillez réessayer plus tard.</p>`;
     }
 }
 
@@ -814,10 +828,12 @@ function updateHeader() {
     highscoresContainer.classList.add('hidden');
   });
 
-  OpenHighscore.addEventListener('click', () => {
-    highscoresContainer.classList.remove('hidden');
-    fetchTopScores(); // Récupère les scores à chaque ouverture
-  });
+  document.getElementById("OpenHighscore").addEventListener("click", async () => {
+    const highscoresContainer = document.querySelector(".classementcontainer");
+    highscoresContainer.classList.remove("hidden");
+
+    await fetchTopScores(); // Récupérer et afficher les scores
+});
 
 // Fonction pour démarrer un timer
 function startTimer(duration, callback) {

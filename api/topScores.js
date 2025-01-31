@@ -6,26 +6,27 @@ export default async function handler(req, res) {
             const client = await clientPromise;
             const db = client.db("geoguessr_clone");
 
-            // Récupération des scores groupés par localisation
-            const pipeline = [
-                { $sort: { score: -1 } }, // Trie par score décroissant
-                {
-                    $group: {
-                        _id: "$location",
-                        topScores: { $push: { username: "$username", score: "$score" } }
-                    }
-                },
-                {
-                    $project: {
-                        _id: 1,
-                        topScores: { $slice: ["$topScores", 5] } // Prend les 5 meilleurs par localisation
-                    }
+            // Récupérer toutes les localisations uniques
+            const locations = await db.collection("scores").distinct("location");
+
+            let topScoresByLocation = {};
+
+            // Parcourir chaque localisation et récupérer les 5 meilleurs scores
+            for (const location of locations) {
+                const scores = await db
+                    .collection("scores")
+                    .find({ location: location }) // Filtrer par localisation
+                    .sort({ score: -1 }) // Trier par score décroissant
+                    .limit(5) // Limiter à 5 résultats max
+                    .toArray();
+
+                // Ajouter uniquement si des scores existent pour cette localisation
+                if (scores.length > 0) {
+                    topScoresByLocation[location] = scores;
                 }
-            ];
+            }
 
-            const scoresByLocation = await db.collection("scores").aggregate(pipeline).toArray();
-
-            res.status(200).json(scoresByLocation);
+            res.status(200).json(topScoresByLocation);
         } catch (error) {
             console.error("Erreur lors de la récupération des scores :", error);
             res.status(500).json({ message: "Erreur serveur", error });
