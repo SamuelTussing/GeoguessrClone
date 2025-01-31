@@ -925,6 +925,7 @@ label{
   flex-direction: column;
   justify-content: flex-start;
   margin-top: 50px;
+  height: auto;
 }
 #main-game{
   display: flex;

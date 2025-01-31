@@ -443,6 +443,8 @@ async function endGame() {
     } catch (error) {
         console.error("Erreur réseau :", error);
     }
+    scoreBanner.style.display = 'none';
+    continueButton.style.display = 'none';
 
     fetchTopScores();
     resetGame();
