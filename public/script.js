@@ -594,7 +594,7 @@ function getRandomStreetViewLocation(locationType) {
                 break;
             case 'famous':
                 filteredLocations = locations.filter(location => location.mode === 'famous'); 
-                radiusInKm = 0.05; // Rayon 0 pour famous
+                radiusInKm = 0.03; // Rayon 0 pour famous
                 break;
             default:
                 filteredLocations = locations;

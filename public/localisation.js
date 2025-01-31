@@ -1535,7 +1535,7 @@ const locations = [
     { lat: -4.038333, lng: 15.302241, continent: 'Afrique', pays: 'République Démocratique du Congo', ville: 'Kinshasa', mode: 'Capitales', place: "Place de l'Indépendance" },
     { lat: 9.05785, lng: 7.49508, continent: 'Afrique', pays: 'Sierra Leone', ville: 'Freetown', mode: 'Capitales', place: "Lumley Beach" },
     { lat: 19.020833, lng: 47.9297, continent: 'Afrique', pays: 'Bénin', ville: 'Porto-Novo', mode: 'Capitales', place: "Parc de la Marina" },
-
+ 
 
 
     //LIEUX CONNUS
@@ -1598,7 +1598,6 @@ const locations = [
     { lat: 52.51657059196804, lng: 13.376837732801087, continent: 'Europe', pays: 'Germany', ville: 'Berlin', mode: 'famous', place: "Porte de Brandebourg" },
     { lat: 31.626112361869072,  lng: -7.988466676812106, continent: 'Africa', pays: 'Morocco', ville: 'Marrakech', mode: 'famous', place: "Place Jemaa El Fna" },
     { lat: -25.69163525984715, lng: -54.43799675097935, continent: 'South America', pays: 'Argentina/Brazil', ville: 'Iguazu Falls', mode: 'famous', place: "Chutes d'Iguazu" },
-    { lat: -41.071922314104654, lng: -71.52238250880717, continent: 'South America', pays: 'Argentina', ville: 'San Carlos de Bariloche', mode: 'famous', place: "San Carlos de Bariloche" },
     { lat: -50.46661677492997, lng: -73.03344986563833, continent: 'South America', pays: 'Argentina', ville: 'El Calafate', mode: 'famous', place: "Glacier Perito Moreno" },
     { lat: 20.683498295552724, lng: -88.56875890724092, continent: 'North America', pays: 'Mexico', ville: 'Chichen Itza', mode: 'famous', place: "Chichen Itza" },
     { lat: 17.48497968295585,  lng: -92.04637003606567, continent: 'North America', pays: 'Mexico', ville: 'Palenque', mode: 'famous', place: "Palenque" },
@@ -1611,7 +1610,6 @@ const locations = [
     { lat: 14.0583, lng: 108.2772, continent: 'Asia', pays: 'Vietnam', ville: 'Hanoi', mode: 'famous', place: 'Halong Bay' },
     { lat: 34.0522, lng: 108.9470, continent: 'Asia', pays: 'China', ville: 'Xi\'an', mode: 'famous', place: 'Terracotta Army' },
     { lat: 13.4125, lng: 103.8667, continent: 'Asia', pays: 'Cambodia', ville: 'Siem Reap', mode: 'famous', place: 'Angkor Wat' },
-    { lat: 25.276987, lng: 55.296249, continent: 'Asia', pays: 'United Arab Emirates', ville: 'Dubai', mode: 'famous', place: 'Burj Khalifa' },
     { lat: 13.7367, lng: 100.5231, continent: 'Asia', pays: 'Thailand', ville: 'Bangkok', mode: 'famous', place: 'Grand Palace' },
     { lat: 27.9881, lng: 86.9250, continent: 'Asia', pays: 'Nepal', ville: 'Kathmandu', mode: 'famous', place: 'Mount Everest' },
     { lat: 15.8700, lng: 100.9925, continent: 'Asia', pays: 'Laos', ville: 'Vientiane', mode: 'famous', place: 'Pha That Luang' },
