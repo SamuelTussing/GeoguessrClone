@@ -476,7 +476,7 @@ async function fetchTopScores() {
         const topScoresByLocation = await response.json();
 
         // Sélectionner le conteneur global des classements
-        const leaderboardsContainer = document.getElementById("leaderboards");
+        const leaderboardsContainer = document.getElementById("dataContainer");
 
         // Vérifier si le conteneur existe
         if (!leaderboardsContainer) {
