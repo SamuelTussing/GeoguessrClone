@@ -476,10 +476,10 @@ async function fetchTopScores() {
         const topScoresByLocation = await response.json();
 
         // Sélectionner le conteneur global des classements
-        const leaderboardsMainContainer = document.getElementById("dataContainer");
+        const leaderboardsContainer = document.getElementById("dataContainer");
 
         // Vérifier si le conteneur existe
-        if (!leaderboardsMainContainer) {
+        if (!leaderboardsContainer) {
             console.error("Erreur : Conteneur leaderboards introuvable !");
             return;
         }
