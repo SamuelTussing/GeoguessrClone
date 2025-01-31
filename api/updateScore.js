@@ -71,7 +71,7 @@ export default async function handler(req, res) {
         const topScores = await db.collection("scores")
             .find({})
             .sort({ score: -1 })
-            .limit(10)
+            .limit(30)
             .toArray();
 
         console.log("Top scores :", topScores);
