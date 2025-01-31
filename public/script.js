@@ -592,36 +592,6 @@ function getRandomStreetViewLocation(locationType) {
                 filteredLocations = locations.filter(location => location.mode === 'famous'); 
                 radiusInKm = 0.05; // Rayon 0 pour famous
                 break;
-            case 'south-america':
-                filteredLocations = locations.filter(location => location.continent === 'Amérique Centrale/Sud');
-                break;
-                case 'africa':
-                    const randomAfricaLatLng = getRandomAfricaCoordinates();
-                    const latLngAfrica = new google.maps.LatLng(randomAfricaLatLng.lat, randomAfricaLatLng.lng);
-                
-                    svService.getPanorama(
-                        {
-                            location: latLngAfrica,
-                            radius: 50000, // Rayon de 50 km
-                            source: google.maps.StreetViewSource.OUTDOOR,
-                        },
-                        (data, status) => {
-                            if (status === 'OK' && data && data.location) {
-                                if (data.location.pano && data.links.length > 0) {
-                                    actualLocation = data.location.latLng;
-                                    panorama.setPosition(actualLocation);
-                                } else {
-                                    getRandomStreetViewLocation('africa'); // Réessayer si pas de Street View
-                                }
-                            } else {
-                                getRandomStreetViewLocation('africa'); // Réessayer si échec
-                            }
-                        }
-                    );
-                    break;
-            case 'asia-oceania':
-                filteredLocations = locations.filter(location => location.continent === 'Asia' || location.continent === 'Australia' || location.continent === 'Oceania');
-                break;
             default:
                 filteredLocations = locations;
                 break;
