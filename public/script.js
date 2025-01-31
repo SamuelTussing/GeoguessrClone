@@ -395,9 +395,6 @@ async function endGame() {
         "France": 1000,
         "europe": 2000,
         "north-america": 2000,
-        "south-america": 2000,
-        "africa": 4000,
-        "asia-oceania": 2500,
         "famous": 1000,
         "Capitales": 1000,
     };
