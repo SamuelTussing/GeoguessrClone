@@ -468,6 +468,7 @@ let currentPlaceName = ""; // Variable globale pour le nom du lieu
 async function fetchTopScores() {
     try {
         const response = await fetch("/api/topScores");
+
         if (!response.ok) {
             throw new Error(`Erreur lors de la récupération des scores : ${response.statusText}`);
         }
@@ -483,8 +484,11 @@ async function fetchTopScores() {
         // Vide le container avant d'ajouter de nouveaux scores
         dataContainer.innerHTML = "";
 
-        // Parcourir chaque localisation et afficher son top 10
+        // Parcourir chaque localisation et afficher son top 5
         Object.entries(topScoresByLocation).forEach(([location, scores]) => {
+            // Limiter les scores à 5 meilleurs, même si l'API renvoie plus
+            const top5Scores = scores.slice(0, 5); // Prendre seulement les 5 premiers
+
             const locationSection = document.createElement("div");
             locationSection.classList.add("classement-section");
 
@@ -495,12 +499,12 @@ async function fetchTopScores() {
             const scoreList = document.createElement("div");
             scoreList.classList.add("classement-list");
 
-            if (scores.length === 0) {
+            if (top5Scores.length === 0) {
                 const noData = document.createElement("p");
                 noData.textContent = "Aucun score enregistré.";
                 scoreList.appendChild(noData);
             } else {
-                scores.forEach((user, index) => {
+                top5Scores.forEach((user, index) => {
                     const listItem = document.createElement("div");
                     listItem.classList.add("classement-item", `position-${index + 1}`);
                     listItem.textContent = `${index + 1}ᵉ ${user.username} - ${user.score} points`;
