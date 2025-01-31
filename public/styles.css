@@ -2,6 +2,10 @@ body{
   display: flex;
   overflow: hidden;
 }
+h3{
+  font-size: 25px;
+  font-weight: 800;
+}
 #fondplanete{
   object-fit: cover;
   object-position: center;
@@ -894,6 +898,10 @@ label{
 }
 #dataContainer{
   display: flex;
+  flex-wrap: wrap;
+  gap: 10%;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 
