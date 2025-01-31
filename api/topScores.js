@@ -19,7 +19,7 @@ export default async function handler(req, res) {
                     .collection("scores")
                     .find({ location: location }) // Filtrer par localisation
                     .sort({ score: -1 }) // Trier par score décroissant
-                    .limit(5) // Limiter à 10 résultats
+                    .limit(20) // Limiter à 10 résultats
                     .toArray();
 
                 topScoresByLocation[location] = scores; // Stocker dans l'objet
