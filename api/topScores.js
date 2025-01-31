@@ -6,15 +6,26 @@ export default async function handler(req, res) {
             const client = await clientPromise;
             const db = client.db("geoguessr_clone");
 
-            // Récupérer le top 10 des scores
-            const scores = await db
-                .collection("scores")
-                .find({})
-                .sort({ score: -1 }) // Tri par score décroissant
-                .limit(10)
-                .toArray();
+            // Liste des localisations à récupérer
+            const locations = [
+                "world", "Strasbourg", "France", "europe", "north-america",
+                "south-america", "africa", "asia-oceania", "famous", "Capitales"
+            ];
 
-            res.status(200).json(scores);
+            let topScoresByLocation = {};
+
+            for (const location of locations) {
+                const scores = await db
+                    .collection("scores")
+                    .find({ location: location }) // Filtrer par localisation
+                    .sort({ score: -1 }) // Trier par score décroissant
+                    .limit(10) // Limiter à 10 résultats
+                    .toArray();
+
+                topScoresByLocation[location] = scores; // Stocker dans l'objet
+            }
+
+            res.status(200).json(topScoresByLocation);
         } catch (error) {
             console.error("Erreur lors de la récupération des scores :", error);
             res.status(500).json({ message: "Erreur serveur", error });
@@ -23,6 +34,3 @@ export default async function handler(req, res) {
         res.status(405).json({ message: "Méthode non autorisée" });
     }
 }
-console.log("Connexion à MongoDB...");
-console.log("Base de données : geoguessr_clone");
-console.log("Collection : scores");

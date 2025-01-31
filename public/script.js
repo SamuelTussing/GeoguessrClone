@@ -476,53 +476,69 @@ async function fetchTopScores() {
         }
 
         const topScores = await response.json();
-        const dataContainer = document.getElementById("dataContainer");
 
-        // Vide le container avant d'ajouter de nouveaux scores
-        dataContainer.innerHTML = "";
+        // Liste des localisations possibles
+        const locations = [
+            "world", "Strasbourg", "France", "europe", "north-america",
+            "south-america", "africa", "asia-oceania", "famous", "Capitales"
+        ];
 
-        // Ajouter les scores dans la liste
-        topScores.forEach((user, index) => {
-            const position = index + 1;
-            const username = user.username;
-            const score = user.score;
-            const location = user.location || "aucune"; // Correction ici
-
-            const listItem = document.createElement("div");
-            listItem.classList.add("classement-item");
-
-            // Ajouter une classe spécifique basée sur l'index + 1
-            listItem.classList.add(`position-${position}`);
-
-            // Ajouter une image pour la première position (index 0)
-            if (index === 0) {
-                const crownImg = document.createElement("img");
-                crownImg.src = "./couronne.png";  // Assurez-vous du bon chemin ici
-                crownImg.alt = "Couronne";
-                crownImg.width = 30;
-
-                crownImg.onerror = function () {
-                    console.error("Erreur de chargement de l'image couronne.png");
-                };
-
-                listItem.appendChild(crownImg);
-            }
-
-            // Correction : Utiliser la bonne variable location
-            listItem.textContent = `${position}ᵉ ${username} - ${score} points - ${location}`;
-
-            dataContainer.appendChild(listItem);
+        // Nettoyer tous les classements
+        locations.forEach(location => {
+            const leaderboard = document.getElementById(`leaderboard-${location}`).querySelector('.classement-list');
+            leaderboard.innerHTML = "";
         });
+
+        // Trier les scores par localisation
+        const scoresByLocation = {};
+        locations.forEach(loc => scoresByLocation[loc] = []);
+
+        topScores.forEach(user => {
+            const location = user.location || "world"; // Par défaut "world" si non défini
+            if (scoresByLocation[location]) {
+                scoresByLocation[location].push(user);
+            }
+        });
+
+        // Afficher le top 10 par localisation
+        locations.forEach(location => {
+            const leaderboard = document.getElementById(`leaderboard-${location}`);
+            const listContainer = leaderboard.querySelector('.classement-list');
+            
+            const sortedScores = scoresByLocation[location].sort((a, b) => b.score - a.score).slice(0, 10);
+            
+            if (sortedScores.length === 0) {
+                leaderboard.style.display = "none"; // Masquer la section vide
+            } else {
+                leaderboard.style.display = "block"; // Afficher la section si elle a des scores
+                
+                sortedScores.forEach((user, index) => {
+                    const listItem = document.createElement("div");
+                    listItem.classList.add("classement-item", `position-${index + 1}`);
+                    
+                    if (index === 0) { // Couronne pour le premier
+                        const crownImg = document.createElement("img");
+                        crownImg.src = "./couronne.png";
+                        crownImg.alt = "Couronne";
+                        crownImg.width = 30;
+                        crownImg.onerror = () => console.error("Erreur de chargement de l'image couronne.png");
+                        listItem.appendChild(crownImg);
+                    }
+
+                    listItem.textContent = `${index + 1}ᵉ ${user.username} - ${user.score} points`;
+                    listContainer.appendChild(listItem);
+                });
+            }
+        });
+
     } catch (error) {
         console.error("Erreur lors de la récupération des scores :", error);
-        const dataContainer = document.getElementById("dataContainer");
-        dataContainer.innerHTML = `<p class="error">Impossible de récupérer les scores. Veuillez réessayer plus tard.</p>`;
+        locations.forEach(location => {
+            const leaderboard = document.getElementById(`leaderboard-${location}`).querySelector('.classement-list');
+            leaderboard.innerHTML = `<p class="error">Impossible de récupérer les scores.</p>`;
+        });
     }
 }
-
-
-
-
 
 
 
