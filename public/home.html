@@ -30,50 +30,60 @@
         </div>
         <h2>Classement</h2>
         
-        <!-- Conteneur global pour tous les classements -->
-        <div id="leaderboards">
-            <div class="classement-region" id="leaderboard-world">
-                <h3>🌍 Monde</h3>
-                <div class="classement-list"></div>
+        <div class="classementcontainer hidden">
+            <div class="classementheader">
+                <img id="arrow" src="./arrow.png" alt="back" height="30px">
             </div>
-            <div class="classement-region" id="leaderboard-Strasbourg">
-                <h3>🏙️ Strasbourg</h3>
-                <div class="classement-list"></div>
+            <h2>Classement</h2>
+        
+            <!-- Conteneur global pour tous les classements -->
+            <div id="leaderboards">
+                <div class="classement-region" id="leaderboard-world">
+                    <h3>🌍 Monde</h3>
+                    <div class="classement-list" id="list-world"></div>
+                </div>
+                <div class="classement-region" id="leaderboard-Strasbourg">
+                    <h3>🏙️ Strasbourg</h3>
+                    <div class="classement-list" id="list-Strasbourg"></div>
+                </div>
+                <div class="classement-region" id="leaderboard-France">
+                    <h3>🇫🇷 France</h3>
+                    <div class="classement-list" id="list-France"></div>
+                </div>
+                <div class="classement-region" id="leaderboard-europe">
+                    <h3>🌍 Europe</h3>
+                    <div class="classement-list" id="list-europe"></div>
+                </div>
+                <div class="classement-region" id="leaderboard-north-america">
+                    <h3>🌎 Amérique du Nord</h3>
+                    <div class="classement-list" id="list-north-america"></div>
+                </div>
+                <div class="classement-region" id="leaderboard-south-america">
+                    <h3>🌎 Amérique du Sud</h3>
+                    <div class="classement-list" id="list-south-america"></div>
+                </div>
+                <div class="classement-region" id="leaderboard-africa">
+                    <h3>🌍 Afrique</h3>
+                    <div class="classement-list" id="list-africa"></div>
+                </div>
+                <div class="classement-region" id="leaderboard-asia-oceania">
+                    <h3>🌏 Asie / Océanie</h3>
+                    <div class="classement-list" id="list-asia-oceania"></div>
+                </div>
+                <div class="classement-region" id="leaderboard-famous">
+                    <h3>⭐ Famous</h3>
+                    <div class="classement-list" id="list-famous"></div>
+                </div>
+                <div class="classement-region" id="leaderboard-Capitales">
+                    <h3>🏛️ Capitales</h3>
+                    <div class="classement-list" id="list-Capitales"></div>
+                </div>
             </div>
-            <div class="classement-region" id="leaderboard-France">
-                <h3>🇫🇷 France</h3>
-                <div class="classement-list"></div>
-            </div>
-            <div class="classement-region" id="leaderboard-europe">
-                <h3>🌍 Europe</h3>
-                <div class="classement-list"></div>
-            </div>
-            <div class="classement-region" id="leaderboard-north-america">
-                <h3>🌎 Amérique du Nord</h3>
-                <div class="classement-list"></div>
-            </div>
-            <div class="classement-region" id="leaderboard-south-america">
-                <h3>🌎 Amérique du Sud</h3>
-                <div class="classement-list"></div>
-            </div>
-            <div class="classement-region" id="leaderboard-africa">
-                <h3>🌍 Afrique</h3>
-                <div class="classement-list"></div>
-            </div>
-            <div class="classement-region" id="leaderboard-asia-oceania">
-                <h3>🌏 Asie / Océanie</h3>
-                <div class="classement-list"></div>
-            </div>
-            <div class="classement-region" id="leaderboard-famous">
-                <h3>⭐ Famous</h3>
-                <div class="classement-list"></div>
-            </div>
-            <div class="classement-region" id="leaderboard-Capitales">
-                <h3>🏛️ Capitales</h3>
-                <div class="classement-list"></div>
-            </div>
+        
+            <!-- Conteneur pour d'autres données si besoin -->
+            <div id="dataContainer"></div>
         </div>
-    </div>
+        
 </div>
     <div id="homepage">
         

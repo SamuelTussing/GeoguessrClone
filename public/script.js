@@ -478,53 +478,36 @@ async function fetchTopScores() {
         const topScoresByLocation = await response.json();
         const dataContainer = document.getElementById("dataContainer");
 
+        if (!dataContainer) {
+            console.error("Erreur : Impossible de trouver l'élément #dataContainer.");
+            return;
+        }
+
         // Vide le container avant d'ajouter de nouveaux scores
         dataContainer.innerHTML = "";
 
         // Parcourir chaque localisation et afficher son top 10
         Object.entries(topScoresByLocation).forEach(([location, scores]) => {
-            // Créer un conteneur pour chaque localisation
             const locationSection = document.createElement("div");
             locationSection.classList.add("classement-section");
 
-            // Ajouter un titre pour la localisation
             const title = document.createElement("h3");
             title.textContent = `Classement - ${location}`;
             locationSection.appendChild(title);
 
-            // Liste des scores
             const scoreList = document.createElement("div");
             scoreList.classList.add("classement-list");
 
             if (scores.length === 0) {
-                // Si aucun score pour cette localisation
                 const noData = document.createElement("p");
                 noData.textContent = "Aucun score enregistré.";
                 scoreList.appendChild(noData);
             } else {
                 scores.forEach((user, index) => {
-                    const position = index + 1;
-                    const username = user.username;
-                    const score = user.score;
-
                     const listItem = document.createElement("div");
-                    listItem.classList.add("classement-item", `position-${position}`);
+                    listItem.classList.add("classement-item", `position-${index + 1}`);
+                    listItem.textContent = `${index + 1}ᵉ ${user.username} - ${user.score} points`;
 
-                    // Ajouter une image pour la première position (index 0)
-                    if (index === 0) {
-                        const crownImg = document.createElement("img");
-                        crownImg.src = "./couronne.png";
-                        crownImg.alt = "Couronne";
-                        crownImg.width = 30;
-
-                        crownImg.onerror = function () {
-                            console.error("Erreur de chargement de l'image couronne.png");
-                        };
-
-                        listItem.appendChild(crownImg);
-                    }
-
-                    listItem.textContent = `${position}ᵉ ${username} - ${score} points`;
                     scoreList.appendChild(listItem);
                 });
             }
@@ -535,8 +518,6 @@ async function fetchTopScores() {
 
     } catch (error) {
         console.error("Erreur lors de la récupération des scores :", error);
-        const dataContainer = document.getElementById("dataContainer");
-        dataContainer.innerHTML = `<p class="error">Impossible de récupérer les scores. Veuillez réessayer plus tard.</p>`;
     }
 }
 
