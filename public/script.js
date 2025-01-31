@@ -476,7 +476,7 @@ async function fetchTopScores() {
         const topScoresByLocation = await response.json();
 
         // Sélectionner le conteneur global des classements
-        const leaderboardsContainer = document.getElementById("leaderboards");
+        const leaderboardsMainContainer = document.getElementById("dataContainer");
 
         // Vérifier si le conteneur existe
         if (!leaderboardsContainer) {
@@ -485,7 +485,7 @@ async function fetchTopScores() {
         }
 
         // Vider les classements avant de les mettre à jour
-        leaderboardsContainer.querySelectorAll(".classement-list").forEach(list => {
+        leaderboardsContainer.querySelectorAll(".classement-region").forEach(list => {
             list.innerHTML = "";
         });
 
