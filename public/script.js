@@ -492,7 +492,7 @@ async function fetchTopScores() {
             locationSection.classList.add("classement-section");
 
             const title = document.createElement("h3");
-            title.textContent = `Classement - ${location}`;
+            title.textContent = `${location}`;
             locationSection.appendChild(title);
 
             const scoreList = document.createElement("div");

@@ -733,7 +733,7 @@ label{
   border-radius: 30px;
 }
 .position-1{
-  font-size: 40px;
+  font-size: 20px;
   color: gold;
 }
 .classement-item img {
@@ -741,11 +741,11 @@ label{
   vertical-align: middle; /* Aligne l'image avec le texte */
 }
 .position-2{
-  font-size: 30px;
+  font-size: 18px;
   color: #c1c1c1;
 }
 .position-3{
-  font-size: 25px;
+  font-size: 15px;
   color: #d37777;
   margin-bottom: 20px;
 }
@@ -892,7 +892,9 @@ label{
   font-weight: 600;
   margin: 10px;
 }
-
+#dataContainer{
+  display: flex;
+}
 
 
 
