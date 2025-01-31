@@ -479,7 +479,7 @@ async function fetchTopScores() {
         const leaderboardsMainContainer = document.getElementById("dataContainer");
 
         // Vérifier si le conteneur existe
-        if (!leaderboardsContainer) {
+        if (!leaderboardsMainContainer) {
             console.error("Erreur : Conteneur leaderboards introuvable !");
             return;
         }
