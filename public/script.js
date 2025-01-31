@@ -828,7 +828,7 @@ function updateHeader() {
     highscoresContainer.classList.add('hidden');
   });
 
-  document.getElementById("OpenHighscore").addEventListener("click", async () => {
+  document.getElementById("classement-button").addEventListener("click", async () => {
     const highscoresContainer = document.querySelector(".classementcontainer");
     highscoresContainer.classList.remove("hidden");
 
