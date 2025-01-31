@@ -472,44 +472,51 @@ async function fetchTopScores() {
             throw new Error(`Erreur lors de la récupération des scores : ${response.statusText}`);
         }
 
-        const scoresByLocation = await response.json();
+        const topScoresByLocation = await response.json();
+        const dataContainer = document.getElementById("dataContainer");
 
-        // On vide tous les classements avant d'ajouter les nouveaux scores
-        document.querySelectorAll(".classement-list").forEach(list => {
-            list.innerHTML = "";
-        });
+        if (!dataContainer) {
+            console.error("Erreur : Impossible de trouver l'élément #dataContainer.");
+            return;
+        }
 
-        scoresByLocation.forEach(region => {
-            const location = region._id || "inconnu"; // Par défaut, "world"
-            const leaderboardElement = document.getElementById(`list-${location}`);
+        // Vide le container avant d'ajouter de nouveaux scores
+        dataContainer.innerHTML = "";
 
-            if (leaderboardElement) {
-                region.topScores.forEach((user, index) => {
-                    const position = index + 1;
+        // Parcourir chaque localisation et afficher son top 10
+        Object.entries(topScoresByLocation).forEach(([location, scores]) => {
+            const locationSection = document.createElement("div");
+            locationSection.classList.add("classement-section");
+
+            const title = document.createElement("h3");
+            title.textContent = `${location}`;
+            locationSection.appendChild(title);
+
+            const scoreList = document.createElement("div");
+            scoreList.classList.add("classement-list");
+
+            if (scores.length === 0) {
+                const noData = document.createElement("p");
+                noData.textContent = "Aucun score enregistré.";
+                scoreList.appendChild(noData);
+            } else {
+                scores.forEach((user, index) => {
                     const listItem = document.createElement("div");
-                    listItem.classList.add("classement-item");
+                    listItem.classList.add("classement-item", `position-${index + 1}`);
+                    listItem.textContent = `${index + 1}ᵉ ${user.username} - ${user.score} points`;
 
-                    if (index === 0) {
-                        const crownImg = document.createElement("img");
-                        crownImg.src = "./couronne.png";
-                        crownImg.alt = "Couronne";
-                        crownImg.width = 30;
-                        listItem.appendChild(crownImg);
-                    }
-
-                    listItem.textContent = `${position}ᵉ ${user.username} - ${user.score} points`;
-                    leaderboardElement.appendChild(listItem);
+                    scoreList.appendChild(listItem);
                 });
             }
+
+            locationSection.appendChild(scoreList);
+            dataContainer.appendChild(locationSection);
         });
 
     } catch (error) {
         console.error("Erreur lors de la récupération des scores :", error);
-        document.getElementById("dataContainer").innerHTML =
-            `<p class="error">Impossible de récupérer les scores. Veuillez réessayer plus tard.</p>`;
     }
 }
-
 
 
 function getRandomStreetViewLocation(locationType) {
