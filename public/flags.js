@@ -284,7 +284,7 @@ document.getElementById("flags-mode-button").addEventListener("click", () => {
     clearInterval(Flagtimer); // Arrêter tout ancien minuteur
     startFlagTimer(); // Démarrer un nouveau minuteur
     loadNewFlag();
-    document.getElementById("FlagsHighScore").style.display = "none";
+    //document.getElementById("FlagsHighScore").style.display = "none";
     
 
 });
