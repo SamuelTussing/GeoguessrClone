@@ -884,7 +884,9 @@ label{
   text-decoration: none;
   cursor: pointer;
 }
-
+#country-flag{
+  height: 400px;
+}
 #FinFlag{
   display: none;
   background-color: #1a7999;
@@ -899,6 +901,9 @@ label{
   justify-content: center;
   background-color: #101e2c;
   color: white;
+}
+#FlagContainer li{
+  font-size: 25px;
 }
 #FlagContainer{
   display: flex;
