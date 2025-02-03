@@ -915,11 +915,11 @@ function activateChrono(chronoType) {
         break;
       case "10s":
         roundTimeLimit = 10;
-        chronoBonus=500;
+        chronoBonus=1000;
         break;
       case "30s":
         roundTimeLimit = 30;
-        chronoBonus=20000;
+        chronoBonus=200;
         break;
       default:
         console.error("Chrono non valide :", chronoType);
