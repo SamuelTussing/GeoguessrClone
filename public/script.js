@@ -1266,11 +1266,11 @@ document.getElementById("joinroom").addEventListener("click", async (e) => {
 });
 
 // Détails de la salle (pour obtenir les joueurs de la salle)
-const getRoomDetails = async (roomCode) => {
-    try {
-        const response = await axios.get(`/api/getRoom?roomCode=${roomCode}`);
-        console.log("Détails de la salle :", response.data);
-    } catch (error) {
-        console.error("Erreur lors de la récupération de la salle :", error);
-    }
-};
+//const getRoomDetails = async (roomCode) => {
+    //try {
+        //const response = await axios.get(`/api/getRoom?roomCode=${roomCode}`);
+       // console.log("Détails de la salle :", response.data);
+   // } catch (error) {
+      //  console.error("Erreur lors de la récupération de la salle :", error);
+    //}
+//};
