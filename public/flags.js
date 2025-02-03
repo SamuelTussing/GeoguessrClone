@@ -125,7 +125,7 @@ function checkAnswer(selected, correct) {
     nextButton.style.display = "block";
 }
 
-function endGameFlag() {
+async function endGameFlag() {
     // Bonus ou pénalité en fonction du temps restant
     if (FlagtimeLeft > 90) {
         scoreflag -= (FlagtimeLeft - 90) * 5; // Retirer 5 points par seconde supplémentaire
@@ -142,6 +142,54 @@ function endGameFlag() {
     document.getElementById("FinFlag").style.display = "flex";
     document.getElementById("timerflag").style.display = "none";
     document.getElementById("resultat").style.display = "none";
+    if (!userId || !token) {
+        console.error("Utilisateur non authentifié. Impossible d'enregistrer le score.");
+        return;
+    }
+
+//ENREGISTREMENT DU SCORE
+    try {
+        const response = await fetch("/api/FlagScore", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify({ userId, score: scoreflag}), // Utilisation de selectedLocation
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            console.log("Score enregistré avec succès :", data);
+
+            const { oldLevel, newLevel } = data;
+            localStorage.setItem("level", newLevel);
+
+            if (newLevel > oldLevel) {
+                showLevelUpAnimation(oldLevel, newLevel);
+            }
+        } else {
+            console.error("Erreur lors de l'enregistrement du score :", data.message);
+        }
+    } catch (error) {
+        console.error("Erreur réseau :", error);
+    }
+
+    FetchFlagScore;
+}
+
+
+async function FetchFlagScore() {
+    try {
+        const response = await fetch("/api/FlagScore");
+
+        if (!response.ok) {
+            throw new Error(`Erreur lors de la récupération des scores : ${response.statusText}`);
+        }
+    } catch (error) {
+        console.error("Erreur lors de la récupération des scores :", error);
+    }
 }
 
 function startFlagTimer() {

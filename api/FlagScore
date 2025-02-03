@@ -7,11 +7,11 @@ export default async function handler(req, res) {
     }
 
     // Extraction des données depuis le corps de la requête
-    const { userId, score, locationSelect } = req.body; // Inclure la localisation dans les données
+    const { userId, score } = req.body; // Inclure la localisation dans les données
 
     // Validation des données d'entrée
-    if (!userId || typeof score !== "number" || !locationSelect) {
-        console.error("Requête invalide : userId, score ou location manquant/incorrect", { userId, score, locationSelect });
+    if (!userId || typeof score !== "number") {
+        console.error("Requête invalide : userId, score", { userId, score });
         return res.status(400).json({ message: "Données manquantes ou invalides" });
     }
 
@@ -49,7 +49,7 @@ export default async function handler(req, res) {
                     level: newLevel,
                     lastscore: score,
                 },
-                $push: { scores: { score, locationSelect } }, // Ajouter le score et la localisation dans l'historique des scores
+                $push: { scores: { score } }, // Ajouter le score et la localisation dans l'historique des scores
             }
         );
 
@@ -60,10 +60,18 @@ export default async function handler(req, res) {
             userId: userId,
             username: user.username,
             score,
-            location: locationSelect, // Stocker la localisation avec le score
         });
 
-        console.log("Score inséré :", insertResult);
+        console.log("Score inséré dans scores :", insertResult);
+
+        // Ajouter également le score dans la collection `FlagScore` si c'est le jeu de drapeaux
+        const flagScoreInsertResult = await db.collection("FlagScore").insertOne({
+            userId: userId,
+            username: user.username,
+            score,
+        });
+
+        console.log("Score inséré dans FlagScore :", flagScoreInsertResult);
 
         // Récupérer les 200 meilleurs scores triés par score décroissant
         const topScores = await db.collection("scores")

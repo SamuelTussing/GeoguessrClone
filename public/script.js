@@ -465,7 +465,7 @@ let currentPlaceName = ""; // Variable globale pour le nom du lieu
 
 
 
-async function fetchTopScores() {
+async function fetchTopScores() { 
     try {
         const response = await fetch("/api/topScores");
 
