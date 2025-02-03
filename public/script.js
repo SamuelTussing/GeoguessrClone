@@ -400,7 +400,7 @@ async function endGame() {
     };
 
     const bonusPoints = bonusPointsMap[selectedLocation] || 0;
-    const finalScore = totalScore + bonusPoints;
+    const finalScore = totalScore + bonusPoints + chronoBonus;
 
     result.textContent = `Jeu terminé ! Votre score total est de : ${finalScore} (Bonus : ${bonusPoints} points)`;
     document.getElementById("result").style.display = "block";
@@ -888,7 +888,7 @@ function resetModeDeplacementSelection() {
     mode.classList.remove("active"); // Enlever la classe active de tous les modes de déplacement
   });
 }
-
+let chronoBonus = 0;
 // Fonction pour activer un chrono et mettre à jour les variables
 // Fonction pour activer un chrono et mettre à jour les variables
 function activateChrono(chronoType) {
@@ -907,15 +907,19 @@ function activateChrono(chronoType) {
     switch (chronoType) {
       case "infini":
         roundTimeLimit = Infinity;
+        chronoBonus=0;
         break;
       case "1s":
         roundTimeLimit = 1;
+        chronoBonus=3000;
         break;
       case "10s":
         roundTimeLimit = 10;
+        chronoBonus=500;
         break;
       case "30s":
         roundTimeLimit = 30;
+        chronoBonus=20000;
         break;
       default:
         console.error("Chrono non valide :", chronoType);
