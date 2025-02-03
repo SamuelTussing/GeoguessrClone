@@ -200,21 +200,21 @@ async function endGameFlag() {
     } catch (error) {
         console.error("Erreur réseau :", error);
     }
-    FetchFlagScore;
+    FetchFlagScore();
 }
 
 
 async function FetchFlagScore() {
+    console.log("FetchFlagScore appelée"); // Debug
     try {
-        // Faire une requête GET à l'API pour récupérer les 5 meilleurs scores
         const response = await fetch("/api/FlagTopScore");
-
         if (!response.ok) {
             throw new Error(`Erreur lors de la récupération des scores : ${response.statusText}`);
         }
 
-        // Extraire les données JSON des scores
         const FlagsTopScore = await response.json();
+        console.log("Données reçues :", FlagsTopScore); // Debug
+
         const FlagContainer = document.getElementById("FlagContainer");
 
         if (!FlagContainer) {
@@ -222,21 +222,17 @@ async function FetchFlagScore() {
             return;
         }
 
-        // Vide le container avant d'ajouter de nouveaux scores
-        FlagContainer.innerHTML = "";
+        FlagContainer.innerHTML = ""; // Vide le container avant d'ajouter de nouveaux scores
 
-        // Vérifie si des scores ont été récupérés
         if (FlagsTopScore.length > 0) {
-            const ul = document.createElement("ul"); // Crée une liste HTML pour afficher les scores
+            const ul = document.createElement("ul");
 
-            // Parcours les 5 meilleurs scores et crée des éléments de liste
             FlagsTopScore.forEach((score, index) => {
                 const li = document.createElement("li");
                 li.textContent = `#${index + 1} - ${score.username}: ${score.score} points`;
-                ul.appendChild(li); // Ajoute chaque score à la liste
+                ul.appendChild(li);
             });
 
-            // Ajoute la liste des scores dans le conteneur
             FlagContainer.appendChild(ul);
         } else {
             FlagContainer.innerHTML = "<p>Aucun score disponible.</p>";
@@ -244,13 +240,13 @@ async function FetchFlagScore() {
 
     } catch (error) {
         console.error("Erreur lors de la récupération des scores :", error);
-        // Affiche un message d'erreur dans le conteneur en cas d'échec
         const FlagContainer = document.getElementById("FlagContainer");
         if (FlagContainer) {
             FlagContainer.innerHTML = "<p>Erreur lors de la récupération des scores. Essayez de nouveau plus tard.</p>";
         }
     }
 }
+
 
 function startFlagTimer() {
     Flagtimer = setInterval(() => {
