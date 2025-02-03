@@ -69,7 +69,7 @@ const locationsflag = [
     { pays: 'Singapour', drapeau: "./flags/Singapour.webp" },
     { pays: 'Suisse', drapeau: "./flags/Suisse.webp" },
     { pays: 'Syrie', drapeau: "./flags/Syrie.webp" },
-    { pays: 'Thaïlande', drapeau: "./flags/Thailand.webp" },
+    { pays: 'Thaïlande', drapeau: "./flags/Thailande.webp" },
     { pays: 'Tunisie', drapeau: "./flags/Tunisie.webp" },
     { pays: 'Turquie', drapeau: "./flags/Turquie.webp" },
     { pays: 'Ukraine', drapeau: "./flags/Ukraine.webp" },
@@ -199,20 +199,56 @@ async function endGameFlag() {
     } catch (error) {
         console.error("Erreur réseau :", error);
     }
-
+    document.getElementById("FlagsHighScore").style.display = "flex";
     FetchFlagScore;
 }
 
 
 async function FetchFlagScore() {
     try {
-        const response = await fetch("/api/FlagScore");
+        // Faire une requête GET à l'API pour récupérer les 5 meilleurs scores
+        const response = await fetch("/api/FlagTopScore");
 
         if (!response.ok) {
             throw new Error(`Erreur lors de la récupération des scores : ${response.statusText}`);
         }
+
+        // Extraire les données JSON des scores
+        const FlagsTopScore = await response.json();
+        const FlagContainer = document.getElementById("FlagContainer");
+
+        if (!FlagContainer) {
+            console.error("Erreur : Impossible de trouver l'élément #FlagContainer.");
+            return;
+        }
+
+        // Vide le container avant d'ajouter de nouveaux scores
+        FlagContainer.innerHTML = "";
+
+        // Vérifie si des scores ont été récupérés
+        if (FlagsTopScore.length > 0) {
+            const ul = document.createElement("ul"); // Crée une liste HTML pour afficher les scores
+
+            // Parcours les 5 meilleurs scores et crée des éléments de liste
+            FlagsTopScore.forEach((score, index) => {
+                const li = document.createElement("li");
+                li.textContent = `#${index + 1} - ${score.username}: ${score.score} points`;
+                ul.appendChild(li); // Ajoute chaque score à la liste
+            });
+
+            // Ajoute la liste des scores dans le conteneur
+            FlagContainer.appendChild(ul);
+        } else {
+            FlagContainer.innerHTML = "<p>Aucun score disponible.</p>";
+        }
+
     } catch (error) {
         console.error("Erreur lors de la récupération des scores :", error);
+        // Affiche un message d'erreur dans le conteneur en cas d'échec
+        const FlagContainer = document.getElementById("FlagContainer");
+        if (FlagContainer) {
+            FlagContainer.innerHTML = "<p>Erreur lors de la récupération des scores. Essayez de nouveau plus tard.</p>";
+        }
     }
 }
 
@@ -248,6 +284,8 @@ document.getElementById("flags-mode-button").addEventListener("click", () => {
     clearInterval(Flagtimer); // Arrêter tout ancien minuteur
     startFlagTimer(); // Démarrer un nouveau minuteur
     loadNewFlag();
+    document.getElementById("FlagsHighScore").style.display = "none";
+
 });
 
 document.getElementById("FinFlag").addEventListener("click", () => {

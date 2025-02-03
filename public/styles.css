@@ -890,6 +890,22 @@ label{
   background-color: #1a7999;
   color: white;
 }
+#FlagsHighScore{
+  height: 50vh;
+  width: 60vw;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #101e2c;
+  color: white;
+}
+#FlagContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 #flag-game{
   display: flex;
     height: 80vh;
