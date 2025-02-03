@@ -163,6 +163,8 @@ nextButton.addEventListener("click", () => {
 
 document.getElementById("flags-mode-button").addEventListener("click", () => {
     document.getElementById("flag-game").style.display = "flex";
+    document.getElementById("timerflag").style.display = "block";
+    document.getElementById("resultat").style.display = "block";
     flagImage.style.display = "block";
     document.getElementById("country-options").style.display = "flex";
     messageDiv.textContent = "";
