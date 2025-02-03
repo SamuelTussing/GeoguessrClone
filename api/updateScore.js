@@ -67,7 +67,7 @@ export default async function handler(req, res) {
 
         console.log("Score inséré :", insertResult);
 
-        // Récupérer les 10 meilleurs scores triés par score décroissant
+        // Récupérer les 200 meilleurs scores triés par score décroissant
         const topScores = await db.collection("scores")
             .find({})
             .sort({ score: -1 })

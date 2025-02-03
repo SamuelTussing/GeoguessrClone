@@ -1,117 +1,183 @@
-let currentCountryIndex = -1;
-let score = 0;
-let selectedRegion = 'world'; // Par défaut
+const locationsflag = [
+    { pays: 'Afghanistan', drapeau: "./flags/Afghanistan.webp" },
+    { pays: 'Brésil', drapeau: "./flags/Bresil.webp" },
+    { pays: 'Japon', drapeau: "./flags/Japon.webp" },
+    { pays: 'Canada', drapeau: "./flags/Canada.webp" },
+    { pays: 'Angleterre', drapeau: "./flags/Angleterre.webp" },
+    { pays: 'Angola', drapeau: "./flags/Angola.webp" },
+    { pays: 'Arabie-Saoudite', drapeau: "./flags/Arabie-Saoudite.webp" },
+    { pays: 'Argentine', drapeau: "./flags/Argentine.webp" },
+    { pays: 'Arménie', drapeau: "./flags/Armenie.webp" },
+    { pays: 'Australie', drapeau: "./flags/Australie.webp" },
+    { pays: 'Azerbaïdjan', drapeau: "./flags/Azerbaidjan.webp" },
+    { pays: 'Bahamas', drapeau: "./flags/Bahamas.webp" },
+    { pays: 'Bangladesh', drapeau: "./flags/Bangladesh.webp" },
+    { pays: 'Bénin', drapeau: "./flags/Benin.webp" },
+    { pays: 'Bolivie', drapeau: "./flags/Bolivie.webp" },
+    { pays: 'Botswana', drapeau: "./flags/Botswana.webp" },
+    { pays: 'Burkina-Faso', drapeau: "./flags/Burkina-Faso.webp" },
+    { pays: 'Cambodge', drapeau: "./flags/Cambodge.webp" },
+    { pays: 'Cameroun', drapeau: "./flags/Cameroun.webp" },
+    { pays: 'Chili', drapeau: "./flags/Chili.webp" },
+    { pays: 'Chine', drapeau: "./flags/Chine.webp" },
+    { pays: 'Chypre', drapeau: "./flags/Chypre.webp" },
+    { pays: 'Colombie', drapeau: "./flags/Colombie.webp" },
+    { pays: 'Corée-du-Nord', drapeau: "./flags/Coree-du-Nord.webp" },
+    { pays: 'Corée-du-Sud', drapeau: "./flags/Coree-du-Sud.webp" },
+    { pays: 'Costa-Rica', drapeau: "./flags/Costa-Rica.webp" },
+    { pays: 'Côte-d’Ivoire', drapeau: "./flags/Cote-dIvoire.webp" },
+    { pays: 'Cuba', drapeau: "./flags/Cuba.webp" },
+    { pays: 'Djibouti', drapeau: "./flags/Djibouti.webp" },
+    { pays: 'Écosse', drapeau: "./flags/Ecosse.webp" },
+    { pays: 'Égypte', drapeau: "./flags/Egypte.webp" },
+    { pays: 'Émirats Arabes Unis', drapeau: "./flags/Emirats-Arabes-Unis.webp" },
+    { pays: 'États-Unis', drapeau: "./flags/Etats-Unis.webp" },
+    { pays: 'Éthiopie', drapeau: "./flags/Ethiopie.webp" },
+    { pays: 'Ghana', drapeau: "./flags/Ghana.webp" },
+    { pays: 'Guatemala', drapeau: "./flags/Guatemala.webp" },
+    { pays: 'Guinée', drapeau: "./flags/Guinee.webp" },
+    { pays: 'Honduras', drapeau: "./flags/Honduras.webp" },
+    { pays: 'Hong-Kong', drapeau: "./flags/Hong-Kong.webp" },
+    { pays: 'Inde', drapeau: "./flags/Inde.webp" },
+    { pays: 'Indonésie', drapeau: "./flags/Indonesie.webp" },
+    { pays: 'Irak', drapeau: "./flags/Irak.webp" },
+    { pays: 'Iran', drapeau: "./flags/Iran.webp" },
+    { pays: 'Islande', drapeau: "./flags/Islande.webp" },
+    { pays: 'Israël', drapeau: "./flags/Israel.webp" },
+    { pays: 'Jamaïque', drapeau: "./flags/Jamaique.webp" },
+    { pays: 'Japon', drapeau: "./flags/Japon.webp" },
+    { pays: 'Kenya', drapeau: "./flags/Kenya.webp" },
+    { pays: 'Liban', drapeau: "./flags/Liban.webp" },
+    { pays: 'Libye', drapeau: "./flags/Libye.webp" },
+    { pays: 'Madagascar', drapeau: "./flags/Madagascar.webp" },
+    { pays: 'Malaisie', drapeau: "./flags/Malaisie.webp" },
+    { pays: 'Maroc', drapeau: "./flags/Maroc.webp" },
+    { pays: 'Mexique', drapeau: "./flags/Mexique.webp" },
+    { pays: 'Moldavie', drapeau: "./flags/Moldavie.webp" },
+    { pays: 'Monaco', drapeau: "./flags/Monaco.webp" },
+    { pays: 'Mongolie', drapeau: "./flags/Mongolie.webp" }
+];
 
 
-function startFlagGame() {
-    document.getElementById('game-choice').style.display = 'none';
-    document.getElementById('start-screen').style.display = 'none';
-    document.getElementById('flag-game').style.display = 'flex';
-    score = 0;
-    updateScore1();
-    getNextFlag();
+let scoreflag = 0;
+let answered = false;
+let round = 0;
+const totalRounds = 10;
+let FlagtimeLeft = 90; // Temps initial (en secondes)
+let Flagtimer; // Timer pour gérer le décompte du temps
+
+const flagImage = document.getElementById("country-flag");
+const countryButtons = document.querySelectorAll(".country-button");
+const resultatSpan = document.getElementById("resultat");
+const nextButton = document.getElementById("next-button");
+const scoreDisplay = document.getElementById("score-drapeau");
+const messageDiv = document.getElementById("message");
+const EndButton = document.getElementById("FinFlag");
+const timerDisplay = document.getElementById("timerflag"); // Affichage du minuteur
+
+function shuffleArray(array) {
+    return array.sort(() => Math.random() - 0.5);
 }
 
-function getNextFlag() {
-    const filteredCountries = selectedRegion === 'world'
-        ? countries
-        : countries.filter(country => country.continent === selectedRegion);
-
-    console.log(filteredCountries); // Debug: affichez les pays filtrés dans la console
-
-    if (filteredCountries.length === 0) {
-        alert('Aucun pays à afficher pour cette région.');
+function loadNewFlag() {
+    if (round >= totalRounds) {
+        endGameFlag();
         return;
     }
 
-    currentCountryIndex = Math.floor(Math.random() * filteredCountries.length);
-    const country = filteredCountries[currentCountryIndex];
+    answered = false;
+    round++;
+    const randomIndex = Math.floor(Math.random() * locationsflag.length); // Choisir un pays au hasard
+    const currentCountry = locationsflag[randomIndex];
+    flagImage.src = currentCountry.drapeau;
+    flagImage.alt = `Drapeau de ${currentCountry.pays}`;
 
-    const flagUrl = `https://flagsapi.com/${country.code}/flat/64.png`;
-    const flagImage = document.getElementById('country-flag');
+    let options = locationsflag.filter(option => option.pays !== currentCountry.pays);
+    options = shuffleArray(options).slice(0, 3);
+    options.push(currentCountry);
+    options = shuffleArray(options);
 
-    flagImage.src = flagUrl;
+    countryButtons.forEach((button, index) => {
+        button.textContent = options[index].pays;
+        button.onclick = () => {
+            if (!answered) {
+                checkAnswer(options[index].pays, currentCountry.pays);
+                answered = true;
+            }
+        };
+    });
 
-    flagImage.onload = () => {
-        document.querySelectorAll('.country-button').forEach((button, index) => {
-            button.style.backgroundColor = ''; // Réinitialiser les couleurs
-            const randomCountries = getRandomCountries(country.name, filteredCountries);
-            button.innerText = randomCountries[index].name;
-            button.setAttribute('data-country', randomCountries[index].code);
-        });
-        document.getElementById('next-button').style.display = 'none'; // Masquer le bouton suivant
-    };
-
-    flagImage.onerror = () => {
-        getNextFlag(); // Essayer un autre pays si l'image ne charge pas
-    };
+    nextButton.style.display = "none";
+    resultatSpan.textContent = "";
 }
 
-function getRandomCountries(correctCountryName, filteredCountries) {
-    const options = [...filteredCountries.filter(c => c.name !== correctCountryName)];
-    const randomOptions = [filteredCountries.find(c => c.name === correctCountryName)];
+function checkAnswer(selected, correct) {
+    if (selected === correct) {
+        resultatSpan.textContent = "Correct !";
+        resultatSpan.style.color = "green";
+        scoreflag += 100; // Ajoute 100 points pour une bonne réponse
+    } else {
+        resultatSpan.textContent = `Faux ! C'était ${correct}.`;
+        resultatSpan.style.color = "red";
+        scoreflag -= 50; // Retire 50 points pour une mauvaise réponse
+    }
+    scoreDisplay.textContent = `Score : ${scoreflag}`;
+    nextButton.style.display = "block";
+}
 
-    while (randomOptions.length < 4) {
-        const randomIndex = Math.floor(Math.random() * options.length);
-        randomOptions.push(options[randomIndex]);
-        options.splice(randomIndex, 1);
+function endGameFlag() {
+    // Bonus ou pénalité en fonction du temps restant
+    if (FlagtimeLeft > 90) {
+        scoreflag -= (FlagtimeLeft - 90) * 5; // Retirer 5 points par seconde supplémentaire
+    } else {
+        scoreflag += FlagtimeLeft * 10; // Ajouter 10 points par seconde restante
     }
 
-    return shuffle(randomOptions);
+    messageDiv.textContent = `Partie terminée ! Score final : ${scoreflag} (${FlagtimeLeft} secondes restantes)`;
+    messageDiv.style.fontSize = "1.5em";
+    messageDiv.style.fontWeight = "bold";
+    flagImage.style.display = "none";
+    document.getElementById("country-options").style.display = "none";
+    nextButton.style.display = "none";
+    document.getElementById("FinFlag").style.display = "flex";
+    document.getElementById("timerflag").style.display = "none";
+    document.getElementById("resultat").style.display = "none";
 }
 
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-}
+function startFlagTimer() {
+    Flagtimer = setInterval(() => {
+        FlagtimeLeft--;
+        timerDisplay.textContent = `Temps restant: ${FlagtimeLeft}s`;
 
-document.querySelectorAll('.country-button').forEach(button => {
-    button.onclick = () => {
-        const correctCountryName = countries[currentCountryIndex].name;
-        const clickedCountryName = button.innerText;
-        const resultSpan = document.getElementById('resultat');
-
-        if (clickedCountryName === correctCountryName) {
-            button.style.backgroundColor = 'green';
-            resultSpan.innerText = `Bonne réponse ! Vous avez marqué ${scorePerCorrectAnswer} points.`;
-            score += scorePerCorrectAnswer;
-            updateScore1();
-            document.getElementById('next-button').style.display = 'block'; // Afficher le bouton suivant
-        } else {
-            button.style.backgroundColor = 'red';
-            resultSpan.innerText = `Mauvaise réponse. La bonne réponse est ${correctCountryName}.`;
-            document.getElementById('next-button').style.display = 'block'; // Afficher le bouton suivant
-            document.querySelectorAll('.country-button').forEach(b => {
-                if (b.innerText === correctCountryName) {
-                    b.style.backgroundColor = 'green'; // Mettre en surbrillance le bouton correct
-                }
-            });
+        if (FlagtimeLeft <= 0) {
+            clearInterval(Flagtimer);
+            endGameFlag(); // Si le temps est écoulé, finir la partie
         }
-    };
+    }, 1000);
+    document.getElementById("FinFlag").style.display = "none";
+}
+
+nextButton.addEventListener("click", () => {
+    loadNewFlag();
 });
 
-document.getElementById('next-button').onclick = () => {
-    document.getElementById('resultat').innerText = ''; // Effacer le message de résultat
-    getNextFlag(); // Charger le prochain drapeau
-};
+document.getElementById("flags-mode-button").addEventListener("click", () => {
+    document.getElementById("flag-game").style.display = "flex";
+    flagImage.style.display = "block";
+    document.getElementById("country-options").style.display = "flex";
+    messageDiv.textContent = "";
+    round = 0;
+    scoreflag = 0;
+    scoreDisplay.textContent = `Score : ${scoreflag}`;
+    FlagtimeLeft = 90; // Réinitialiser le temps à 90 secondes
+    timerDisplay.textContent = `Temps restant: ${FlagtimeLeft}s`; // Afficher le temps restant initial
+    clearInterval(Flagtimer); // Arrêter tout ancien minuteur
+    startFlagTimer(); // Démarrer un nouveau minuteur
+    loadNewFlag();
+});
 
-document.getElementById('flags-mode-button').onclick = () => {
-    document.getElementById('mode-title').innerText = 'MODE DE JEU : DRAPEAU';
-    document.getElementById('region-select').style.display = 'block';
-    document.getElementById('location-select').style.display = 'none';
-    document.getElementById('player-input').style.display = 'none';
-    document.getElementById('start-button').style.display = 'none';
-};
-
-document.getElementById('start-flag-game-button').onclick = () => {
-    selectedRegion = document.getElementById('region').value;
-    console.log(selectedRegion); // Debug: vérifiez la région sélectionnée
-    startFlagGame();
-};
-
-function updateScore1() {
-    document.getElementById('score-drapeau').innerText = `Score : ${score}`;
-}
+document.getElementById("FinFlag").addEventListener("click", () => {
+    document.getElementById("FinFlag").style.display = "none";
+    document.getElementById("flag-game").style.display = "none";
+    clearInterval(Flagtimer);
+});

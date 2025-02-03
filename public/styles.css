@@ -884,8 +884,18 @@ label{
   text-decoration: none;
   cursor: pointer;
 }
+
+#FinFlag{
+  display: none;
+  background-color: #1a7999;
+  color: white;
+}
 #flag-game{
   display: flex;
+    height: 80vh;
+    width: 100vw;
+    position: absolute;
+    background-color: #1A2F44;
   flex-direction: column;
   align-items: center;
 }
