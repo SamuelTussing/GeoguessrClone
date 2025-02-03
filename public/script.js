@@ -1195,16 +1195,16 @@ function updatePlayerList(players) {
 // Polling pour mettre à jour la liste des joueurs toutes les 2 secondes
 let pollingInterval;
 
-const startPolling = (roomCode) => {
-    pollingInterval = setInterval(async () => {
-        try {
-            const response = await axios.get(`/api/getRoom?roomCode=${roomCode}`);
-            updatePlayerList(response.data.players); // Met à jour la liste des joueurs
-        } catch (error) {
-            console.error("Erreur lors de la récupération des détails de la salle :", error);
-        }
-    }, 2000); // 2 secondes d'intervalle entre chaque mise à jour
-};
+//const startPolling = (roomCode) => {
+    //pollingInterval = setInterval(async () => {
+        //try {
+            //const response = await axios.get(`/api/getRoom?roomCode=${roomCode}`);
+            //updatePlayerList(response.data.players); // Met à jour la liste des joueurs
+        //} catch (error) {
+            //console.error("Erreur lors de la récupération des détails de la salle :", error);
+        //}
+    //}, 2000); // 2 secondes d'intervalle entre chaque mise à jour
+//};
 
 const stopPolling = () => {
     clearInterval(pollingInterval);
