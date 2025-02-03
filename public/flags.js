@@ -103,6 +103,7 @@ function shuffleArray(array) {
 function loadNewFlag() {
     if (round >= totalRounds) {
         endGameFlag();
+        document.getElementById("FlagsHighScore").style.display = "flex";
         return;
     }
 
@@ -199,7 +200,6 @@ async function endGameFlag() {
     } catch (error) {
         console.error("Erreur réseau :", error);
     }
-    document.getElementById("FlagsHighScore").style.display = "flex";
     FetchFlagScore;
 }
 
