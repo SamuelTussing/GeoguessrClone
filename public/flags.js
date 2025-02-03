@@ -285,11 +285,13 @@ document.getElementById("flags-mode-button").addEventListener("click", () => {
     startFlagTimer(); // Démarrer un nouveau minuteur
     loadNewFlag();
     document.getElementById("FlagsHighScore").style.display = "none";
+    
 
 });
 
 document.getElementById("FinFlag").addEventListener("click", () => {
     document.getElementById("FinFlag").style.display = "none";
     document.getElementById("flag-game").style.display = "none";
+    document.getElementById("FlagsHighScore").style.display = "none";
     clearInterval(Flagtimer);
 });
