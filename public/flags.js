@@ -55,7 +55,28 @@ const locationsflag = [
     { pays: 'Mexique', drapeau: "./flags/Mexique.webp" },
     { pays: 'Moldavie', drapeau: "./flags/Moldavie.webp" },
     { pays: 'Monaco', drapeau: "./flags/Monaco.webp" },
-    { pays: 'Mongolie', drapeau: "./flags/Mongolie.webp" }
+    { pays: 'Mongolie', drapeau: "./flags/Mongolie.webp" },
+    { pays: 'Nepal', drapeau: "./flags/Nepal.webp" },
+    { pays: 'Norvège', drapeau: "./flags/Norvege.webp" },
+    { pays: 'Nouvelle-Zélande', drapeau: "./flags/Nouvelle-Zelande.webp" },
+    { pays: 'Pakistan', drapeau: "./flags/Pakistan.webp" },
+    { pays: 'Pérou', drapeau: "./flags/Perou.webp" },
+    { pays: 'Philippines', drapeau: "./flags/Philippines.webp" },
+    { pays: 'Royaume-Uni', drapeau: "./flags/Royaume-Uni.webp" },
+    { pays: 'Russie', drapeau: "./flags/Russie.webp" },
+    { pays: 'Sénégal', drapeau: "./flags/Senegal.webp" },
+    { pays: 'Serbie', drapeau: "./flags/Serbie.webp" },
+    { pays: 'Singapour', drapeau: "./flags/Singapour.webp" },
+    { pays: 'Suisse', drapeau: "./flags/Suisse.webp" },
+    { pays: 'Syrie', drapeau: "./flags/Syrie.webp" },
+    { pays: 'Thaïlande', drapeau: "./flags/Thailand.webp" },
+    { pays: 'Tunisie', drapeau: "./flags/Tunisie.webp" },
+    { pays: 'Turquie', drapeau: "./flags/Turquie.webp" },
+    { pays: 'Ukraine', drapeau: "./flags/Ukraine.webp" },
+    { pays: 'Uruguay', drapeau: "./flags/Uruguay.webp" },
+    { pays: 'Vatican', drapeau: "./flags/Vatican.webp" },
+    { pays: 'Yémen', drapeau: "./flags/Yemen.webp" },
+    { pays: 'Zimbabwe', drapeau: "./flags/Zimbabwe.webp" }
 ];
 
 
@@ -126,6 +147,9 @@ function checkAnswer(selected, correct) {
 }
 
 async function endGameFlag() {
+
+    const userId = localStorage.getItem("userId");
+    const token = localStorage.getItem("authToken");
     // Bonus ou pénalité en fonction du temps restant
     if (FlagtimeLeft > 90) {
         scoreflag -= (FlagtimeLeft - 90) * 5; // Retirer 5 points par seconde supplémentaire
