@@ -50,6 +50,7 @@ document.body.appendChild(googleMapsScript);
 
 function initMap() {
     console.log('Google Maps a été chargé avec succès !');
+    changerImage();
     // Initialize the map
     map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 0, lng: 0 },
