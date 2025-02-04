@@ -1090,6 +1090,9 @@ async function login(username, password) {
     });
 }
 
+
+//LIRE LES INFOS DU JOUEUR
+
 const ArrowCompte = document.getElementById("arrowcompte");
 const compteContainer = document.getElementById("comptecontainer");
 
@@ -1100,6 +1103,8 @@ ArrowCompte.addEventListener("click", () =>{
 document.getElementById('clear-storage-button').addEventListener('click', () => {
     compteContainer.style.display = "flex";
 });
+
+
 
 // Fonction pour simuler le stockage des données utilisateur dans localStorage
 function saveUserToLocalStorage() {
@@ -1133,9 +1138,9 @@ function loadUserFromLocalStorage() {
     const userInfo = JSON.parse(userInfoString);
 
     // Insérez les informations utilisateur dans le HTML
-    document.querySelector("#infocomptecontainer #infosperso span:nth-child(1)").textContent = `Username : ${userInfo.username}`;
-    document.querySelector("#infocomptecontainer #infosperso span:nth-child(2)").textContent = `Niveau : ${userInfo.level}`;
-    document.querySelector("#infocomptecontainer #infosperso span:nth-child(3)").textContent = `Experience : ${userInfo.experience} points`;
+    document.getElementById("informationName").textContent = `Username : ${username}`;
+    document.getElementById("informationLvl").textContent = `Niveau : ${ActualLevel}`;
+    document.getElementById("informationXP").textContent = `Experience : ${experience} points`;
 
     // Optionnel : afficher la liste des scores dans un tableau ou une liste HTML
     const scoreList = document.querySelector("#scoreList");

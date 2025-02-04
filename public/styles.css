@@ -710,6 +710,15 @@ label{
   align-items: center;
   justify-content: center;
 }
+#infocomptemaindiv{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30vh;
+}
+#infocompteBadge{
+  height: 100%;
+}
 .classement-section{
   width: 20%;
   display: flex;
