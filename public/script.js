@@ -1106,8 +1106,8 @@ ArrowCompte.addEventListener("click", () =>{
 
 document.getElementById('clear-storage-button').addEventListener('click', () => {
     compteContainer.style.display = "flex";
-    loadUserFromLocalStorage();
     changerImage();
+    loadUserFromLocalStorage();
 });
 
 
@@ -1115,16 +1115,6 @@ document.getElementById('clear-storage-button').addEventListener('click', () => 
 
 // Fonction pour récupérer les données utilisateur depuis localStorage et les afficher
 function loadUserFromLocalStorage() {
-    // Récupérer les données utilisateur depuis localStorage
-    const userInfoString = localStorage.getItem("userInfo");
-
-    if (!userInfoString) {
-        console.error("Aucune information utilisateur trouvée dans le localStorage.");
-        return;
-    }
-
-    // Convertir la chaîne JSON en objet
-    const userInfo = JSON.parse(userInfoString);
 
     // Insérez les informations utilisateur dans le HTML
     document.getElementById("informationID").textContent = `ID : ${userId}`;
