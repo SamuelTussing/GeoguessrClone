@@ -533,7 +533,7 @@ function getRandomStreetViewLocation(locationType) {
         const latLng = new google.maps.LatLng(randomLat, randomLng);
 
         // Utiliser l'API pour trouver un panorama dans un rayon de 50 km
-        svService.getPanorama({ location: latLng, radius: 50000,  }, (data, status) => {
+        svService.getPanorama({ location: latLng, radius: 50000, source: google.maps.StreetViewSource.OUTDOOR, }, (data, status) => {
             if (status === 'OK' && data && data.location) {
                 if (data.location.pano && data.links.length > 0) {
                     actualLocation = data.location.latLng;
