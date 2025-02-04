@@ -1126,6 +1126,7 @@ function loadUserFromLocalStorage() {
     const userInfo = JSON.parse(userInfoString);
 
     // Insérez les informations utilisateur dans le HTML
+    document.getElementById("informationID").textContent = `ID : ${userId}`;
     document.getElementById("informationName").textContent = `Username : ${username}`;
     document.getElementById("informationLvl").textContent = `Niveau : ${ActualLevel}`;
     document.getElementById("informationXP").textContent = `Experience : ${PlayerXP} points`;
