@@ -1037,7 +1037,6 @@ async function login(username, password) {
   }
 
   function changerImage() {
-    const Badge = document.getElementById("levelupbadge");
     let badgeSrc;
     if (ActualLevel < 5) {
         badgeSrc = "./badge/0.png";
@@ -1066,7 +1065,7 @@ async function login(username, password) {
     } else {
         badgeSrc = "./badge/0.png"; // Par défaut pour les niveaux 20 et plus
     }
-    Badge.src = "badgeSrc";
+    document.getElementById("levelupbadge").src = "badgeSrc";
   }
   
   function showLevelUpAnimation(oldLevel, newLevel) {
