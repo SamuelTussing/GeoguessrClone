@@ -19,6 +19,7 @@ let attempts = 0;
 const maxAttempts = 5;
 const username = localStorage.getItem('username');
 const ActualLevel = localStorage.getItem('level');
+let PlayerXP = 0;
 let currentRound = 0;
 let locationType
 const audioPlayer = document.getElementById('audioPlayer');
@@ -432,8 +433,10 @@ async function endGame() {
         if (response.ok) {
             console.log("Score enregistré avec succès :", data);
 
-            const { oldLevel, newLevel } = data;
+            const { oldLevel, newLevel,experience } = data;
             localStorage.setItem("level", newLevel);
+
+            PlayerXP = experience;
 
             if (newLevel > oldLevel) {
                 showLevelUpAnimation(oldLevel, newLevel);
@@ -1067,6 +1070,7 @@ async function login(username, password) {
         badgeSrc = "./badge/0.png"; // Par défaut pour les niveaux 20 et plus
     }
     document.getElementById("levelupbadge").src = "badgeSrc";
+    document.getElementById("playerbadge").src = "badgeSrc";
   }
   
   function showLevelUpAnimation(oldLevel, newLevel) {
@@ -1102,27 +1106,11 @@ ArrowCompte.addEventListener("click", () =>{
 
 document.getElementById('clear-storage-button').addEventListener('click', () => {
     compteContainer.style.display = "flex";
+    changerImage();
 });
 
 
 
-// Fonction pour simuler le stockage des données utilisateur dans localStorage
-function saveUserToLocalStorage() {
-    // Exemple d'utilisateur à stocker
-    const userInfo = {
-        _id: "test",
-        username: "conso",
-        email: "consothebest@gmail.com",
-        createdAt: "2025-01-09T15:52:54.319+00:00",
-        experience: 100000,
-        level: 99,
-        lastscore: 26999,
-        scores: [21587, 15465, 15236, 14629, 12816, 6369, 16063, 11895], // Extrait d'un tableau de scores
-    };
-
-    // Convertir les données en chaîne JSON et les stocker dans localStorage
-    localStorage.setItem("userInfo", JSON.stringify(userInfo));
-}
 
 // Fonction pour récupérer les données utilisateur depuis localStorage et les afficher
 function loadUserFromLocalStorage() {
@@ -1140,7 +1128,7 @@ function loadUserFromLocalStorage() {
     // Insérez les informations utilisateur dans le HTML
     document.getElementById("informationName").textContent = `Username : ${username}`;
     document.getElementById("informationLvl").textContent = `Niveau : ${ActualLevel}`;
-    document.getElementById("informationXP").textContent = `Experience : ${experience} points`;
+    document.getElementById("informationXP").textContent = `Experience : ${PlayerXP} points`;
 
     // Optionnel : afficher la liste des scores dans un tableau ou une liste HTML
     const scoreList = document.querySelector("#scoreList");
@@ -1156,7 +1144,6 @@ function loadUserFromLocalStorage() {
 
 // Sauvegarder les informations utilisateur au chargement de la page (exemple)
 document.addEventListener("DOMContentLoaded", () => {
-    saveUserToLocalStorage(); // Sauvegarde initiale (peut être omise si déjà fait)
     loadUserFromLocalStorage(); // Charger les données et les afficher
 });
 
