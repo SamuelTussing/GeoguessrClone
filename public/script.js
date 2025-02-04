@@ -35,6 +35,7 @@ let roundTimeLimit = 10; // Temps limite du round (par défaut infini)
 let timerInterval; // Intervalle pour le compte à rebours
 let timeLeft = roundTimeLimit; // Initialiser globalement avec la limite de temps
 let preCountdown = 5;
+const userId = localStorage.getItem("userId");
 
 // Remplacer ceci par votre vraie clé API
 const googleMapsApiKey = 'AIzaSyAUPG5ygE36Pd45w23U157bjffFqJ0Obcg'; // Remplacez par la clé exacte obtenue depuis Google Cloud Console
