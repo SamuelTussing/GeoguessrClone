@@ -18,7 +18,7 @@ let totalScore = 0;
 let attempts = 0;
 const maxAttempts = 5;
 const username = localStorage.getItem('username');
-const level = localStorage.getItem('level');
+const ActualLevel = localStorage.getItem('level');
 let currentRound = 0;
 let locationType
 const audioPlayer = document.getElementById('audioPlayer');
@@ -511,8 +511,39 @@ async function fetchTopScores() {
                     const listItem = document.createElement("div");
                     listItem.classList.add("classement-item", `position-${index + 1}`);
                      // Ajout de l'image
-                     const img = document.createElement("img");
-                    img.src = './badge/50.png'; // Assurez-vous que les images sont accessibles
+                    // Détermination de l'image en fonction de ActualLevel
+                    let imgSrc;
+                    if (ActualLevel < 5) {
+                        imgSrc = "./badge/0.png";
+                    } else if (ActualLevel >= 5 && ActualLevel <= 9) {
+                        imgSrc = "./badge/5.png";
+                    } else if (ActualLevel >= 10 && ActualLevel <= 19) {
+                        imgSrc = "./badge/10.png";
+                    } else if (ActualLevel >= 20 && ActualLevel <= 29) {
+                        imgSrc = "./badge/20.png";
+                    } else if (ActualLevel >= 30 && ActualLevel <= 39) {
+                        imgSrc = "./badge/30.png";
+                    } else if (ActualLevel >= 40 && ActualLevel <= 49) {
+                        imgSrc = "./badge/40.png";
+                    } else if (ActualLevel >= 50 && ActualLevel <= 59) {
+                        imgSrc = "./badge/50.png";
+                    } else if (ActualLevel >= 60 && ActualLevel <= 69) {
+                        imgSrc = "./badge/60.png";
+                    } else if (ActualLevel >= 70 && ActualLevel <= 79) {
+                        imgSrc = "./badge/70.png";
+                    } else if (ActualLevel >= 80 && ActualLevel <= 89) {
+                        imgSrc = "./badge/80.png";
+                    } else if (ActualLevel >= 90 && ActualLevel <= 99) {
+                        imgSrc = "./badge/90.png";
+                    } else if (ActualLevel >= 100 && ActualLevel <= 199) {
+                        imgSrc = "./badge/100.png";
+                    } else {
+                        imgSrc = "./badge/0.png"; // Par défaut pour les niveaux 20 et plus
+                    }
+
+                    // Ajout de l'image
+                    const img = document.createElement("img");
+                    img.src = imgSrc; // Source dynamique
                     img.alt = user.username;
                     img.style.height = "50px"; // Taille de l'image
     
@@ -996,12 +1027,46 @@ async function login(username, password) {
         localStorage.setItem("userId", data.userId);
         localStorage.setItem("token", data.token);
         console.log("Utilisateur connecté :", data.username);
+        updateHeader();
       } else {
         console.error("Erreur de connexion :", data.message);
       }
     } catch (error) {
       console.error("Erreur réseau :", error);
     }
+  }
+
+  function changerImage() {
+    const Badge = document.getElementById("levelupbadge");
+    let badgeSrc;
+    if (ActualLevel < 5) {
+        badgeSrc = "./badge/0.png";
+    } else if (ActualLevel >= 5 && ActualLevel <= 9) {
+        badgeSrc = "./badge/5.png";
+    } else if (ActualLevel >= 10 && ActualLevel <= 19) {
+        badgeSrc = "./badge/10.png";
+    } else if (ActualLevel >= 20 && ActualLevel <= 29) {
+        badgeSrc = "./badge/20.png";
+    } else if (ActualLevel >= 30 && ActualLevel <= 39) {
+        badgeSrc = "./badge/30.png";
+    } else if (ActualLevel >= 40 && ActualLevel <= 49) {
+        badgeSrc = "./badge/40.png";
+    } else if (ActualLevel >= 50 && ActualLevel <= 59) {
+        badgeSrc = "./badge/50.png";
+    } else if (ActualLevel >= 60 && ActualLevel <= 69) {
+        badgeSrc = "./badge/60.png";
+    } else if (ActualLevel >= 70 && ActualLevel <= 79) {
+        badgeSrc = "./badge/70.png";
+    } else if (ActualLevel >= 80 && ActualLevel <= 89) {
+        badgeSrc = "./badge/80.png";
+    } else if (ActualLevel >= 90 && ActualLevel <= 99) {
+        badgeSrc = "./badge/90.png";
+    } else if (ActualLevel >= 100 && ActualLevel <= 199) {
+        badgeSrc = "./badge/100.png";
+    } else {
+        badgeSrc = "./badge/0.png"; // Par défaut pour les niveaux 20 et plus
+    }
+    Badge.src = "badgeSrc";
   }
   
   function showLevelUpAnimation(oldLevel, newLevel) {
@@ -1010,6 +1075,8 @@ async function login(username, password) {
     const newLevelSpan = document.getElementById("newlevel");
     const nextButton = document.getElementById("Nextbutton");
 
+
+    changerImage()
     // Mettre à jour dynamiquement les niveaux
     oldLevelSpan.textContent = `Niv.${oldLevel}`;
     newLevelSpan.textContent = `Niv.${newLevel}`;
