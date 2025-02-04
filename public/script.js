@@ -489,9 +489,9 @@ async function fetchTopScores() {
         dataContainer.innerHTML = "";
 
         // Parcourir chaque localisation et afficher son top 5
-        Object.entries(topScoresByLocation).forEach(([location, scores, level]) => {
+        Object.entries(topScoresByLocation).forEach(([location, scores]) => {
             // Limiter les scores à 5 meilleurs, même si l'API renvoie plus
-            const top5Scores = scores.slice(0, 5); // Prendre seulement les 5 premiers
+            const top5Scores = scores.slice(0, 5);
 
             const locationSection = document.createElement("div");
             locationSection.classList.add("classement-section");
@@ -511,49 +511,48 @@ async function fetchTopScores() {
                 top5Scores.forEach((user, index) => {
                     const listItem = document.createElement("div");
                     listItem.classList.add("classement-item", `position-${index + 1}`);
-                     // Ajout de l'image
-                    // Détermination de l'image en fonction de ActualLevel
+
+                    // Utilisation de user.level au lieu de ActualLevel
                     let imgSrc;
-                    if (ActualLevel < 5) {
+                    if (user.level < 5) {
                         imgSrc = "./badge/0.png";
-                    } else if (ActualLevel >= 5 && ActualLevel <= 9) {
+                    } else if (user.level >= 5 && user.level <= 9) {
                         imgSrc = "./badge/5.png";
-                    } else if (ActualLevel >= 10 && ActualLevel <= 19) {
+                    } else if (user.level >= 10 && user.level <= 19) {
                         imgSrc = "./badge/10.png";
-                    } else if (ActualLevel >= 20 && ActualLevel <= 29) {
+                    } else if (user.level >= 20 && user.level <= 29) {
                         imgSrc = "./badge/20.png";
-                    } else if (ActualLevel >= 30 && ActualLevel <= 39) {
+                    } else if (user.level >= 30 && user.level <= 39) {
                         imgSrc = "./badge/30.png";
-                    } else if (ActualLevel >= 40 && ActualLevel <= 49) {
+                    } else if (user.level >= 40 && user.level <= 49) {
                         imgSrc = "./badge/40.png";
-                    } else if (ActualLevel >= 50 && ActualLevel <= 59) {
+                    } else if (user.level >= 50 && user.level <= 59) {
                         imgSrc = "./badge/50.png";
-                    } else if (ActualLevel >= 60 && ActualLevel <= 69) {
+                    } else if (user.level >= 60 && user.level <= 69) {
                         imgSrc = "./badge/60.png";
-                    } else if (ActualLevel >= 70 && ActualLevel <= 79) {
+                    } else if (user.level >= 70 && user.level <= 79) {
                         imgSrc = "./badge/70.png";
-                    } else if (ActualLevel >= 80 && ActualLevel <= 89) {
+                    } else if (user.level >= 80 && user.level <= 89) {
                         imgSrc = "./badge/80.png";
-                    } else if (ActualLevel >= 90 && ActualLevel <= 99) {
+                    } else if (user.level >= 90 && user.level <= 99) {
                         imgSrc = "./badge/90.png";
-                    } else if (ActualLevel >= 100 && ActualLevel <= 199) {
+                    } else if (user.level >= 100) {
                         imgSrc = "./badge/100.png";
                     } else {
-                        imgSrc = "./badge/0.png"; // Par défaut pour les niveaux 20 et plus
+                        imgSrc = "./badge/0.png";
                     }
 
                     // Ajout de l'image
                     const img = document.createElement("img");
-                    img.src = imgSrc; // Source dynamique
+                    img.src = imgSrc;
                     img.alt = user.username;
-                    img.style.height = "50px"; // Taille de l'image
-    
+                    img.style.height = "50px";
+
                     // Ajout du texte
                     const text = document.createTextNode(`${index + 1}ᵉ - ${user.username} - ${user.score} points`);
 
                     listItem.appendChild(img);
                     listItem.appendChild(text);
-
                     scoreList.appendChild(listItem);
                 });
             }
@@ -566,6 +565,7 @@ async function fetchTopScores() {
         console.error("Erreur lors de la récupération des scores :", error);
     }
 }
+
 
 
 function getRandomStreetViewLocation(locationType) {
