@@ -519,6 +519,9 @@ async function fetchTopScores() {
                     // Ajout du texte
                     const text = document.createTextNode(`${index + 1}ᵉ - Lvl : ${user.username} - ${user.username} - ${user.score} points`);
 
+                    listItem.appendChild(img);
+                    listItem.appendChild(text);
+
                     scoreList.appendChild(listItem);
                 });
             }
