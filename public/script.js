@@ -488,7 +488,7 @@ async function fetchTopScores() {
         dataContainer.innerHTML = "";
 
         // Parcourir chaque localisation et afficher son top 5
-        Object.entries(topScoresByLocation).forEach(([location, scores]) => {
+        Object.entries(topScoresByLocation).forEach(([location, scores, level]) => {
             // Limiter les scores à 5 meilleurs, même si l'API renvoie plus
             const top5Scores = scores.slice(0, 5); // Prendre seulement les 5 premiers
 
@@ -510,8 +510,17 @@ async function fetchTopScores() {
                 top5Scores.forEach((user, index) => {
                     const listItem = document.createElement("div");
                     listItem.classList.add("classement-item", `position-${index + 1}`);
-                    listItem.textContent = `${index + 1}ᵉ ${user.username} - ${user.score} points`;
+                     // Ajout de l'image
+                     const img = document.createElement("img");
+                    img.src = player.img; // Assurez-vous que les images sont accessibles
+                    img.alt = player.name;
+                    img.style.height = "50px"; // Taille de l'image
+    
+                    // Ajout du texte
+                    const text = document.createTextNode(`${index + 1}ᵉ - Lvl : ${user.username} - ${user.username} - ${user.score} points`);
 
+                    li.appendChild(img);
+                    li.appendChild(text);
                     scoreList.appendChild(listItem);
                 });
             }

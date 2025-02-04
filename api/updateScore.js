@@ -59,6 +59,7 @@ export default async function handler(req, res) {
         const insertResult = await db.collection("scores").insertOne({
             userId: userId,
             username: user.username,
+            level : oldLevel,
             score,
             location: locationSelect, // Stocker la localisation avec le score
         });
