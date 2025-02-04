@@ -512,8 +512,8 @@ async function fetchTopScores() {
                     listItem.classList.add("classement-item", `position-${index + 1}`);
                      // Ajout de l'image
                      const img = document.createElement("img");
-                    img.src = player.img; // Assurez-vous que les images sont accessibles
-                    img.alt = player.name;
+                    img.src = './badge/5.png'; // Assurez-vous que les images sont accessibles
+                    img.alt = user.username;
                     img.style.height = "50px"; // Taille de l'image
     
                     // Ajout du texte
