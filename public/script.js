@@ -238,6 +238,7 @@ newGameButton.addEventListener('click', () => {
 });
 
 function startNewRound(locationType) {
+    streetViewElement.classList.add('blur'); // Ajouter le flou streetview
     roundStartTime = Date.now(); // Enregistre l'heure de début du round
     let preCountdown = 5
 
@@ -262,7 +263,7 @@ function startNewRound(locationType) {
     getRandomStreetViewLocation(locationType);
 
     // Ajouter un timer de pré-compte à rebours (par exemple, 5 secondes)
-    preparationtimer.classList.remove("hidden");
+    preparationtimer.classList.remove("hidden"); //Reveler le compte a rebourd
     preparationtimer.textContent = `Préparation... ${preCountdown}s`; // Affiche le pré-compte à rebours
 
     const preCountdownInterval = setInterval(() => {
@@ -272,7 +273,8 @@ function startNewRound(locationType) {
 
         if (preCountdown <= 1) {
             clearInterval(preCountdownInterval);
-            preparationtimer.classList.add("hidden");
+            preparationtimer.classList.add("hidden"); //Cacher le compte a rebourd
+            streetViewElement.classList.remove('blur'); // Enlever le flou de streetview
             startMainTimer();
         }
     }, 1000);
@@ -586,7 +588,7 @@ function getRandomStreetViewLocation(locationType) {
                 break;
             case 'Strasbourg':
                 filteredLocations = locations.filter(location => location.ville === 'Strasbourg');
-                radiusInKm = 0.1; // Rayon 0 pour Strasbourg
+                radiusInKm = 0.2; // Rayon 0 pour Strasbourg
                 break;
             case 'France':
                 filteredLocations = locations.filter(location => location.pays === 'France');
@@ -692,7 +694,7 @@ function getRandomNorthAmericaCoordinates() {
     if (Math.random() < urbanBias) {
         // Choisir un point aléatoire dans une zone urbaine
         const city = urbanAreas[Math.floor(Math.random() * urbanAreas.length)];
-        const radius = 0.5; // Rayon de déviation en degrés (environ 50 km)
+        const radius = 0.1; // Rayon de déviation en degrés (environ 10 km)
 
         const latOffset = (Math.random() - 0.5) * radius * 2;
         const lngOffset = (Math.random() - 0.5) * radius * 2;
