@@ -1142,10 +1142,6 @@ function loadUserFromLocalStorage() {
     }
 }
 
-// Sauvegarder les informations utilisateur au chargement de la page (exemple)
-document.addEventListener("DOMContentLoaded", () => {
-    loadUserFromLocalStorage(); // Charger les données et les afficher
-});
 
 
 //GESTION MODE MULTI
