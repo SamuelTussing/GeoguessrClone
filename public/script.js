@@ -1069,8 +1069,8 @@ async function login(username, password) {
     } else {
         badgeSrc = "./badge/0.png"; // Par défaut pour les niveaux 20 et plus
     }
-    document.getElementById("levelupbadge").src = "badgeSrc";
-    document.getElementById("playerbadge").src = "badgeSrc";
+    document.getElementById("levelupbadge").src = badgeSrc;
+    document.getElementById("playerbadge").src = badgeSrc;
   }
   
   function showLevelUpAnimation(oldLevel, newLevel) {
