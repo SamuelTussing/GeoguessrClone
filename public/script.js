@@ -512,12 +512,12 @@ async function fetchTopScores() {
                     listItem.classList.add("classement-item", `position-${index + 1}`);
                      // Ajout de l'image
                      const img = document.createElement("img");
-                    img.src = './badge/5.png'; // Assurez-vous que les images sont accessibles
+                    img.src = './badge/50.png'; // Assurez-vous que les images sont accessibles
                     img.alt = user.username;
                     img.style.height = "50px"; // Taille de l'image
     
                     // Ajout du texte
-                    const text = document.createTextNode(`${index + 1}ᵉ - Lvl : ${user.username} - ${user.username} - ${user.score} points`);
+                    const text = document.createTextNode(`${index + 1}ᵉ - ${user.username} - ${user.score} points`);
 
                     listItem.appendChild(img);
                     listItem.appendChild(text);

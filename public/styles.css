@@ -706,7 +706,7 @@ label{
   height: 5%;
 }
 .classement-section{
-  width: 15%;
+  width: 20%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -935,7 +935,7 @@ label{
 #dataContainer{
   display: flex;
   flex-wrap: wrap;
-  gap: 10%;
+  gap: 5%;
   align-items: flex-start;
   justify-content: center;
 }
