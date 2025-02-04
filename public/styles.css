@@ -706,6 +706,7 @@ font-weight: 700;
   background-color: #1b4c60af;
   backdrop-filter: blur(10px); /* Flou de 10px */
   -webkit-backdrop-filter: blur(10px); /* Compatibilité avec les anciens navigateurs */
+  overflow-y: auto;
 }
 
 .classementheader{
