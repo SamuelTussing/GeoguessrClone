@@ -461,6 +461,10 @@ label{
     padding: 50px;
     top: 15vh;
 }
+#comptecontainer span{
+font-size: 5vh;
+font-weight: 700;
+}
 #arrowcontainer{
   display: flex;
   justify-content: flex-start;
@@ -473,6 +477,7 @@ label{
   gap: 15px;
   align-items: center;
   justify-content: center;
+  width: 50%;
 }
 
 #information{
@@ -485,8 +490,12 @@ label{
   display: flex;
   flex-direction: column;
   gap: 15px;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+}
+
+#infosperso span{
+  font-size: 2.5vh;
 }
 
 @keyframes scale-up-hor-center {
@@ -705,6 +714,10 @@ label{
   width: 100%;
   height: 5%;
 }
+#playerbadge{
+  height: 100%;
+}
+
 #leveluptitlediv{
   display: flex;
   align-items: center;
@@ -715,9 +728,11 @@ label{
   align-items: center;
   justify-content: center;
   height: 30vh;
+  width: 100%;
 }
 #infocompteBadge{
   height: 100%;
+  width: 50%;
 }
 .classement-section{
   width: 20%;
