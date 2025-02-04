@@ -370,6 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
     logoImage.addEventListener('click', function() {
         // Appeler la fonction endGame() quand l'image est cliquée
         endGame();
+        document.getElementById("result").style.display = "none";
     });
 });
 
