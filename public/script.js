@@ -1360,12 +1360,21 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
         badgeImg.src = badge.badgesrc;
         badgeImg.alt = badge.badgeName;
         badgeImg.height = 200;
+        if (ActualLevel >= badge.valeur ){
+            badgeImg.classList.add("valid");
+        }else{
+            badgeTxt.classList.add("unvalid");
+        };
 
         const badgeTxtContainer = document.createElement("div");
         badgeTxtContainer.id = "badgetxtcontainer";
 
         const badgeTxt = document.createElement("p");
-        badgeTxt.classList.add("badgetxt", "valid");
+        if (ActualLevel >= badge.valeur ){
+            badgeTxt.classList.add("badgetxt", "valid");
+        }else{
+            badgeTxt.classList.add("badgetxt");
+        };
         badgeTxt.textContent = badge.badgeDesc;
 
         // Ajout des éléments dans la structure HTML
