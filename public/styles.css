@@ -453,7 +453,7 @@ label{
   display: none;
   background-color: #0E566E;
   width: 100vw;
-  height: AUTO;
+  height: 100%;
   align-items: center;
   flex-direction: column;
   margin-top: 5vh;
