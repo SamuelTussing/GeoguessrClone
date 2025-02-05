@@ -1363,7 +1363,7 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
         if (ActualLevel >= badge.valeur ){
             badgeImg.classList.add("valid");
         }else{
-            badgeTxt.classList.add("unvalid");
+            badgeImg.classList.add("unvalid");
         };
 
         const badgeTxtContainer = document.createElement("div");

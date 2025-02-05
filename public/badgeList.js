@@ -10,5 +10,4 @@ const badgeList = [
     {badgeName : "Niv80", badgesrc:"./badge/80.png", badgeDesc:"Atteindre le niveau 80", valeur: 80},
     {badgeName : "Niv90", badgesrc:"./badge/90.png", badgeDesc:"Atteindre le niveau 90", valeur: 90},
     {badgeName : "Niv100", badgesrc:"./badge/100.png", badgeDesc:"Atteindre le niveau 100", valeur: 100}
-
 ]
