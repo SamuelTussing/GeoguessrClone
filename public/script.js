@@ -1364,6 +1364,7 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
             badgeImg.classList.add("valid");
         }else{
             badgeImg.classList.add("unvalid");
+            badgeImg.classList.remove("valid");
         };
 
         const badgeTxtContainer = document.createElement("div");
@@ -1374,6 +1375,7 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
             badgeTxt.classList.add("badgetxt", "valid");
         }else{
             badgeTxt.classList.add("badgetxt");
+            badgeTxt.classList.remove("valid");
         };
         badgeTxt.textContent = badge.badgeDesc;
 
