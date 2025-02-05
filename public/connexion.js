@@ -1,3 +1,5 @@
+const GoogleButton = document.getElementById('googlebutton');
+
 document.getElementById('signup-form').addEventListener('submit', async function (e) {
     e.preventDefault(); // Empêche le comportement par défaut (rechargement de la page)
 
@@ -44,3 +46,7 @@ document.getElementById('signup-form').addEventListener('submit', async function
         errorDiv.style.display = 'block';
     }
 });
+
+GoogleButton.addEventListener('click', () =>{
+    window.location.href = 'login.html';
+})

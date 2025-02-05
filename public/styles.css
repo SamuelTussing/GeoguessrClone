@@ -983,8 +983,9 @@ font-weight: 700;
   #containerlogs {
     display: flex;
     overflow: hidden;
-    height: 85vh;
+    height: auto;
     margin-top: 5vh;
+    overflow-y: auto;
 }
 #containerlogs img {
   height: 85vh;
@@ -1008,6 +1009,10 @@ font-weight: 700;
   justify-content: flex-start;
   margin-top: 50px;
   height: auto;
+  position: relative;
+  right: 50px;
+  overflow-y: auto;
+  margin: 0;
 }
 #main-game{
   display: flex;
@@ -1017,8 +1022,10 @@ font-weight: 700;
   width: 100vw;
 }
   #game-choice{
-    gap:50px;
+    gap:0;
     margin-bottom: 50px;
+    position: relative;
+    top: 50px;
   }
 .map-container{
     width: 50%;
@@ -1026,5 +1033,11 @@ font-weight: 700;
 }
 #compass{
     top:100px;
+  }
+  #classique-mode-button button{
+    font-size: 20px;
+  }
+  #mode-title{
+    font-size: 20px;
   }
 }

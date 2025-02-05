@@ -48,9 +48,7 @@ googleMapsScript.async = true;
 googleMapsScript.defer = true;
 document.body.appendChild(googleMapsScript);
 
-GoogleButton.addEventListener('click', () =>{
-    window.location.href = 'login.html';
-})
+
 
 
 function initMap() {
