@@ -14,6 +14,8 @@ let resultElement = document.getElementById('result');
 let okButton = document.getElementById('ok-button');
 let continueButton = document.getElementById('continue-button');
 let newGameButton = document.getElementById('new-game-button');
+let badgeButton = document.getElementById('badgeButton');
+let arrowbadge = document.getElementById('arrowbadge');
 let totalScore = 0;
 let attempts = 0;
 const maxAttempts = 5;
@@ -1340,3 +1342,45 @@ document.getElementById("joinroom").addEventListener("click", async (e) => {
       //  console.error("Erreur lors de la récupération de la salle :", error);
     //}
 //};
+
+document.getElementById("badgeButton").addEventListener("click", async (e) => {
+    e.preventDefault(); // Empêche le rechargement de la page
+
+    document.getElementById('badgecontainer').style.display = 'flex';
+    const badgesListContainer = document.getElementById('badgeslistcontainer');
+    // Vide le conteneur pour éviter les doublons si on reclique
+    badgesListContainer.innerHTML = "";
+
+    // Génère les badges dynamiquement
+    badgeList.forEach(badge => {
+        const badgeSection = document.createElement("div");
+        badgeSection.id = "badgesection";
+
+        const badgeImg = document.createElement("img");
+        badgeImg.src = badge.badgesrc;
+        badgeImg.alt = badge.badgeName;
+        badgeImg.height = 200;
+
+        const badgeTxtContainer = document.createElement("div");
+        badgeTxtContainer.id = "badgetxtcontainer";
+
+        const badgeTxt = document.createElement("p");
+        badgeTxt.classList.add("badgetxt", "valid");
+        badgeTxt.textContent = badge.badgeDesc;
+
+        // Ajout des éléments dans la structure HTML
+        badgeTxtContainer.appendChild(badgeTxt);
+        badgeSection.appendChild(badgeImg);
+        badgeSection.appendChild(badgeTxtContainer);
+        badgesListContainer.appendChild(badgeSection);
+
+});
+});
+
+
+document.getElementById("arrowbadge").addEventListener("click", async (e) => {
+    e.preventDefault(); // Empêche le rechargement de la page
+
+    document.getElementById('badgecontainer').style.display = 'none';
+
+});

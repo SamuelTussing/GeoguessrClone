@@ -448,7 +448,70 @@ label{
   background-color: #0e566e;
   margin-top: 0px;
 }
-
+#badgecontainer{
+  position: absolute;
+  display: none;
+  background-color: #0E566E;
+  width: 100vw;
+  height: AUTO;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 5vh;
+  justify-content: flex-start;
+  animation: scale-up-hor-center 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  gap: 5vh;
+  z-index: 12;
+  padding: 50px;
+  top: 15vh;
+}
+#badgeslistcontainer{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1%;
+  flex-wrap: wrap;
+  overflow-y: auto;
+}
+.badgetxt{
+  font-size: 20px;
+  font-weight: 800;
+  color: #747d81;
+  text-align: center;
+}
+.valid{
+  color: #ffffff;
+  opacity: 1;
+}
+.unvalid{
+  opacity: .5;
+}
+#badgetxtcontainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#badgesection{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1vh;
+  width: 15%;
+  background-color: #2a3343;
+  border-radius: 25px;
+  margin-bottom: 1vw;
+  padding: 1vh;
+}
+#badgecontainer span{
+  font-size: 5vh;
+  font-weight: 700;
+  }
+  #arrowbadgecontainer{
+    display: flex;
+    justify-content: flex-start;
+    width: 90%;
+  }
 #comptecontainer{
   position: absolute;
     display: none;
@@ -639,7 +702,12 @@ font-weight: 700;
   padding: 5px 10px;
   margin: 15px;
 }
-#start-button{
+#badgeButton{
+  color: #43a6b1;
+  font-weight: 700;
+  background-color: white;
+}
+#start-button {
   color: #43a6b1;
   font-weight: 700;
   background-color: white;
