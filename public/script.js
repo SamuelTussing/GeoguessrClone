@@ -23,6 +23,7 @@ let PlayerXP = 0;
 let currentRound = 0;
 let locationType
 const audioPlayer = document.getElementById('audioPlayer');
+const GoogleButton = document.getElementById('googlebutton');
 const compass = document.getElementById('compass');
 let chronoMode = "infini"; // Par défaut
 let timer; // Référence au timer
@@ -47,7 +48,9 @@ googleMapsScript.async = true;
 googleMapsScript.defer = true;
 document.body.appendChild(googleMapsScript);
 
-
+GoogleButton.addEventListener('click', () =>{
+    window.location.href = 'login.html';
+})
 
 
 function initMap() {
