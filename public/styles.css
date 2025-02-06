@@ -456,13 +456,14 @@ label{
   height: 100%;
   align-items: center;
   flex-direction: column;
-  margin-top: 5vh;
+  margin-top: -10vh;
   justify-content: flex-start;
   animation: scale-up-hor-center 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
   gap: 5vh;
   z-index: 12;
-  padding: 50px;
+  /*padding: 50px;*/
   top: 15vh;
+  overflow-y: auto;
 }
 #badgeslistcontainer{
   width: 100%;
@@ -471,7 +472,6 @@ label{
   align-items: center;
   gap: 1%;
   flex-wrap: wrap;
-  overflow-y: auto;
 }
 .badgetxt{
   font-size: 20px;
