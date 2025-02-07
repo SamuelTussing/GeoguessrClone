@@ -10,12 +10,12 @@ const badgeList = [
     {badgeName : "Maître Voyageur", badgesrc:"./badge/80.png", badgeDesc:"Atteindre le niveau 80", valeur: 80},
     {badgeName : "Seigneur de l'Inconnu", badgesrc:"./badge/90.png", badgeDesc:"Atteindre le niveau 90", valeur: 90},
     {badgeName : "Légende des Mondes Perdus", badgesrc:"./badge/100.png", badgeDesc:"Atteindre le niveau 100", valeur: 100},
-    {badgeName : "Choucroute Suprême", badgesrc:"./badge/choucroute.png", badgeDesc:"25000 points sur Strasbourg en 1s", valeur: "choucroute"},
-    {badgeName : "Halsacien", badgesrc:"./badge/halsacien.png", badgeDesc:"25000 points sur Strasbourg", valeur: "halsacien"},
-    {badgeName : "Globetrotter", badgesrc:"./badge/globetrotter.png", badgeDesc:"15000 points sur World", valeur: "globetrotter"},
-    {badgeName : "World Conqueror", badgesrc:"./badge/conqueror.png", badgeDesc:"20000 points sur World en 1s", valeur: "conqueror"},
-    {badgeName : "Super Croissant", badgesrc:"./badge/croissant.png", badgeDesc:"20000 points sur France", valeur: "croissant"},
-    {badgeName : "Bleu Marine", badgesrc:"./badge/marine.png", badgeDesc:"20000 points sur France en 1s", valeur: "marine"},
-    {badgeName : "Voyageur Expert", badgesrc:"./badge/voyageur.png", badgeDesc:"20000 points sur Europe", valeur: "voyageur"},
-    {badgeName : "Euro Champion", badgesrc:"./badge/euro.png", badgeDesc:"15000 points sur Europe en 1s", valeur: "euro"}
+    {badgeName : "Choucroute Suprême", badgesrc:"./badge/choucroute.png", badgeDesc:"Réaliser un score de 25000 points sur Strasbourg en mode 1s", valeur: "choucroute"},
+    {badgeName : "Halsacien", badgesrc:"./badge/halsacien.png", badgeDesc:"Réaliser un score de 25000 points sur Strasbourg", valeur: "halsacien"},
+    {badgeName : "Globetrotter", badgesrc:"./badge/globetrotter.png", badgeDesc:"Réaliser un score de 15000 points sur World", valeur: "globetrotter"},
+    {badgeName : "World Conqueror", badgesrc:"./badge/conqueror.png", badgeDesc:"Réaliser un score de 20000 points sur World mode 1s", valeur: "conqueror"},
+    {badgeName : "Super Croissant", badgesrc:"./badge/croissant.png", badgeDesc:"Réaliser un score de 20000 points sur France", valeur: "croissant"},
+    {badgeName : "Bleu Marine", badgesrc:"./badge/marine.png", badgeDesc:"Réaliser un score de 20000 points sur France en en mode 1s", valeur: "marine"},
+    {badgeName : "Voyageur Expert", badgesrc:"./badge/voyageur.png", badgeDesc:"Réaliser un score de 20000 points sur Europe", valeur: "voyageur"},
+    {badgeName : "Euro Champion", badgesrc:"./badge/euro.png", badgeDesc:"Réaliser un score de 15000 points sur Europe en en mode 1s", valeur: "euro"}
 ]
