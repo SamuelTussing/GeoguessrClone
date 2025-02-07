@@ -19,10 +19,10 @@ const badgeList = [
     {badgeName : "Voyageur Expert", badgesrc:"./badge/voyageur.png", badgeDesc:"Réaliser un score de 20000 points sur Europe", valeur: "voyageur"},
     {badgeName : "Euro Champion", badgesrc:"./badge/euro.png", badgeDesc:"Réaliser un score de 15000 points sur Europe en en mode 1s", valeur: "euro"},
     {badgeName : "Aigle", badgesrc:"./badge/AIGLE.png", badgeDesc:"Réaliser un score de 15000 points sur Amérique du Nord en mode 1s", valeur: "AIGLE"},
-    {badgeName : "Archéologue", badgesrc:"./badge/ARCHEOLOGUE.png", badgeDesc:"Réaliser un score de 20000 points sur Famous en mode 1s", valeur: "ARCHEOLOGUE"},
-    {badgeName : "Duc-de-Agass", badgesrc:"./badge/Duc-de-Agass.png", badgeDesc:"Réaliser un score de 15000 points sur Capitales", valeur: "Duc-de-Agass"},
-    {badgeName : "Reporter", badgesrc:"./badge/REPORTER.png", badgeDesc:"Réaliser un score de 15000 points sur Famous", valeur: "REPORTER"},
-    {badgeName : "Routard Pro", badgesrc:"./badge/ROUTARD-PRO.png", badgeDesc:"Réaliser un score de 20000 points sur Capitales", valeur: "ROUTARD-PRO"},
     {badgeName : "Cow-Boy", badgesrc:"./badge/cwx-boy.png", badgeDesc:"Réaliser un score de 15000 points sur Amérique du Nord", valeur: "Cow-Boy"},
-    {badgeName : "Pionnier", badgesrc:"./badge/pionnier.png", badgeDesc:"Réaliser un score de 20000 points sur Amérique du Nord", valeur: "pionnier"}
+    {badgeName : "Pionnier", badgesrc:"./badge/pionnier.png", badgeDesc:"Réaliser un score de 20000 points sur Amérique du Nord", valeur: "pionnier"},
+    {badgeName : "Archéologue", badgesrc:"./badge/ARCHEOLOGUE.png", badgeDesc:"Réaliser un score de 20000 points sur Famous en mode 1s", valeur: "ARCHEOLOGUE"},
+    {badgeName : "Reporter", badgesrc:"./badge/REPORTER.png", badgeDesc:"Réaliser un score de 15000 points sur Famous", valeur: "REPORTER"},
+    {badgeName : "Duc-de-Agass", badgesrc:"./badge/Duc-de-Agass.png", badgeDesc:"Réaliser un score de 15000 points sur Capitales", valeur: "Duc-de-Agass"},
+    {badgeName : "Routard Pro", badgesrc:"./badge/ROUTARD-PRO.png", badgeDesc:"Réaliser un score de 20000 points sur Capitales", valeur: "ROUTARD-PRO"}
 ]
