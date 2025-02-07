@@ -1162,6 +1162,8 @@ const roundTimer = document.getElementById("roundtimer");
 let roundsToPlay = 5;
 let roundTime = 50;
 
+
+
 multiplayerMode.addEventListener("click", () =>{
     multiContainer.style.display = 'flex';
     multiMenu.style.display = 'flex';
@@ -1445,4 +1447,31 @@ document.getElementById("arrowbadge").addEventListener("click", async (e) => {
 
     document.getElementById('badgecontainer').style.display = 'none';
 
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const popupa = document.getElementById("popupbadgemain");
+    const popupimg = document.getElementById("popupbadgeimg");
+    const buttonn = document.getElementById("classique-mode-button");
+
+    buttonn.addEventListener("click", () => {
+        if (!popupa) return;
+
+        // Réinitialise la position pour permettre le redéclenchement de l'animation
+        popupa.classList.remove("activate");
+        popupimg.classList.remove("rotation");
+
+        // Petite pause pour forcer le navigateur à appliquer le retrait avant d'ajouter à nouveau la classe
+        setTimeout(() => {
+            popupa.classList.add("activate");
+            popupimg.classList.add("rotation");
+        }, 10); 
+
+        // Supprime la classe après 5.5s (2s delay + 0.5s slide + 3s affichage + 0.5s retour)
+        setTimeout(() => {
+            popupa.classList.remove("activate");
+            popupimg.classList.remove("rotation");
+        }, 2500);
+    });
 });
