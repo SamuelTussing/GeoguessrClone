@@ -475,9 +475,10 @@ label{
 }
 .badgetxt{
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 400;
   color: #747d81;
   text-align: center;
+  margin: 1%;
 }
 .valid{
   color: #ffffff;
@@ -486,12 +487,16 @@ label{
 .unvalid{
   opacity: .5;
 }
+.opacity{
+  opacity: .5;
+}
 #badgetxtcontainer{
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
 }
-#badgesection{
+.badgesection{
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -502,6 +507,11 @@ label{
   border-radius: 25px;
   margin-bottom: 1vw;
   padding: 1vh;
+  height: 40vh;
+}
+.badgesection:hover{
+  background-color: #1a2435;
+
 }
 #badgecontainer span{
   font-size: 5vh;
@@ -918,6 +928,57 @@ font-weight: 700;
   display: block;
     font-size: 24px;
     font-weight: 700;
+}
+
+/* Effet blur sur tout l'écran */
+.badgedetailcontainerblur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.5); /* Assombrit légèrement l'arrière-plan */
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+.visible{
+  display: flex;
+  z-index: 15;
+}
+
+/* Conteneur centré */
+.badgedetailcontainer {
+  width: 30%;
+  height: 50vh;
+  background: #1A2F44;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Image à l'intérieur du conteneur */
+.badgedetailcontainerimg {
+  width: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+/* Infos du badge */
+.badgedetailcontainerinfo {
+  text-align: center;
+}
+
+/* Texte à l'intérieur du conteneur */
+.badgedetailcontainertext {
+  font-size: 16px;
+  color: white;
+  margin-top: 10px;
 }
 
 .popup {

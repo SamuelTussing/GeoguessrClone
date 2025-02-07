@@ -1352,40 +1352,91 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
     badgesListContainer.innerHTML = "";
 
     // Génère les badges dynamiquement
-    badgeList.forEach(badge => {
-        const badgeSection = document.createElement("div");
-        badgeSection.id = "badgesection";
+badgeList.forEach((badge, index) => {
+    const badgeSection = document.createElement("button");
+    badgeSection.classList.add("badgesection"); // Ajoute la classe avec l'index
+    
+    
 
-        const badgeImg = document.createElement("img");
-        badgeImg.src = badge.badgesrc;
-        badgeImg.alt = badge.badgeName;
-        badgeImg.height = 200;
-        if (ActualLevel >= badge.valeur ){
-            badgeImg.classList.add("valid");
-        }else{
-            badgeImg.classList.add("unvalid");
-            badgeImg.classList.remove("valid");
-        };
+    const badgeImg = document.createElement("img");
+    badgeImg.src = badge.badgesrc;
+    badgeImg.alt = badge.badgeName;
+    badgeImg.height = 200;
 
-        const badgeTxtContainer = document.createElement("div");
-        badgeTxtContainer.id = "badgetxtcontainer";
+    // Ajoute une classe unique basée sur l'index
+    badgeImg.classList.add(`${index}`);
 
-        const badgeTxt = document.createElement("p");
-        if (ActualLevel >= badge.valeur ){
-            badgeTxt.classList.add("badgetxt", "valid");
-        }else{
-            badgeTxt.classList.add("badgetxt");
-            badgeTxt.classList.remove("valid");
-        };
-        badgeTxt.textContent = badge.badgeDesc;
+    if (ActualLevel >= badge.valeur) {
+        badgeImg.classList.add(`badge-${index}`,"valid","imgtest");
+    } else {
+        badgeImg.classList.add(`badge-${index}`,"unvalid","imgtest");
+        badgeImg.classList.remove("valid");
+    }
 
-        // Ajout des éléments dans la structure HTML
-        badgeTxtContainer.appendChild(badgeTxt);
-        badgeSection.appendChild(badgeImg);
-        badgeSection.appendChild(badgeTxtContainer);
-        badgesListContainer.appendChild(badgeSection);
+    const badgeTxtContainer = document.createElement("div");
+    badgeTxtContainer.id = "badgetxtcontainer";
+
+    const badgeTitle = document.createElement("h3");
+    badgeTitle.textContent = badge.badgeName;
+
+    if (ActualLevel >= badge.valeur) {
+        badgeTitle.classList.add("valid");
+    } else {
+        badgeTitle.classList.add("opacity");
+        badgeTitle.classList.remove("valid");
+    }
+
+    // Ajout des éléments dans la structure HTML
+    badgeTxtContainer.appendChild(badgeTitle);
+    badgeSection.appendChild(badgeImg);
+    badgeSection.appendChild(badgeTxtContainer);
+    badgesListContainer.appendChild(badgeSection);
+});
 
 });
+
+// Sélectionner le conteneur de détail du badge
+let BadgeDetail = document.querySelector(".badgedetailcontainerblur");
+
+document.body.addEventListener("click", async (e) => {
+    if (e.target.classList.contains("imgtest")) {
+        e.preventDefault(); // Empêche le comportement par défaut du bouton
+        
+        // Trouver la classe qui contient l'index (ex: "badge-2")
+        const badgeClass = [...e.target.classList].find(cls => cls.startsWith("badge-"));
+        const index = badgeClass ? badgeClass.split("-")[1] : "inconnu";
+
+        console.log(`Clic sur le badge index : ${index}`);
+
+        // Récupérer les informations du badge en fonction de l'index
+        const badge = badgeList[index]; // index correspond à la position du tableau
+
+        // Vérifier que le badge existe dans le tableau
+        if (badge) {
+            // Mettre à jour le contenu de la vue détaillée du badge
+            const badgeDetailImg = document.querySelector(".badgedetailcontainerimg");
+            const badgeDetailTitle = document.querySelector(".badgedetailcontainertitle");
+            const badgeDetailText = document.querySelector(".badgedetailcontainertext");
+
+            // Mettre à jour l'image
+            badgeDetailImg.src = badge.badgesrc;
+            badgeDetailImg.alt = badge.badgeName;
+
+            // Mettre à jour le titre et la description
+            badgeDetailTitle.textContent = badge.badgeName;
+            badgeDetailText.textContent = badge.badgeDesc;
+
+            // Afficher le détail du badge
+            BadgeDetail.classList.add("visible");
+        }
+    }
+});
+
+// Fermer le détail du badge lorsque l'on clique en dehors
+document.querySelector(".badgedetailcontainerblur").addEventListener("click", (e) => {
+    if (e.target === BadgeDetail) {
+        BadgeDetail.classList.remove("visible");
+    }
 });
 
 
