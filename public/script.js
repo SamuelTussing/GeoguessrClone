@@ -408,7 +408,7 @@ async function endGame() {
         "Capitales": 1000,
     };
 
-    const bonusPoints = bonusPointsMap[selectedLocation] || 0;
+    const bonusPoints = bonusPointsMap[locationType] || 0;
     const finalScore = totalScore + bonusPoints + chronoBonus;
 
     result.textContent = `Jeu terminé ! Votre score total est de : ${finalScore} (Bonus : ${bonusPoints} points)`;
@@ -423,7 +423,7 @@ async function endGame() {
     }
 
     // Vérification des badges à débloquer
-    const unlockedBadges = checkAndUnlockBadges(finalScore, selectedLocation, chronoSelection);
+    const unlockedBadges = checkAndUnlockBadges(finalScore, locationType, chronoSelection);
 
     try {
         const response = await fetch("/api/updateScore", {
@@ -467,6 +467,7 @@ async function endGame() {
     fetchTopScores();
     resetGame();
 }
+
 
 function checkAndUnlockBadges(finalScore, location, chronoSelection) {
     let unlockedBadges = [];
@@ -1418,23 +1419,9 @@ badgeList.forEach((badge, index) => {
         badgeImg.classList.remove("valid");
     }
 
-    const badgeTxtContainer = document.createElement("div");
-    badgeTxtContainer.id = "badgetxtcontainer";
-
-    const badgeTitle = document.createElement("h3");
-    badgeTitle.textContent = badge.badgeName;
-
-    if (ActualLevel >= badge.valeur) {
-        badgeTitle.classList.add("valid");
-    } else {
-        badgeTitle.classList.add("opacity");
-        badgeTitle.classList.remove("valid");
-    }
 
     // Ajout des éléments dans la structure HTML
-    badgeTxtContainer.appendChild(badgeTitle);
     badgeSection.appendChild(badgeImg);
-    badgeSection.appendChild(badgeTxtContainer);
     badgesListContainer.appendChild(badgeSection);
 });
 

@@ -1,4 +1,5 @@
 import clientPromise from "../lib/mongodb";
+import { ObjectId } from "mongodb";
 
 export default async function handler(req, res) {
     if (req.method === "POST") {
@@ -8,8 +9,8 @@ export default async function handler(req, res) {
             const client = await clientPromise;
             const db = client.db("geoguessr_clone");
 
-            // Récupérer l'utilisateur
-            const user = await db.collection("users").findOne({ _id: userId });
+            // Convertir userId en ObjectId
+            const user = await db.collection("users").findOne({ _id: new ObjectId(userId) });
 
             if (!user) {
                 return res.status(404).json({ message: "Utilisateur non trouvé" });
@@ -25,13 +26,15 @@ export default async function handler(req, res) {
 
             // Mettre à jour le score et les badges
             await db.collection("users").updateOne(
-                { _id: userId },
+                { _id: new ObjectId(userId) },
                 { 
                     $set: updateBadges,
                     $push: { scores: { location: locationSelect, score } },
                     $max: { lastscore: score }
                 }
             );
+
+            console.log("Badges mis à jour :", updateBadges); // DEBUG
 
             res.status(200).json({ message: "Score et badges mis à jour" });
 

@@ -1,5 +1,5 @@
 const badgeList = [
-    {badgeName : "Beta-Testeur", badgesrc:"./badge/betatesteur.png", badgeDesc:"Réaliser un score de 15000 points sur Capitales", valeur: "Beta Testeur"},
+    {badgeName : "Beta-Testeur", badgesrc:"./badge/betatesteur.png", badgeDesc:"Pour les joueurs qui se saignent au quotidien", valeur: "Beta Testeur"},
     {badgeName : "Eclaireur Novice", badgesrc:"./badge/5.png", badgeDesc:"Atteindre le niveau 5", valeur: 5},
     {badgeName : "Voyageur Curieux", badgesrc:"./badge/10.png", badgeDesc:"Atteindre le niveau 10", valeur: 10},
     {badgeName : "Aventurier", badgesrc:"./badge/20.png", badgeDesc:"Atteindre le niveau 20", valeur: 20},
