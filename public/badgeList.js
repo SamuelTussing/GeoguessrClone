@@ -1,4 +1,5 @@
 const badgeList = [
+    {badgeName : "Beta-Testeur", badgesrc:"./badge/betatesteur.png", badgeDesc:"Réaliser un score de 15000 points sur Capitales", valeur: "Beta Testeur"},
     {badgeName : "Eclaireur Novice", badgesrc:"./badge/5.png", badgeDesc:"Atteindre le niveau 5", valeur: 5},
     {badgeName : "Voyageur Curieux", badgesrc:"./badge/10.png", badgeDesc:"Atteindre le niveau 10", valeur: 10},
     {badgeName : "Aventurier", badgesrc:"./badge/20.png", badgeDesc:"Atteindre le niveau 20", valeur: 20},
@@ -17,7 +18,7 @@ const badgeList = [
     {badgeName : "Super Croissant", badgesrc:"./badge/croissant.png", badgeDesc:"Réaliser un score de 20000 points sur France", valeur: "croissant"},
     {badgeName : "Bleu Marine", badgesrc:"./badge/marine.png", badgeDesc:"Réaliser un score de 20000 points sur France en en mode 1s", valeur: "marine"},
     {badgeName : "Voyageur Expert", badgesrc:"./badge/voyageur.png", badgeDesc:"Réaliser un score de 20000 points sur Europe", valeur: "voyageur"},
-    {badgeName : "Euro Champion", badgesrc:"./badge/euro.png", badgeDesc:"Réaliser un score de 15000 points sur Europe en en mode 1s", valeur: "euro"},
+    {badgeName : "Blietzkrieg", badgesrc:"./badge/blitzkrieg.png", badgeDesc:"Réaliser un score de 15000 points sur Europe en en mode 1s", valeur: "blietzkrieg"},
     {badgeName : "Aigle", badgesrc:"./badge/AIGLE.png", badgeDesc:"Réaliser un score de 15000 points sur Amérique du Nord en mode 1s", valeur: "AIGLE"},
     {badgeName : "Cow-Boy", badgesrc:"./badge/cwx-boy.png", badgeDesc:"Réaliser un score de 15000 points sur Amérique du Nord", valeur: "Cow-Boy"},
     {badgeName : "Pionnier", badgesrc:"./badge/pionnier.png", badgeDesc:"Réaliser un score de 20000 points sur Amérique du Nord", valeur: "pionnier"},

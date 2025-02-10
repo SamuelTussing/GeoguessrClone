@@ -30,17 +30,38 @@ export default async function handler(req, res) {
         // Hacher le mot de passe
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Ajouter l'utilisateur dans la base de données
-        const result = await db.collection('users').insertOne({
-            username,
-            email,
-            password: hashedPassword,
-            createdAt: new Date(),
-            experience: 0, // Initialise à 0
-            level: 1, // Niveau initial
-            lastscore: 0, // Score initial
-            scores: [], // Liste des meilleurs scores (vide au début)
-        });
+// Ajouter l'utilisateur dans la base de données
+const result = await db.collection('users').insertOne({
+    username,
+    email,
+    password: hashedPassword,
+    createdAt: new Date(),
+    betaTester: false,
+    experience: 0, // Initialise à 0
+    level: 1, // Niveau initial
+    lastscore: 0, // Score initial
+    scores: [], // Liste des meilleurs scores (vide au début)
+
+    // Initialisation des badges : tous à false par défaut
+    badges: {
+        "Beta-Testeur": false,
+        choucroute: false,
+        halsacien: false,
+        globetrotter: false,
+        conqueror: false,
+        croissant: false,
+        marine: false,
+        voyageur: false,
+        blietzkrieg: false,
+        AIGLE: false,
+        "Cow-Boy": false,
+        pionnier: false,
+        ARCHEOLOGUE: false,
+        REPORTER: false,
+        "Duc-de-Agass": false,
+        "ROUTARD-PRO": false
+    }
+});
 
         // Générer un token JWT
         const token = jwt.sign(

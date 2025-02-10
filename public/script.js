@@ -394,8 +394,8 @@ function locationsave(locationType) {
 
 
 async function endGame() {
-    const locationType = document.getElementById("location-select").value; // Récupérer la localisation sélectionnée
-    locationsave(locationType); // Mettre à jour selectedLocation
+    const locationType = document.getElementById("location-select").value; 
+    locationsave(locationType); 
 
     // Points bonus en fonction du mode de jeu
     const bonusPointsMap = {
@@ -422,6 +422,9 @@ async function endGame() {
         return;
     }
 
+    // Vérification des badges à débloquer
+    const unlockedBadges = checkAndUnlockBadges(finalScore, selectedLocation, chronoSelection);
+
     try {
         const response = await fetch("/api/updateScore", {
             method: "POST",
@@ -429,7 +432,7 @@ async function endGame() {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ userId, score: finalScore, locationSelect: locationType }), // Utilisation de selectedLocation
+            body: JSON.stringify({ userId, score: finalScore, locationSelect: locationType, badges: unlockedBadges }),
         });
 
         const data = await response.json();
@@ -437,7 +440,7 @@ async function endGame() {
         if (response.ok) {
             console.log("Score enregistré avec succès :", data);
 
-            const { oldLevel, newLevel,experience } = data;
+            const { oldLevel, newLevel, experience } = data;
             localStorage.setItem("level", newLevel);
 
             PlayerXP = experience;
@@ -445,18 +448,58 @@ async function endGame() {
             if (newLevel > oldLevel) {
                 showLevelUpAnimation(oldLevel, newLevel);
             }
+
+            // Affichage des badges débloqués
+            if (unlockedBadges.length > 0) {
+                showBadgeNotification(unlockedBadges);
+            }
+
         } else {
             console.error("Erreur lors de l'enregistrement du score :", data.message);
         }
     } catch (error) {
         console.error("Erreur réseau :", error);
     }
+
     scoreBanner.style.display = 'none';
     continueButton.style.display = 'none';
 
     fetchTopScores();
     resetGame();
 }
+
+function checkAndUnlockBadges(finalScore, location, chronoSelection) {
+    let unlockedBadges = [];
+
+    const badgeConditions = [
+        { name: "choucroute", score: 25000, location: "Strasbourg", chrono: "1s" },
+        { name: "halsacien", score: 25000, location: "Strasbourg" },
+        { name: "globetrotter", score: 15000, location: "world" },
+        { name: "conqueror", score: 20000, location: "world", chrono: "1s" },
+        { name: "croissant", score: 20000, location: "France" },
+        { name: "marine", score: 20000, location: "France", chrono: "1s" },
+        { name: "voyageur", score: 20000, location: "europe" },
+        { name: "blietzkrieg", score: 15000, location: "europe", chrono: "1s" },
+        { name: "AIGLE", score: 15000, location: "north-america", chrono: "1s" },
+        { name: "Cow-Boy", score: 15000, location: "north-america" },
+        { name: "pionnier", score: 20000, location: "north-america" },
+        { name: "ARCHEOLOGUE", score: 20000, location: "famous", chrono: "1s" },
+        { name: "REPORTER", score: 15000, location: "famous" },
+        { name: "Duc-de-Agass", score: 15000, location: "Capitales" },
+        { name: "ROUTARD-PRO", score: 20000, location: "Capitales" }
+    ];
+
+    badgeConditions.forEach(badge => {
+        if (finalScore >= badge.score && location === badge.location) {
+            if (!badge.chrono || chronoSelection === badge.chrono) {
+                unlockedBadges.push(badge.name);
+            }
+        }
+    });
+
+    return unlockedBadges;
+}
+
 
 
 
