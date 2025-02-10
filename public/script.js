@@ -282,6 +282,8 @@ function startNewRound(locationType) {
             preparationtimer.classList.add("hidden"); //Cacher le compte a rebourd
             streetViewElement.classList.remove('blur'); // Enlever le flou de streetview
             startMainTimer();
+            let preCountdown = 5
+
         }
     }, 1000);
 
@@ -341,7 +343,7 @@ function placePlayerMarker(location) {
     if (playerMarker) {
         playerMarker.setMap(null);
     }
-    playerMarker = new google.maps.Marker({
+    playerMarker = new google.maps.marker.AdvancedMarkerElement({
         position: location,
         map: map,
         title: 'Votre choix'
@@ -349,7 +351,7 @@ function placePlayerMarker(location) {
 }
 
 function placeActualMarker(location) {
-    actualMarker = new google.maps.Marker({
+    actualMarker = new google.maps.marker.AdvancedMarkerElement({
         position: location,
         map: map,
         title: 'Emplacement réel'
