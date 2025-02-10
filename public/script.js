@@ -616,7 +616,7 @@ async function fetchTopScores() {
                     listItem.classList.add("classement-item", `position-${index + 1}`);
                 
                     // 🔥 Utiliser le badge actif enregistré avec le score
-                    let badgeImgSrc = user.activeBadge ? `/badges/${user.activeBadge}.png` : "/badges/0.png";
+                    let badgeImgSrc = user.activeBadge ? `./badge/${user.activeBadge}.png` : "./badge/0.png";
                 
                     // Ajout de l'image du badge
                     const badgeImg = document.createElement("img");
@@ -631,7 +631,7 @@ async function fetchTopScores() {
                     // Ajout des éléments à la liste
                     listItem.appendChild(badgeImg);
                     listItem.appendChild(textElement);
-                    highscoresContainer.appendChild(listItem);
+                    scoreList.appendChild(listItem);
                 });
             }
 
