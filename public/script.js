@@ -616,7 +616,8 @@ async function fetchTopScores() {
                     listItem.classList.add("classement-item", `position-${index + 1}`);
 
                     // Utilisation de user.level au lieu de ActualLevel
-                    let imgSrc=activeBadge;
+                    let imgSrc=`${activeBadge}.png`;
+                    console.log(activeBadge)
 
                     // Ajout de l'image
                     const img = document.createElement("img");
