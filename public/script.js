@@ -631,7 +631,7 @@ async function fetchTopScores() {
                     // Ajout des éléments à la liste
                     listItem.appendChild(badgeImg);
                     listItem.appendChild(textElement);
-                    classementContainer.appendChild(listItem);
+                    highscoresContainer.appendChild(listItem);
                 });
             }
 
