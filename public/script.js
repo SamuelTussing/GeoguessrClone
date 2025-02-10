@@ -467,6 +467,45 @@ async function endGame() {
     fetchTopScores();
     resetGame();
 }
+function showBadgeNotification(unlockedBadges) {
+    if (!unlockedBadges || unlockedBadges.length === 0) return;
+
+    const popupa = document.getElementById("popupbadgemain");
+    const popupimg = document.getElementById("popupbadgeimg");
+    const popuptext = document.getElementById("popupbadgetext"); // Ajoute un élément texte si nécessaire
+
+    if (!popupa || !popupimg || !popuptext) {
+        console.error("Les éléments du popup de badge sont introuvables !");
+        return;
+    }
+
+    unlockedBadges.forEach((badge, index) => {
+        setTimeout(() => {
+            // Met à jour l'image du badge
+            popupimg.src = `/assets/badges/${badge.toLowerCase().replace(/ /g, "_")}.png`; 
+
+            // Met à jour le texte du badge
+            popuptext.textContent = `🎉 Nouveau badge débloqué : ${badge} !`;
+
+            // Déclenche l'animation
+            popupa.classList.remove("activate");
+            popupimg.classList.remove("rotation");
+
+            setTimeout(() => {
+                popupa.classList.add("activate");
+                popupimg.classList.add("rotation");
+            }, 10);
+
+            // Masquer après 2.5s
+            setTimeout(() => {
+                popupa.classList.remove("activate");
+                popupimg.classList.remove("rotation");
+            }, 2500);
+
+        }, index * 3000); // Affiche les badges un par un avec un délai de 3s entre chaque
+    });
+}
+
 
 
 function checkAndUnlockBadges(finalScore, location, chronoSelection) {
