@@ -1259,37 +1259,7 @@ let roundTime = 50;
 
 
 
-multiplayerMode.addEventListener("click", () =>{
-    multiContainer.style.display = 'flex';
-    multiMenu.style.display = 'flex';
-    joinmultiform.style.display = 'none';
-    audioPlayer.play(); // Joue le son
-    hostcontainer.style.display = 'none';
-    lobby.style.display = 'none';
 
-});
-
-document.getElementById("closemulti").addEventListener("click", () => {
-    // Cacher la section de jeu multi-joueurs
-    document.getElementById("multicontainer").style.display = 'none';
-    
-    // Émettre un signal au serveur pour fermer la salle
-    const roomCode = document.getElementById("roomcode").value; // Récupérer le code de la salle
-    
-//    socket.emit('closeRoom', roomCode); // Envoyer une demande de fermeture au serveur
-});
-
-joinButton.addEventListener("click",()=>{
-    multiMenu.style.display = 'none';
-    joinmultiform.style.display = 'flex';
-})
-
-hostButton.addEventListener("click",()=>{
-    multiMenu.style.display = 'none';
-    joinmultiform.style.display = 'none';
-    hostcontainer.style.display = 'flex';
-
-})
 
 roundMoinsButton.addEventListener("click", () => {
     if (roundsToPlay <= 1) { // Vérifie si roundsToPlay est déjà au minimum
@@ -1330,115 +1300,6 @@ timePlusButton.addEventListener("click", () => {
 });
 
 
-// Fonction de mise à jour de la liste des joueurs
-function updatePlayerList(players) {
-    const playerListElement = document.getElementById("playerlist");
-    
-    // Vérifie si l'élément existe
-    if (!playerListElement) {
-        console.error("L'élément 'playerlist' est introuvable.");
-        return;
-    }
-
-    // Vérifie que players est un tableau
-    if (!Array.isArray(players)) {
-        console.error("La liste des joueurs n'est pas valide :", players);
-        return;
-    }
-
-    // Réinitialise le contenu de la liste
-    playerListElement.innerHTML = "";
-
-    // Ajoute chaque joueur dans la liste
-    players.forEach(player => {
-        const playerElement = document.createElement("div");
-        playerElement.textContent = player;
-        playerListElement.appendChild(playerElement);
-    });
-}
-
-// Polling pour mettre à jour la liste des joueurs toutes les 2 secondes
-let pollingInterval;
-
-//const startPolling = (roomCode) => {
-    //pollingInterval = setInterval(async () => {
-        //try {
-            //const response = await axios.get(`/api/getRoom?roomCode=${roomCode}`);
-            //updatePlayerList(response.data.players); // Met à jour la liste des joueurs
-        //} catch (error) {
-            //console.error("Erreur lors de la récupération des détails de la salle :", error);
-        //}
-    //}, 2000); // 2 secondes d'intervalle entre chaque mise à jour
-//};
-
-const stopPolling = () => {
-    clearInterval(pollingInterval);
-};
-
-// HEBERGEMENT
-document.getElementById("hostroom").addEventListener("click", async () => {
-    const rounds = parseInt(document.getElementById("roundnumber").textContent);
-    const duration = parseInt(document.getElementById("roundtimer").textContent);
-    const map = document.getElementById("location-select").value;
-
-    try {
-        const response = await axios.post('/api/createRoom', { rounds, duration, map, playerName: username });
-        console.log(response);
-        alert(`Partie créée avec succès ! Code de la salle : ${response.data.roomCode}`);
-        hostcontainer.style.display = 'none';
-        lobby.style.display = 'block';
-
-        // Met à jour la liste des joueurs avec l'hôte
-        updatePlayerList([username]); // Ajoute l'hôte dans la liste
-
-        // Démarre le polling pour mettre à jour la liste des joueurs toutes les 2 secondes
-        startPolling(response.data.roomCode);
-    } catch (error) {
-        console.error(error);
-        alert(`Erreur lors de la création de la salle : ${error.response?.data?.error || 'Erreur inconnue'}`);
-    }
-});
-
-lancermulti.addEventListener("click", () => {
-    startNewRound(locationType);
-});
-
-// REJOINDRE
-document.getElementById("joinroom").addEventListener("click", async (e) => {
-    e.preventDefault(); // Empêche le rechargement de la page
-
-    const roomCode = document.getElementById("roomcode").value;
-
-    if (username) {
-        try {
-            const response = await axios.post('/api/joinRoom', { roomCode, playerName: username });
-            alert(`Bonjour ${username}, vous avez rejoint la salle ${roomCode}`);
-            document.getElementById("Feu").style.display = "block";
-            joinmultiform.style.display = 'none';
-            lobby.style.display = 'block';
-
-            // Met à jour la liste des joueurs dans le lobby
-            updatePlayerList(response.data.players);
-
-            // Démarre le polling pour mettre à jour la liste des joueurs pour l'hôte
-            startPolling(roomCode);
-        } catch (error) {
-            alert(`Erreur : ${error.response?.data?.error || 'Erreur inconnue'}`);
-        }
-    } else {
-        alert("Nom d'utilisateur non trouvé. Veuillez vous connecter.");
-    }
-});
-
-// Détails de la salle (pour obtenir les joueurs de la salle)
-//const getRoomDetails = async (roomCode) => {
-    //try {
-        //const response = await axios.get(`/api/getRoom?roomCode=${roomCode}`);
-       // console.log("Détails de la salle :", response.data);
-   // } catch (error) {
-      //  console.error("Erreur lors de la récupération de la salle :", error);
-    //}
-//};
 
 
 //AFFICHAGE DE LA LISTE DE BADGES AVEC BADGE ACQUIS EN VISIBLE
@@ -1504,14 +1365,36 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
 // Variable pour le badge actif du joueur
 let ActiveBadge = "5"; // Exemple, initialiser avec un badge par défaut
 
-// Fonction pour changer le badge
-// Fonction pour changer le badge
+// Récupération et affichage du badge actif au chargement de la page
+async function loadActiveBadge() {
+    try {
+        const response = await fetch(`/api/getActiveBadge?userId=${userId}`);
+
+        if (!response.ok) {
+            throw new Error("Erreur lors de la récupération du badge actif");
+        }
+
+        const data = await response.json();
+
+        if (data.activeBadge) {
+            // Met à jour l'image du badge
+            const activeBadge = badgeList.find(badge => badge.valeur === data.activeBadge);
+            if (activeBadge) {
+                document.getElementById("playerbadge").src = activeBadge.badgesrc;
+            }
+        }
+    } catch (error) {
+        console.error("Erreur lors du chargement du badge actif :", error);
+    }
+}
+
+// Fonction pour changer et enregistrer le badge actif
 document.getElementById("changeBadgeButton").addEventListener("click", async (e) => {
     e.preventDefault();
 
-    document.getElementById('badgecontainer').style.display = 'flex'; // Affiche le conteneur des badges
+    document.getElementById('badgecontainer').style.display = 'flex';
     const badgesListContainer = document.getElementById('badgeslistcontainer');
-    badgesListContainer.innerHTML = ""; // Réinitialiser la liste de badges
+    badgesListContainer.innerHTML = "";
 
     try {
         const response = await fetch(`/api/getUserBadges?userId=${userId}`);
@@ -1521,41 +1404,41 @@ document.getElementById("changeBadgeButton").addEventListener("click", async (e)
         }
 
         const userData = await response.json();
-
-        // Vérification de la structure des badges
-        // Filtrer les badges débloqués en tenant compte des valeurs "true" et "false"
-        const unlockedBadges = Object.keys(userData.badges || {}).filter(badge => userData.badges[badge] === "true").map(badge => String(badge));
+        const unlockedBadges = Object.keys(userData.badges || {}).filter(badge => userData.badges[badge] === "true");
 
         badgeList.forEach((badge, index) => {
-            const badgeSection = document.createElement("button");
-            badgeSection.classList.add("badgesection");
-
-            const badgeImg = document.createElement("img");
-            badgeImg.src = badge.badgesrc;
-            badgeImg.alt = badge.valeur;
-            badgeImg.height = 200;
-            badgeImg.classList.add(`${index}`, "imgtest");
-
-            // Vérification et affichage des classes de badge
             if (unlockedBadges.includes(String(badge.valeur))) {
+                const badgeSection = document.createElement("button");
+                badgeSection.classList.add("badgesection");
+
+                const badgeImg = document.createElement("img");
+                badgeImg.src = badge.badgesrc;
+                badgeImg.alt = badge.valeur;
+                badgeImg.height = 200;
                 badgeImg.classList.add(`badge-${index}`, "valid");
-            } else {
-                badgeImg.classList.add(`badge-${index}`, "unvalid");
-            }
 
-            // Ajouter les badges valides seulement
-            if (unlockedBadges.includes(String(badge.valeur))) {
                 badgeSection.appendChild(badgeImg);
                 badgesListContainer.appendChild(badgeSection);
 
-                // Ajouter l'événement pour changer le badge actif
-                badgeSection.addEventListener("click", () => {
-                    // Mettre à jour l'image du badge de l'utilisateur
+                // Enregistrer le badge choisi
+                badgeSection.addEventListener("click", async () => {
                     document.getElementById("playerbadge").src = badge.badgesrc;
 
-                    // Mettre à jour la variable ActiveBadge
-                    ActiveBadge = badge.valeur;
-                    document.getElementById('badgecontainer').style.display = 'none'; // Masquer la liste après sélection
+                    try {
+                        const saveResponse = await fetch(`/api/setActiveBadge`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ userId, activeBadge: badge.valeur })
+                        });
+
+                        if (!saveResponse.ok) {
+                            throw new Error("Erreur lors de l'enregistrement du badge");
+                        }
+
+                        document.getElementById('badgecontainer').style.display = 'none';
+                    } catch (error) {
+                        console.error("Erreur lors de la sauvegarde du badge :", error);
+                    }
                 });
             }
         });
@@ -1564,6 +1447,9 @@ document.getElementById("changeBadgeButton").addEventListener("click", async (e)
         console.error("Erreur lors de la récupération des badges:", error);
     }
 });
+
+// Charger le badge actif au démarrage
+window.addEventListener("load", loadActiveBadge);
 
 
 
