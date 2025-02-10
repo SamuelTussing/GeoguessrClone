@@ -1450,7 +1450,6 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
     badgesListContainer.innerHTML = "";
 
     try {
-        // userId est défini plus haut dans le code pas besoin de le redéfinir.
         const response = await fetch(`/api/getUserBadges?userId=${userId}`);
         
         if (!response.ok) {
@@ -1459,12 +1458,22 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
 
         const userData = await response.json();
 
-        // Vérifie si userData.badges est un objet avant d'effectuer la comparaison
-        const unlockedBadges = Object.keys(userData.badges || {}).filter(badge => {
-            return userData.badges[badge] === true; // Vérifie si la valeur est un booléen true
+        // Log pour voir les données retournées par l'API
+        console.log("Données utilisateur:", userData);
+
+        // Vérification de la structure des badges
+        console.log("Badges de l'utilisateur:", userData.badges);
+        Object.keys(userData.badges || {}).forEach(badge => {
+            console.log(`${badge}: ${userData.badges[badge]}`);
         });
-                // Log pour vérifier ce que contient unlockedBadges
-                console.log("Badges débloqués:", userData);
+
+        // Filtrer les badges débloqués en tenant compte des valeurs "true" et "false"
+        const unlockedBadges = Object.keys(userData.badges || {}).filter(badge => {
+            return userData.badges[badge] === "true"; // Comparer avec la chaîne "true"
+        });
+
+        // Log pour vérifier les badges débloqués
+        console.log("Badges débloqués:", unlockedBadges);
 
         badgeList.forEach((badge, index) => {
             const badgeSection = document.createElement("button");
@@ -1476,7 +1485,7 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
             badgeImg.height = 200;
             badgeImg.classList.add(`${index}`, "imgtest");
 
-            if (unlockedBadges.includes(badge.valeur)) {
+            if (unlockedBadges.includes(badge.badgeName)) {
                 badgeImg.classList.add(`badge-${index}`, "valid");
             } else {
                 badgeImg.classList.add(`badge-${index}`, "unvalid");
@@ -1490,6 +1499,7 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
         console.error("Erreur lors de la récupération des badges:", error);
     }
 });
+
 
 
 
