@@ -1429,24 +1429,24 @@ document.getElementById("joinroom").addEventListener("click", async (e) => {
 //};
 
 document.getElementById("badgeButton").addEventListener("click", async (e) => {
-    e.preventDefault(); // Empêche le rechargement de la page
+    e.preventDefault();
 
     document.getElementById('badgecontainer').style.display = 'flex';
     const badgesListContainer = document.getElementById('badgeslistcontainer');
-    badgesListContainer.innerHTML = ""; // Vide le conteneur pour éviter les doublons
+    badgesListContainer.innerHTML = "";
 
     try {
-        // 🔹 1. Récupération des données utilisateur depuis MongoDB
-        const response = await fetch('/api/getUserBadges'); // Endpoint à créer côté serveur
-        const userData = await response.json();
+        // ⚠️ Remplace "USER_ID_HERE" par l'ID réel de l'utilisateur connecté
+        const userId = "USER_ID_HERE"; 
+        const response = await fetch(`/api/getUserBadges?userId=${userId}`);
         
-        // Vérifie si l'utilisateur a des badges
-        const userBadges = userData.badges || {}; 
+        if (!response.ok) {
+            throw new Error("Erreur API");
+        }
 
-        // 🔹 2. Extraction des badges débloqués
-        const unlockedBadges = Object.keys(userBadges).filter(badge => userBadges[badge] === "true");
+        const userData = await response.json();
+        const unlockedBadges = Object.keys(userData.badges || {}).filter(badge => userData.badges[badge] === "true");
 
-        // 🔹 3. Génération des badges dynamiquement
         badgeList.forEach((badge, index) => {
             const badgeSection = document.createElement("button");
             badgeSection.classList.add("badgesection");
@@ -1457,14 +1457,12 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
             badgeImg.height = 200;
             badgeImg.classList.add(`${index}`, "imgtest");
 
-            // Vérifie si le badge est débloqué via le niveau ou MongoDB
             if (ActualLevel >= badge.valeur || unlockedBadges.includes(badge.badgeName)) {
                 badgeImg.classList.add(`badge-${index}`, "valid");
             } else {
                 badgeImg.classList.add(`badge-${index}`, "unvalid");
             }
 
-            // Ajout des éléments dans la structure HTML
             badgeSection.appendChild(badgeImg);
             badgesListContainer.appendChild(badgeSection);
         });
@@ -1473,6 +1471,7 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
         console.error("Erreur lors de la récupération des badges:", error);
     }
 });
+
 
 
 

@@ -1,4 +1,5 @@
 const express = require("express");
+import clientPromise from "../lib/mongodb";
 const mongoose = require("mongoose"); // Nécessaire pour valider l'ObjectId
 const router = express.Router();
 const User = require("./models/User"); // Modèle utilisateur
