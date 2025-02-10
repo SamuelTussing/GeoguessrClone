@@ -343,7 +343,7 @@ function placePlayerMarker(location) {
     if (playerMarker) {
         playerMarker.setMap(null);
     }
-    playerMarker = new google.maps.marker.AdvancedMarkerElement({
+    playerMarker = new google.maps.Marker({
         position: location,
         map: map,
         title: 'Votre choix'
@@ -351,7 +351,7 @@ function placePlayerMarker(location) {
 }
 
 function placeActualMarker(location) {
-    actualMarker = new google.maps.marker.AdvancedMarkerElement({
+    actualMarker = new google.maps.Marker({
         position: location,
         map: map,
         title: 'Emplacement réel'
