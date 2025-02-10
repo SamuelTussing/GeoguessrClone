@@ -1474,7 +1474,7 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
             badgeImg.height = 200;
             badgeImg.classList.add(`${index}`, "imgtest");
 
-            if (unlockedBadges.includes(badge.badgeName)) {
+            if (unlockedBadges.includes(badge.valeur)) {
                 badgeImg.classList.add(`badge-${index}`, "valid");
             } else {
                 badgeImg.classList.add(`badge-${index}`, "unvalid");
