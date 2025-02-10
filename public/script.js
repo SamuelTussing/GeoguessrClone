@@ -1264,7 +1264,7 @@ document.getElementById("closemulti").addEventListener("click", () => {
     // Émettre un signal au serveur pour fermer la salle
     const roomCode = document.getElementById("roomcode").value; // Récupérer le code de la salle
     
-    socket.emit('closeRoom', roomCode); // Envoyer une demande de fermeture au serveur
+//    socket.emit('closeRoom', roomCode); // Envoyer une demande de fermeture au serveur
 });
 
 joinButton.addEventListener("click",()=>{
@@ -1433,38 +1433,48 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
 
     document.getElementById('badgecontainer').style.display = 'flex';
     const badgesListContainer = document.getElementById('badgeslistcontainer');
-    // Vide le conteneur pour éviter les doublons si on reclique
-    badgesListContainer.innerHTML = "";
+    badgesListContainer.innerHTML = ""; // Vide le conteneur pour éviter les doublons
 
-    // Génère les badges dynamiquement
-badgeList.forEach((badge, index) => {
-    const badgeSection = document.createElement("button");
-    badgeSection.classList.add("badgesection"); // Ajoute la classe avec l'index
-    
-    
+    try {
+        // 🔹 1. Récupération des données utilisateur depuis MongoDB
+        const response = await fetch('/api/getUserBadges'); // Endpoint à créer côté serveur
+        const userData = await response.json();
+        
+        // Vérifie si l'utilisateur a des badges
+        const userBadges = userData.badges || {}; 
 
-    const badgeImg = document.createElement("img");
-    badgeImg.src = badge.badgesrc;
-    badgeImg.alt = badge.badgeName;
-    badgeImg.height = 200;
+        // 🔹 2. Extraction des badges débloqués
+        const unlockedBadges = Object.keys(userBadges).filter(badge => userBadges[badge] === "true");
 
-    // Ajoute une classe unique basée sur l'index
-    badgeImg.classList.add(`${index}`);
+        // 🔹 3. Génération des badges dynamiquement
+        badgeList.forEach((badge, index) => {
+            const badgeSection = document.createElement("button");
+            badgeSection.classList.add("badgesection");
 
-    if (ActualLevel >= badge.valeur) {
-        badgeImg.classList.add(`badge-${index}`,"valid","imgtest");
-    } else {
-        badgeImg.classList.add(`badge-${index}`,"unvalid","imgtest");
-        badgeImg.classList.remove("valid");
+            const badgeImg = document.createElement("img");
+            badgeImg.src = badge.badgesrc;
+            badgeImg.alt = badge.badgeName;
+            badgeImg.height = 200;
+            badgeImg.classList.add(`${index}`, "imgtest");
+
+            // Vérifie si le badge est débloqué via le niveau ou MongoDB
+            if (ActualLevel >= badge.valeur || unlockedBadges.includes(badge.badgeName)) {
+                badgeImg.classList.add(`badge-${index}`, "valid");
+            } else {
+                badgeImg.classList.add(`badge-${index}`, "unvalid");
+            }
+
+            // Ajout des éléments dans la structure HTML
+            badgeSection.appendChild(badgeImg);
+            badgesListContainer.appendChild(badgeSection);
+        });
+
+    } catch (error) {
+        console.error("Erreur lors de la récupération des badges:", error);
     }
-
-
-    // Ajout des éléments dans la structure HTML
-    badgeSection.appendChild(badgeImg);
-    badgesListContainer.appendChild(badgeSection);
 });
 
-});
+
 
 // Sélectionner le conteneur de détail du badge
 let BadgeDetail = document.querySelector(".badgedetailcontainerblur");
