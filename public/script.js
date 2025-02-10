@@ -1194,7 +1194,7 @@ ArrowCompte.addEventListener("click", () =>{
 document.getElementById('clear-storage-button').addEventListener('click', () => {
     compteContainer.style.display = "flex";
     changerImage();
-    loadUserFromLocalStorage();
+    loadUserFromAPI();
 });
 
 
