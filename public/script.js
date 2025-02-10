@@ -1505,46 +1505,63 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
 let ActiveBadge = "5"; // Exemple, initialiser avec un badge par défaut
 
 // Fonction pour changer le badge
-document.getElementById("changeBadgeButton").addEventListener("click", () => {
+// Fonction pour changer le badge
+document.getElementById("changeBadgeButton").addEventListener("click", async (e) => {
+    e.preventDefault();
 
-    
-    let badgeOptions = unlockedBadges.map(badgeVal => {
-        // Cherche le badge correspondant à la valeur
-        return badgeList.find(badge => badge.valeur === badgeVal);
-    }).filter(Boolean); // Filtre les badges valides
+    document.getElementById('badgecontainer').style.display = 'flex'; // Affiche le conteneur des badges
+    const badgesListContainer = document.getElementById('badgeslistcontainer');
+    badgesListContainer.innerHTML = ""; // Réinitialiser la liste de badges
 
-    if (badgeOptions.length > 0) {
-        let badgeSelectHTML = "";
-        badgeOptions.forEach(badge => {
-            badgeSelectHTML += `<div class="badge-option" data-badge="${badge.valeur}">
-                                    <img src="${badge.badgesrc}" alt="${badge.badgeName}" height="100">
-                                    <span>${badge.badgeName}</span>
-                                 </div>`;
+    try {
+        const response = await fetch(`/api/getUserBadges?userId=${userId}`);
+        
+        if (!response.ok) {
+            throw new Error("Erreur API");
+        }
+
+        const userData = await response.json();
+
+        // Vérification de la structure des badges
+        // Filtrer les badges débloqués en tenant compte des valeurs "true" et "false"
+        const unlockedBadges = Object.keys(userData.badges || {}).filter(badge => userData.badges[badge] === "true").map(badge => String(badge));
+
+        badgeList.forEach((badge, index) => {
+            const badgeSection = document.createElement("button");
+            badgeSection.classList.add("badgesection");
+
+            const badgeImg = document.createElement("img");
+            badgeImg.src = badge.badgesrc;
+            badgeImg.alt = badge.valeur;
+            badgeImg.height = 200;
+            badgeImg.classList.add(`${index}`, "imgtest");
+
+            // Vérification et affichage des classes de badge
+            if (unlockedBadges.includes(String(badge.valeur))) {
+                badgeImg.classList.add(`badge-${index}`, "valid");
+            } else {
+                badgeImg.classList.add(`badge-${index}`, "unvalid");
+            }
+
+            // Ajouter les badges valides seulement
+            if (unlockedBadges.includes(String(badge.valeur))) {
+                badgeSection.appendChild(badgeImg);
+                badgesListContainer.appendChild(badgeSection);
+
+                // Ajouter l'événement pour changer le badge actif
+                badgeSection.addEventListener("click", () => {
+                    // Mettre à jour l'image du badge de l'utilisateur
+                    document.getElementById("playerbadge").src = badge.badgesrc;
+
+                    // Mettre à jour la variable ActiveBadge
+                    ActiveBadge = badge.valeur;
+                    document.getElementById('badgecontainer').style.display = 'none'; // Masquer la liste après sélection
+                });
+            }
         });
 
-        // Afficher les options dans une modale ou une nouvelle fenêtre
-        const badgeSelectionContainer = document.createElement("div");
-        badgeSelectionContainer.innerHTML = `
-            <div class="badge-selection-popup">
-                <h3>Sélectionnez un badge</h3>
-                ${badgeSelectHTML}
-            </div>
-        `;
-        document.body.appendChild(badgeSelectionContainer);
-
-        // Ajouter un événement pour sélectionner un badge
-        badgeSelectionContainer.querySelectorAll(".badge-option").forEach(option => {
-            option.addEventListener("click", () => {
-                const selectedBadgeValue = option.getAttribute("data-badge");
-
-                // Mettre à jour le badge actif
-                ActiveBadge = selectedBadgeValue;
-                document.getElementById("playerbadge").src = badgeList.find(badge => badge.valeur === selectedBadgeValue).badgesrc;
-
-                // Fermer la fenêtre modale
-                document.body.removeChild(badgeSelectionContainer);
-            });
-        });
+    } catch (error) {
+        console.error("Erreur lors de la récupération des badges:", error);
     }
 });
 
