@@ -1457,7 +1457,6 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
 
         const userData = await response.json();
         const unlockedBadges = Object.keys(userData.badges || {}).filter(badge => userData.badges[badge] === "true");
-        console.log(unlockedBadges)
 
         badgeList.forEach((badge, index) => {
             const badgeSection = document.createElement("button");
@@ -1469,7 +1468,7 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
             badgeImg.height = 200;
             badgeImg.classList.add(`${index}`, "imgtest");
 
-            if (ActualLevel >= badge.valeur || unlockedBadges.includes(badge.badgeName)) {
+            if (unlockedBadges.includes(badge.badgeName)) {
                 badgeImg.classList.add(`badge-${index}`, "valid");
             } else {
                 badgeImg.classList.add(`badge-${index}`, "unvalid");
