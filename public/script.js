@@ -1343,10 +1343,10 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
 
             // Vérification et affichage des classes de badge
             if (unlockedBadges.includes(String(badge.valeur))) {
-                console.log(`Badge ${badge.valeur} est débloqué.`);
+                //console.log(`Badge ${badge.valeur} est débloqué.`);
                 badgeImg.classList.add(`badge-${index}`, "valid");
             } else {
-                console.log(`Badge ${badge.valeur} n'est pas débloqué.`);
+                //console.log(`Badge ${badge.valeur} n'est pas débloqué.`);
                 badgeImg.classList.add(`badge-${index}`, "unvalid");
             }
 
