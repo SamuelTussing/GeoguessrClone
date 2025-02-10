@@ -45,7 +45,7 @@ const googleMapsApiKey = 'AIzaSyAUPG5ygE36Pd45w23U157bjffFqJ0Obcg'; // Remplacez
 
 // Charger directement le script Google Maps
 const googleMapsScript = document.createElement('script');
-googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&callback=initMap&libraries=geometry`;
+googleMapsScript.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&callback=initMap&libraries=geometry&loading=async`;
 googleMapsScript.async = true;
 googleMapsScript.defer = true;
 document.body.appendChild(googleMapsScript);
