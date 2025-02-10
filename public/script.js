@@ -614,23 +614,24 @@ async function fetchTopScores() {
                 top5Scores.forEach((user, index) => {
                     const listItem = document.createElement("div");
                     listItem.classList.add("classement-item", `position-${index + 1}`);
-
-                    // Utilisation de user.level au lieu de ActualLevel
-                    let imgSrc=`${activeBadge}.png`;
-                    console.log(activeBadge)
-
-                    // Ajout de l'image
-                    const img = document.createElement("img");
-                    img.src = imgSrc;
-                    img.alt = user.username;
-                    img.style.height = "50px";
-
-                    // Ajout du texte
-                    const text = document.createTextNode(`${index + 1}ᵉ - ${user.username} - ${user.score} points`);
-
-                    listItem.appendChild(img);
-                    listItem.appendChild(text);
-                    scoreList.appendChild(listItem);
+                
+                    // 🔥 Utiliser le badge actif enregistré avec le score
+                    let badgeImgSrc = user.activeBadge ? `/badges/${user.activeBadge}.png` : "/badges/0.png";
+                
+                    // Ajout de l'image du badge
+                    const badgeImg = document.createElement("img");
+                    badgeImg.src = badgeImgSrc;
+                    badgeImg.alt = `Badge de ${user.username}`;
+                    badgeImg.style.height = "50px";
+                
+                    // Création de l'élément texte avec le nom et le score du joueur
+                    const textElement = document.createElement("span");
+                    textElement.textContent = `${user.username} - Score: ${user.score}`;
+                
+                    // Ajout des éléments à la liste
+                    listItem.appendChild(badgeImg);
+                    listItem.appendChild(textElement);
+                    classementContainer.appendChild(listItem);
                 });
             }
 
