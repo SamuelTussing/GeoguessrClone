@@ -1440,6 +1440,8 @@ document.getElementById("joinroom").addEventListener("click", async (e) => {
     //}
 //};
 
+
+//AFFICHAGE DE LA LISTE DE BADGES AVEC BADGE ACQUIS EN VISIBLE
 document.getElementById("badgeButton").addEventListener("click", async (e) => {
     e.preventDefault();
 
@@ -1456,7 +1458,11 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
         }
 
         const userData = await response.json();
-        const unlockedBadges = Object.keys(userData.badges || {}).filter(badge => userData.badges[badge] === "true");
+
+        // Vérifie si userData.badges est un objet avant d'effectuer la comparaison
+        const unlockedBadges = Object.keys(userData.badges || {}).filter(badge => {
+            return userData.badges[badge] === true; // Vérifie si la valeur est un booléen true
+        });
 
         badgeList.forEach((badge, index) => {
             const badgeSection = document.createElement("button");
@@ -1482,6 +1488,7 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
         console.error("Erreur lors de la récupération des badges:", error);
     }
 });
+
 
 
 
