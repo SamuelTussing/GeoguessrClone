@@ -20,7 +20,7 @@ export default async function handler(req, res) {
             }
 
             // Récupération des données utilisateur à partir de l'ID converti en ObjectId
-            const user = await db.collection("user").findOne({ _id: new ObjectId(userId) });
+            const user = await db.collection("users").findOne({ _id: new ObjectId(userId) });
 
             if (!user) {
                 return res.status(404).json({ message: "Utilisateur non trouvé" });
