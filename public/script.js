@@ -1436,8 +1436,7 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
     badgesListContainer.innerHTML = "";
 
     try {
-        // ⚠️ Remplace "USER_ID_HERE" par l'ID réel de l'utilisateur connecté
-        const userId = "USER_ID_HERE"; 
+        // ⚠️ Remplace "USER_ID_HERE" par l'ID réel de l'utilisateur connecté 
         const response = await fetch(`/api/getUserBadges?userId=${userId}`);
         
         if (!response.ok) {
