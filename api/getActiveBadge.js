@@ -1,3 +1,6 @@
+import { ObjectId } from "mongodb";
+import clientPromise from "../../lib/mongodb"; // Assure-toi que le chemin est correct
+
 export default async function handler(req, res) {
     if (req.method === "GET") {
         try {
@@ -23,9 +26,15 @@ export default async function handler(req, res) {
                 return res.status(404).json({ message: "Utilisateur non trouvé" });
             }
 
-        res.json({ activeBadge: user.activeBadge });
-    } catch (error) {
-        res.status(500).json({ message: "Erreur serveur" });
+            // Vérifier si l'utilisateur a un badge actif
+            const activeBadge = user.activeBadge || "5";
+
+            return res.status(200).json({ activeBadge });
+        } catch (error) {
+            console.error("Erreur lors de la récupération du badge actif :", error);
+            return res.status(500).json({ message: "Erreur serveur" });
+        }
+    } else {
+        return res.status(405).json({ message: "Méthode non autorisée" });
     }
 }
-};
