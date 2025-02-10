@@ -41,6 +41,7 @@ const result = await db.collection('users').insertOne({
     level: 1, // Niveau initial
     lastscore: 0, // Score initial
     scores: [], // Liste des meilleurs scores (vide au début)
+    activeBadge:"0",
 
     // Initialisation des badges : tous à false par défaut
     badges: {
@@ -60,6 +61,7 @@ const result = await db.collection('users').insertOne({
         Reporter: false,
         DucdeAgass: false,
         RoutardPro: false,
+        0:true,
         5:false,
         10:false,
         20:false,

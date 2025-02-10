@@ -1,5 +1,6 @@
 const badgeList = [
     {badgeName : "Beta-Testeur", badgesrc:"./badge/betatesteur.png", badgeDesc:"Pour les joueurs qui se saignent au quotidien", valeur: "BetaTesteur"},
+    {badgeName : "Scout Novice", badgesrc:"./badge/0.png", badgeDesc:"Nouveau joueur", valeur: "0"},
     {badgeName : "Eclaireur Novice", badgesrc:"./badge/5.png", badgeDesc:"Atteindre le niveau 5", valeur: "5"},
     {badgeName : "Voyageur Curieux", badgesrc:"./badge/10.png", badgeDesc:"Atteindre le niveau 10", valeur: "10"},
     {badgeName : "Aventurier", badgesrc:"./badge/20.png", badgeDesc:"Atteindre le niveau 20", valeur: "20"},

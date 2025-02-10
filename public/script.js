@@ -55,7 +55,7 @@ document.body.appendChild(googleMapsScript);
 
 function initMap() {
     console.log('Google Maps a été chargé avec succès !');
-    changerImage();
+    loadActiveBadge();
     // Initialize the map
     map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 0, lng: 0 },
@@ -422,6 +422,19 @@ async function endGame() {
         return;
     }
 
+    // 🔥 Récupération du badge actif
+    let activeBadge = null;
+    try {
+        const badgeResponse = await fetch(`/api/getActiveBadge?userId=${userId}`);
+        if (!badgeResponse.ok) throw new Error("Erreur API getActiveBadge");
+
+        const badgeData = await badgeResponse.json();
+        activeBadge = badgeData.activeBadge || null; // Assurez-vous que le badge est bien défini
+
+    } catch (error) {
+        console.error("Erreur lors du chargement du badge actif :", error);
+    }
+
     // Vérification des badges à débloquer
     const unlockedBadges = checkAndUnlockBadges(finalScore, locationType, chronoSelection);
 
@@ -432,7 +445,7 @@ async function endGame() {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ userId, score: finalScore, locationSelect: locationType, badges: unlockedBadges }),
+            body: JSON.stringify({ userId, score: finalScore, locationSelect: locationType, badges: unlockedBadges, activeBadge: activeBadge }),
         });
 
         const data = await response.json();
@@ -579,7 +592,7 @@ async function fetchTopScores() {
         dataContainer.innerHTML = "";
 
         // Parcourir chaque localisation et afficher son top 5
-        Object.entries(topScoresByLocation).forEach(([location, scores]) => {
+        Object.entries(topScoresByLocation).forEach(([location, scores, activeBadge]) => {
             // Limiter les scores à 5 meilleurs, même si l'API renvoie plus
             const top5Scores = scores.slice(0, 5);
 
@@ -603,34 +616,7 @@ async function fetchTopScores() {
                     listItem.classList.add("classement-item", `position-${index + 1}`);
 
                     // Utilisation de user.level au lieu de ActualLevel
-                    let imgSrc;
-                    if (user.level < 5) {
-                        imgSrc = "./badge/0.png";
-                    } else if (user.level >= 5 && user.level <= 9) {
-                        imgSrc = "./badge/5.png";
-                    } else if (user.level >= 10 && user.level <= 19) {
-                        imgSrc = "./badge/10.png";
-                    } else if (user.level >= 20 && user.level <= 29) {
-                        imgSrc = "./badge/20.png";
-                    } else if (user.level >= 30 && user.level <= 39) {
-                        imgSrc = "./badge/30.png";
-                    } else if (user.level >= 40 && user.level <= 49) {
-                        imgSrc = "./badge/40.png";
-                    } else if (user.level >= 50 && user.level <= 59) {
-                        imgSrc = "./badge/50.png";
-                    } else if (user.level >= 60 && user.level <= 69) {
-                        imgSrc = "./badge/60.png";
-                    } else if (user.level >= 70 && user.level <= 79) {
-                        imgSrc = "./badge/70.png";
-                    } else if (user.level >= 80 && user.level <= 89) {
-                        imgSrc = "./badge/80.png";
-                    } else if (user.level >= 90 && user.level <= 99) {
-                        imgSrc = "./badge/90.png";
-                    } else if (user.level >= 100) {
-                        imgSrc = "./badge/100.png";
-                    } else {
-                        imgSrc = "./badge/0.png";
-                    }
+                    let imgSrc=activeBadge;
 
                     // Ajout de l'image
                     const img = document.createElement("img");
@@ -1127,38 +1113,7 @@ async function login(username, password) {
     }
   }
 
-  function changerImage() {
-    let badgeSrc;
-    if (ActualLevel < 5) {
-        badgeSrc = "./badge/0.png";
-    } else if (ActualLevel >= 5 && ActualLevel <= 9) {
-        badgeSrc = "./badge/5.png";
-    } else if (ActualLevel >= 10 && ActualLevel <= 19) {
-        badgeSrc = "./badge/10.png";
-    } else if (ActualLevel >= 20 && ActualLevel <= 29) {
-        badgeSrc = "./badge/20.png";
-    } else if (ActualLevel >= 30 && ActualLevel <= 39) {
-        badgeSrc = "./badge/30.png";
-    } else if (ActualLevel >= 40 && ActualLevel <= 49) {
-        badgeSrc = "./badge/40.png";
-    } else if (ActualLevel >= 50 && ActualLevel <= 59) {
-        badgeSrc = "./badge/50.png";
-    } else if (ActualLevel >= 60 && ActualLevel <= 69) {
-        badgeSrc = "./badge/60.png";
-    } else if (ActualLevel >= 70 && ActualLevel <= 79) {
-        badgeSrc = "./badge/70.png";
-    } else if (ActualLevel >= 80 && ActualLevel <= 89) {
-        badgeSrc = "./badge/80.png";
-    } else if (ActualLevel >= 90 && ActualLevel <= 99) {
-        badgeSrc = "./badge/90.png";
-    } else if (ActualLevel >= 100 && ActualLevel <= 199) {
-        badgeSrc = "./badge/100.png";
-    } else {
-        badgeSrc = "./badge/0.png"; // Par défaut pour les niveaux 20 et plus
-    }
-    document.getElementById("levelupbadge").src = badgeSrc;
-    document.getElementById("playerbadge").src = badgeSrc;
-  }
+
   
   function showLevelUpAnimation(oldLevel, newLevel) {
     const levelUpContainer = document.getElementById("levelupcontainer");
@@ -1166,8 +1121,7 @@ async function login(username, password) {
     const newLevelSpan = document.getElementById("newlevel");
     const nextButton = document.getElementById("Nextbutton");
 
-
-    changerImage()
+    loadActiveBadge()
     // Mettre à jour dynamiquement les niveaux
     oldLevelSpan.textContent = `Niv.${oldLevel}`;
     newLevelSpan.textContent = `Niv.${newLevel}`;
@@ -1193,7 +1147,7 @@ ArrowCompte.addEventListener("click", () =>{
 
 document.getElementById('clear-storage-button').addEventListener('click', () => {
     compteContainer.style.display = "flex";
-    changerImage();
+    loadActiveBadge()
     loadUserFromAPI();
 });
 
@@ -1381,6 +1335,7 @@ async function loadActiveBadge() {
             const activeBadge = badgeList.find(badge => badge.valeur === data.activeBadge);
             if (activeBadge) {
                 document.getElementById("playerbadge").src = activeBadge.badgesrc;
+                document.getElementById("levelupbadge").src = activeBadge.badgesrc;
             }
         }
     } catch (error) {
@@ -1436,6 +1391,7 @@ document.getElementById("changeBadgeButton").addEventListener("click", async (e)
                         }
 
                         document.getElementById('badgecontainer').style.display = 'none';
+                        console.log("Badge mis à jour");
                     } catch (error) {
                         console.error("Erreur lors de la sauvegarde du badge :", error);
                     }

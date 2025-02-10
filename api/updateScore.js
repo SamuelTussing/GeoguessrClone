@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 export default async function handler(req, res) {
     if (req.method === "POST") {
         try {
-            const { userId, score, locationSelect, badges } = req.body;
+            const { userId, score, locationSelect, badges, activeBadge } = req.body;
 
             const client = await clientPromise;
             const db = client.db("geoguessr_clone");
@@ -29,7 +29,7 @@ export default async function handler(req, res) {
                 { _id: new ObjectId(userId) },
                 { 
                     $set: updateBadges,
-                    $push: { scores: { location: locationSelect, score } },
+                    $push: { scores: { activeBadge, location: locationSelect, score } },
                     $max: { lastscore: score }
                 }
             );
