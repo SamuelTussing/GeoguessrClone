@@ -1458,9 +1458,6 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
 
         const userData = await response.json();
 
-        // Log pour voir les données retournées par l'API
-        console.log("Données utilisateur:", userData);
-
         // Vérification de la structure des badges
         console.log("Badges de l'utilisateur:", userData.badges);
         Object.keys(userData.badges || {}).forEach(badge => {
@@ -1468,9 +1465,7 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
         });
 
         // Filtrer les badges débloqués en tenant compte des valeurs "true" et "false"
-        const unlockedBadges = Object.keys(userData.badges || {}).filter(badge => {
-            return userData.badges[badge] === "true"; // Comparer avec la chaîne "true"
-        });
+        const unlockedBadges = Object.keys(userData.badges || {}).filter(badge => userData.badges[badge] === "true").map(badge => String(badge));
 
         // Log pour vérifier les badges débloqués
         console.log("Badges débloqués:", unlockedBadges);
@@ -1485,9 +1480,12 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
             badgeImg.height = 200;
             badgeImg.classList.add(`${index}`, "imgtest");
 
-            if (unlockedBadges.includes(badge.valeur)) {
+            // Vérification et affichage des classes de badge
+            if (unlockedBadges.includes(String(badge.valeur))) {
+                console.log(`Badge ${badge.valeur} est débloqué.`);
                 badgeImg.classList.add(`badge-${index}`, "valid");
             } else {
+                console.log(`Badge ${badge.valeur} n'est pas débloqué.`);
                 badgeImg.classList.add(`badge-${index}`, "unvalid");
             }
 
@@ -1499,6 +1497,7 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
         console.error("Erreur lors de la récupération des badges:", error);
     }
 });
+
 
 
 
