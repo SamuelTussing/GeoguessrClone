@@ -1464,7 +1464,7 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
             return userData.badges[badge] === true; // Vérifie si la valeur est un booléen true
         });
                 // Log pour vérifier ce que contient unlockedBadges
-                console.log("Badges débloqués:", unlockedBadges);
+                console.log("Badges débloqués:", userData);
 
         badgeList.forEach((badge, index) => {
             const badgeSection = document.createElement("button");
