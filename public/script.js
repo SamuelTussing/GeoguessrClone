@@ -1459,7 +1459,7 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
         const userData = await response.json();
 
         // Vérification de la structure des badges
-        console.log("Badges de l'utilisateur:", userData.badges);
+        //console.log("Badges de l'utilisateur:", userData.badges);
         Object.keys(userData.badges || {}).forEach(badge => {
             console.log(`${badge}: ${userData.badges[badge]}`);
         });
@@ -1468,7 +1468,7 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
         const unlockedBadges = Object.keys(userData.badges || {}).filter(badge => userData.badges[badge] === "true").map(badge => String(badge));
 
         // Log pour vérifier les badges débloqués
-        console.log("Badges débloqués:", unlockedBadges);
+        //console.log("Badges débloqués:", unlockedBadges);
 
         badgeList.forEach((badge, index) => {
             const badgeSection = document.createElement("button");
@@ -1499,7 +1499,54 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
 });
 
 
+//CHANGEMENT DU BADGE
 
+// Variable pour le badge actif du joueur
+let ActiveBadge = "5"; // Exemple, initialiser avec un badge par défaut
+
+// Fonction pour changer le badge
+document.getElementById("changeBadgeButton").addEventListener("click", () => {
+
+    
+    let badgeOptions = unlockedBadges.map(badgeVal => {
+        // Cherche le badge correspondant à la valeur
+        return badgeList.find(badge => badge.valeur === badgeVal);
+    }).filter(Boolean); // Filtre les badges valides
+
+    if (badgeOptions.length > 0) {
+        let badgeSelectHTML = "";
+        badgeOptions.forEach(badge => {
+            badgeSelectHTML += `<div class="badge-option" data-badge="${badge.valeur}">
+                                    <img src="${badge.badgesrc}" alt="${badge.badgeName}" height="100">
+                                    <span>${badge.badgeName}</span>
+                                 </div>`;
+        });
+
+        // Afficher les options dans une modale ou une nouvelle fenêtre
+        const badgeSelectionContainer = document.createElement("div");
+        badgeSelectionContainer.innerHTML = `
+            <div class="badge-selection-popup">
+                <h3>Sélectionnez un badge</h3>
+                ${badgeSelectHTML}
+            </div>
+        `;
+        document.body.appendChild(badgeSelectionContainer);
+
+        // Ajouter un événement pour sélectionner un badge
+        badgeSelectionContainer.querySelectorAll(".badge-option").forEach(option => {
+            option.addEventListener("click", () => {
+                const selectedBadgeValue = option.getAttribute("data-badge");
+
+                // Mettre à jour le badge actif
+                ActiveBadge = selectedBadgeValue;
+                document.getElementById("playerbadge").src = badgeList.find(badge => badge.valeur === selectedBadgeValue).badgesrc;
+
+                // Fermer la fenêtre modale
+                document.body.removeChild(badgeSelectionContainer);
+            });
+        });
+    }
+});
 
 
 
@@ -1515,7 +1562,7 @@ document.body.addEventListener("click", async (e) => {
         const badgeClass = [...e.target.classList].find(cls => cls.startsWith("badge-"));
         const index = badgeClass ? badgeClass.split("-")[1] : "inconnu";
 
-        console.log(`Clic sur le badge index : ${index}`);
+        //console.log(`Clic sur le badge index : ${index}`);
 
         // Récupérer les informations du badge en fonction de l'index
         const badge = badgeList[index]; // index correspond à la position du tableau
@@ -1582,3 +1629,4 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 2500);
     });
 });
+
