@@ -1200,24 +1200,36 @@ document.getElementById('clear-storage-button').addEventListener('click', () => 
 
 
 
-// Fonction pour récupérer les données utilisateur depuis localStorage et les afficher
-function loadUserFromLocalStorage() {
+// Fonction pour récupérer les données utilisateur depuis l'API et les afficher
+async function loadUserFromAPI() {
+    const userId = localStorage.getItem("userId");  // Récupérer l'ID utilisateur depuis le localStorage
 
-    // Insérez les informations utilisateur dans le HTML
-    document.getElementById("informationID").textContent = `ID : ${userId}`;
-    document.getElementById("informationName").textContent = `Username : ${username}`;
-    document.getElementById("informationLvl").textContent = `Niveau : ${ActualLevel}`;
-    document.getElementById("informationXP").textContent = `Experience : ${PlayerXP} points`;
+    if (!userId) {
+        console.error("Aucun ID utilisateur trouvé dans le localStorage");
+        return;
+    }
 
-    // Optionnel : afficher la liste des scores dans un tableau ou une liste HTML
-    const scoreList = document.querySelector("#scoreList");
-    if (scoreList) {
-        scoreList.innerHTML = ""; // Vider la liste actuelle
-        userInfo.scores.forEach((score, index) => {
-            const scoreItem = document.createElement("li");
-            scoreItem.textContent = `Score ${index + 1}: ${score}`;
-            scoreList.appendChild(scoreItem);
-        });
+    try {
+        // Effectuer une requête GET pour récupérer les données utilisateur depuis l'API
+        const response = await fetch(`/api/getUserBadges?userId=${userId}`);
+        
+        if (!response.ok) {
+            throw new Error("Erreur lors de la récupération des données utilisateur");
+        }
+
+        const userData = await response.json();
+
+        // Vérifier que les données nécessaires sont présentes
+        const { badges, experience, level, username } = userData;
+
+        // Insérer les informations utilisateur dans le HTML
+        document.getElementById("informationID").textContent = `ID : ${userId}`;
+        document.getElementById("informationName").textContent = `Username : ${username}`;
+        document.getElementById("informationLvl").textContent = `Niveau : ${level}`;
+        document.getElementById("informationXP").textContent = `Experience : ${experience} points`;
+
+    } catch (error) {
+        console.error("Erreur lors du chargement des données utilisateur depuis l'API :", error);
     }
 }
 
@@ -1445,6 +1457,7 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
 
         const userData = await response.json();
         const unlockedBadges = Object.keys(userData.badges || {}).filter(badge => userData.badges[badge] === "true");
+        console.log(unlockedBadges)
 
         badgeList.forEach((badge, index) => {
             const badgeSection = document.createElement("button");

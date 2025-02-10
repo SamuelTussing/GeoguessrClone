@@ -26,13 +26,21 @@ export default async function handler(req, res) {
                 return res.status(404).json({ message: "Utilisateur non trouvé" });
             }
 
-            // Extraction des badges
+            // Extraction des badges, expérience et niveau
             const userBadges = user.badges || {};
+            const userExperience = user.experience || 0; // Valeur par défaut 0 si expérience non définie
+            const userLevel = user.level || 1; // Valeur par défaut 1 si niveau non défini
+            const username = user.username || "Imposteur";
 
-            // Retourner les badges de l'utilisateur
-            res.status(200).json({ badges: userBadges });
+            // Retourner les badges, expérience et niveau de l'utilisateur
+            res.status(200).json({
+                badges: userBadges,
+                experience: userExperience,
+                level: userLevel,
+                username: user.username
+            });
         } catch (error) {
-            console.error("Erreur lors de la récupération des badges :", error);
+            console.error("Erreur lors de la récupération des badges, expérience et niveau :", error);
             res.status(500).json({ message: "Erreur serveur", error });
         }
     } else {
