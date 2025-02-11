@@ -395,6 +395,56 @@ function locationsave(locationType) {
     selectedLocation = locationType; // Mettre à jour la variable globale
 }
 
+function showBadgeNotification(unlockedBadges) {
+    if (!unlockedBadges || unlockedBadges.length === 0) return;
+
+    // Récupération correcte des éléments
+    const popupa = document.getElementById("popupbadgemain");
+    const popupimg = document.getElementById("popupbadgeimg");
+    const popuptitre = document.getElementById("popupbadgetitre"); // Titre du badge
+    const popuptext = document.getElementById("popupbadgetxt"); // Texte du badge
+
+    if (!popupa || !popupimg || !popuptitre || !popuptext) {
+        console.error("Les éléments du popup de badge sont introuvables !");
+        return;
+    }
+
+    const badgeSound = new Audio("/ckoi.m4a");
+
+    unlockedBadges.forEach((badge, index) => {
+        setTimeout(() => {
+            // Met à jour l'image, le titre et le texte du badge
+            popupimg.src = `/assets/badges/${badge.toLowerCase().replace(/ /g, "_")}.png`;
+            popuptitre.textContent = "🎖️ Nouveau badge débloqué !";
+            popuptext.textContent = badge;
+
+            // Joue le son
+            badgeSound.currentTime = 0;
+            badgeSound.play().catch(error => console.error("Erreur lors de la lecture du son :", error));
+
+            // Déclenche l'animation
+            popupa.classList.remove("activate");
+            popupimg.classList.remove("rotation");
+
+            setTimeout(() => {
+                popupa.classList.add("activate");
+                popupimg.classList.add("rotation");
+            }, 10);
+
+            // Masquer après 2.5s
+            setTimeout(() => {
+                popupa.classList.remove("activate");
+                popupimg.classList.remove("rotation");
+            }, 2500);
+
+        }, index * 3000);
+    });
+}
+
+// ✅ DOMContentLoaded uniquement pour l'initialisation
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOM chargé !");
+});
 
 async function endGame() {
     const locationType = document.getElementById("location-select").value; 
@@ -483,53 +533,7 @@ async function endGame() {
     fetchTopScores();
     resetGame();
 }
-document.addEventListener("DOMContentLoaded", () => {
-    function showBadgeNotification(unlockedBadges) {
-        if (!unlockedBadges || unlockedBadges.length === 0) return;
 
-        // Récupération correcte des éléments
-        const popupa = document.getElementById("popupbadgemain");
-        const popupimg = document.getElementById("popupbadgeimg");
-        const popuptitre = document.getElementById("popupbadgetitre"); // Titre du badge
-        const popuptext = document.getElementById("popupbadgetxt"); // Texte du badge
-
-        if (!popupa || !popupimg || !popuptitre || !popuptext) {
-            console.error("Les éléments du popup de badge sont introuvables !");
-            return;
-        }
-
-        const badgeSound = new Audio("/ckoi.m4a");
-
-        unlockedBadges.forEach((badge, index) => {
-            setTimeout(() => {
-                // Met à jour l'image, le titre et le texte du badge
-                popupimg.src = `/assets/badges/${badge.toLowerCase().replace(/ /g, "_")}.png`;
-                popuptitre.textContent = "🎖️ Nouveau badge débloqué !";
-                popuptext.textContent = badge;
-
-                // Joue le son
-                badgeSound.currentTime = 0;
-                badgeSound.play().catch(error => console.error("Erreur lors de la lecture du son :", error));
-
-                // Déclenche l'animation
-                popupa.classList.remove("activate");
-                popupimg.classList.remove("rotation");
-
-                setTimeout(() => {
-                    popupa.classList.add("activate");
-                    popupimg.classList.add("rotation");
-                }, 10);
-
-                // Masquer après 2.5s
-                setTimeout(() => {
-                    popupa.classList.remove("activate");
-                    popupimg.classList.remove("rotation");
-                }, 2500);
-
-            }, index * 3000);
-        });
-    }
-});
 
 
 
