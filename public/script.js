@@ -414,7 +414,7 @@ function showBadgeNotification(unlockedBadges) {
     unlockedBadges.forEach((badge, index) => {
         setTimeout(() => {
             // Met à jour l'image, le titre et le texte du badge
-            popupimg.src = `/assets/badges/${badge.toLowerCase().replace(/ /g, "_")}.png`;
+            popupimg.src = `/assets/badge/${badge.toLowerCase().replace(/ /g, "_")}.png`;
             popuptitre.textContent = "🎖️ Nouveau badge débloqué !";
             popuptext.textContent = badge;
 
