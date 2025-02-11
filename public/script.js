@@ -660,6 +660,67 @@ async function fetchTopScores() {
     }
 }
 
+const urbanAreas = [
+    { lat: 47.606209, lng: -122.332069, name: "Seattle, WA" }, // Seattle
+    { lat: 45.515232, lng: -122.678385, name: "Portland, OR" }, // Portland
+    { lat: 43.615021, lng: -116.202316, name: "Boise, ID" }, // Boise
+    { lat: 42.850076, lng: -106.325173, name: "Casper, WY" }, // Casper
+    { lat: 46.909797, lng: -98.708436, name: "Jamestown, ND" }, // Jamestown
+    { lat: 40.813616, lng: -96.702595, name: "Lincoln, NE" }, // Lincoln
+    { lat: 40.760779, lng: -111.891047, name: "Salt Lake City, UT" }, // Salt Lake City
+    { lat: 39.529633, lng: -119.813803, name: "Reno, NV" }, // Reno
+    { lat: 38.581572, lng: -121.494400, name: "Sacramento, CA" }, // Sacramento
+    { lat: 37.774929, lng: -122.419416, name: "San Francisco, CA" }, // San Francisco
+    { lat: 37.338208, lng: -121.886329, name: "San José, CA" }, // San José
+    { lat: 39.739235, lng: -104.990250, name: "Denver, CO" }, // Denver
+    { lat: 33.448376, lng: -112.074036, name: "Phoenix, AZ" }, // Phoenix
+    { lat: 34.052235, lng: -118.243683, name: "Los Angeles, CA" }, // Los Angeles
+    { lat: 35.084385, lng: -106.650422, name: "Albuquerque, NM" }, // Albuquerque
+    { lat: 35.687000, lng: -105.937799, name: "Santa Fe, NM" }, // Santa Fe
+    { lat: 35.467560, lng: -97.516428, name: "Oklahoma City, OK" }, // Oklahoma City
+    { lat: 32.776664, lng: -96.796988, name: "Dallas, TX" }, // Dallas
+    { lat: 39.099727, lng: -94.578567, name: "Kansas City, MO" }, // Kansas City
+    { lat: 30.267153, lng: -97.743061, name: "Austin, TX" }, // Austin
+    { lat: 35.149532, lng: -90.048980, name: "Memphis, TN" }, // Memphis
+    { lat: 32.298757, lng: -90.184810, name: "Jackson, MS" }, // Jackson
+    { lat: 29.951065, lng: -90.071533, name: "New Orleans, LA" }, // New Orleans
+    { lat: 30.332184, lng: -81.655647, name: "Jacksonville, FL" }, // Jacksonville
+    { lat: 38.627003, lng: -90.199404, name: "St. Louis, MO" }, // St. Louis
+    { lat: 41.878113, lng: -87.629799, name: "Chicago, IL" }, // Chicago
+    { lat: 44.977753, lng: -93.265011, name: "Minneapolis, MN" }, // Minneapolis
+    { lat: 43.038902, lng: -87.906471, name: "Milwaukee, WI" }, // Milwaukee
+    { lat: 42.331427, lng: -83.045753, name: "Detroit, MI" }, // Detroit
+    { lat: 38.252665, lng: -85.758456, name: "Louisville, KY" }, // Louisville
+    { lat: 40.440625, lng: -79.995886, name: "Pittsburgh, PA" }, // Pittsburgh
+    { lat: 41.499321, lng: -81.694361, name: "Cleveland, OH" }, // Cleveland
+    { lat: 36.162664, lng: -86.781602, name: "Nashville, TN" }, // Nashville
+    { lat: 43.659099, lng: -70.256820, name: "Portland, ME" }, // Portland, Maine
+    { lat: 40.712776, lng: -74.005974, name: "New York, NY" }, // New York
+    { lat: 39.952583, lng: -75.165222, name: "Philadelphia, PA" }, // Philadelphie
+    { lat: 39.290386, lng: -76.612190, name: "Baltimore, MD" }, // Baltimore
+    { lat: 38.907192, lng: -77.036873, name: "Washington, DC" }, // Washington
+    { lat: 39.103119, lng: -84.512016, name: "Cincinnati, OH" }, // Cincinnati
+    { lat: 36.850769, lng: -76.285873, name: "Norfolk, VA" }, // Norfolk
+    { lat: 35.227085, lng: -80.843124, name: "Charlotte, NC" }, // Charlotte
+    { lat: 35.960638, lng: -83.920739, name: "Knoxville, TN" }, // Knoxville
+    { lat: 34.000710, lng: -81.034814, name: "Columbia, SC" }, // Columbia
+    { lat: 34.225727, lng: -77.944710, name: "Wilmington, NC" }, // Wilmington
+    { lat: 39.364285, lng: -74.422935, name: "Atlantic City, NJ" }, // Atlantic City
+    { lat: 32.379223, lng: -86.307736, name: "Montgomery, AL" }, // Montgomery
+    { lat: 32.080898, lng: -81.091203, name: "Savannah, GA" }, // Savannah
+    { lat: 29.585365, lng: -81.207869, name: "Palm Coast, FL" }, // Palm Coast
+    { lat: 30.762990, lng: -86.570507, name: "Crestview, FL" }, // Crestview
+    { lat: 30.451468, lng: -91.187146, name: "Baton Rouge, LA" }, // Baton Rouge
+    { lat: 26.640628, lng: -81.872308, name: "Fort Myers, FL" }, // Fort Myers
+    { lat: 27.950575, lng: -82.457178, name: "Tampa, FL" }, // Tampa
+    { lat: 26.358689, lng: -80.083098, name: "Boca Raton, FL" }, // Boca Raton
+    { lat: 33.749000, lng: -84.387982, name: "Atlanta, GA" }, // Atlanta
+    { lat: 41.256538, lng: -95.934502, name: "Omaha, NE" }, // Omaha
+    { lat: 40.585260, lng: -105.084423, name: "Fort Collins, CO" }, // Fort Collins
+    { lat: 44.877182, lng: -98.518226, name: "Redfield, SD" }, // Redfield
+    { lat: 43.544596, lng: -96.731103, name: "Sioux Falls, SD" } // Sioux Falls
+]
+// Sélectionner un point aléatoire parmi les villes listées
 
 
 function getRandomStreetViewLocation(locationType) {
@@ -685,102 +746,44 @@ function getRandomStreetViewLocation(locationType) {
             }
         });
     } else if (locationType === 'north-america') {
+        // Vérification que urbanAreas existe bien
+        if (!urbanAreas || urbanAreas.length === 0) {
+            console.error("La liste urbanAreas est vide ou non définie !");
+            return;
+        }
 
-        const urbanAreas = [
-            { lat: 47.606209, lng: -122.332069, name: "Seattle, WA" }, // Seattle
-            { lat: 45.515232, lng: -122.678385, name: "Portland, OR" }, // Portland
-            { lat: 43.615021, lng: -116.202316, name: "Boise, ID" }, // Boise
-            { lat: 42.850076, lng: -106.325173, name: "Casper, WY" }, // Casper
-            { lat: 46.909797, lng: -98.708436, name: "Jamestown, ND" }, // Jamestown
-            { lat: 40.813616, lng: -96.702595, name: "Lincoln, NE" }, // Lincoln
-            { lat: 40.760779, lng: -111.891047, name: "Salt Lake City, UT" }, // Salt Lake City
-            { lat: 39.529633, lng: -119.813803, name: "Reno, NV" }, // Reno
-            { lat: 38.581572, lng: -121.494400, name: "Sacramento, CA" }, // Sacramento
-            { lat: 37.774929, lng: -122.419416, name: "San Francisco, CA" }, // San Francisco
-            { lat: 37.338208, lng: -121.886329, name: "San José, CA" }, // San José
-            { lat: 39.739235, lng: -104.990250, name: "Denver, CO" }, // Denver
-            { lat: 33.448376, lng: -112.074036, name: "Phoenix, AZ" }, // Phoenix
-            { lat: 34.052235, lng: -118.243683, name: "Los Angeles, CA" }, // Los Angeles
-            { lat: 35.084385, lng: -106.650422, name: "Albuquerque, NM" }, // Albuquerque
-            { lat: 35.687000, lng: -105.937799, name: "Santa Fe, NM" }, // Santa Fe
-            { lat: 35.467560, lng: -97.516428, name: "Oklahoma City, OK" }, // Oklahoma City
-            { lat: 32.776664, lng: -96.796988, name: "Dallas, TX" }, // Dallas
-            { lat: 39.099727, lng: -94.578567, name: "Kansas City, MO" }, // Kansas City
-            { lat: 30.267153, lng: -97.743061, name: "Austin, TX" }, // Austin
-            { lat: 35.149532, lng: -90.048980, name: "Memphis, TN" }, // Memphis
-            { lat: 32.298757, lng: -90.184810, name: "Jackson, MS" }, // Jackson
-            { lat: 29.951065, lng: -90.071533, name: "New Orleans, LA" }, // New Orleans
-            { lat: 30.332184, lng: -81.655647, name: "Jacksonville, FL" }, // Jacksonville
-            { lat: 38.627003, lng: -90.199404, name: "St. Louis, MO" }, // St. Louis
-            { lat: 41.878113, lng: -87.629799, name: "Chicago, IL" }, // Chicago
-            { lat: 44.977753, lng: -93.265011, name: "Minneapolis, MN" }, // Minneapolis
-            { lat: 43.038902, lng: -87.906471, name: "Milwaukee, WI" }, // Milwaukee
-            { lat: 42.331427, lng: -83.045753, name: "Detroit, MI" }, // Detroit
-            { lat: 38.252665, lng: -85.758456, name: "Louisville, KY" }, // Louisville
-            { lat: 40.440625, lng: -79.995886, name: "Pittsburgh, PA" }, // Pittsburgh
-            { lat: 41.499321, lng: -81.694361, name: "Cleveland, OH" }, // Cleveland
-            { lat: 36.162664, lng: -86.781602, name: "Nashville, TN" }, // Nashville
-            { lat: 43.659099, lng: -70.256820, name: "Portland, ME" }, // Portland, Maine
-            { lat: 40.712776, lng: -74.005974, name: "New York, NY" }, // New York
-            { lat: 39.952583, lng: -75.165222, name: "Philadelphia, PA" }, // Philadelphie
-            { lat: 39.290386, lng: -76.612190, name: "Baltimore, MD" }, // Baltimore
-            { lat: 38.907192, lng: -77.036873, name: "Washington, DC" }, // Washington
-            { lat: 39.103119, lng: -84.512016, name: "Cincinnati, OH" }, // Cincinnati
-            { lat: 36.850769, lng: -76.285873, name: "Norfolk, VA" }, // Norfolk
-            { lat: 35.227085, lng: -80.843124, name: "Charlotte, NC" }, // Charlotte
-            { lat: 35.960638, lng: -83.920739, name: "Knoxville, TN" }, // Knoxville
-            { lat: 34.000710, lng: -81.034814, name: "Columbia, SC" }, // Columbia
-            { lat: 34.225727, lng: -77.944710, name: "Wilmington, NC" }, // Wilmington
-            { lat: 39.364285, lng: -74.422935, name: "Atlantic City, NJ" }, // Atlantic City
-            { lat: 32.379223, lng: -86.307736, name: "Montgomery, AL" }, // Montgomery
-            { lat: 32.080898, lng: -81.091203, name: "Savannah, GA" }, // Savannah
-            { lat: 29.585365, lng: -81.207869, name: "Palm Coast, FL" }, // Palm Coast
-            { lat: 30.762990, lng: -86.570507, name: "Crestview, FL" }, // Crestview
-            { lat: 30.451468, lng: -91.187146, name: "Baton Rouge, LA" }, // Baton Rouge
-            { lat: 26.640628, lng: -81.872308, name: "Fort Myers, FL" }, // Fort Myers
-            { lat: 27.950575, lng: -82.457178, name: "Tampa, FL" }, // Tampa
-            { lat: 26.358689, lng: -80.083098, name: "Boca Raton, FL" }, // Boca Raton
-            { lat: 33.749000, lng: -84.387982, name: "Atlanta, GA" }, // Atlanta
-            { lat: 41.256538, lng: -95.934502, name: "Omaha, NE" }, // Omaha
-            { lat: 40.585260, lng: -105.084423, name: "Fort Collins, CO" }, // Fort Collins
-            { lat: 44.877182, lng: -98.518226, name: "Redfield, SD" }, // Redfield
-            { lat: 43.544596, lng: -96.731103, name: "Sioux Falls, SD" } // Sioux Falls
-        ]
-        // Sélectionner un point aléatoire parmi les villes listées
-        
-    // Sélectionner une ville au hasard
-    const randomIndex = Math.floor(Math.random() * urbanAreas.length);
-    const baseLocation = urbanAreas[randomIndex];
+        const randomIndex = Math.floor(Math.random() * urbanAreas.length);
+        const baseLocation = urbanAreas[randomIndex];
 
-    // Ajouter une légère variation (~5 km)
-    const randomLat = baseLocation.lat + (Math.random() - 0.5) * 0.09;
-    const randomLng = baseLocation.lng + (Math.random() - 0.5) * 0.09;
-    const latLng = new google.maps.LatLng(randomLat, randomLng);
+        // Ajouter une légère variation (~5 km)
+        const randomLat = baseLocation.lat + (Math.random() - 0.5) * 0.09;
+        const randomLng = baseLocation.lng + (Math.random() - 0.5) * 0.09;
+        const latLng = new google.maps.LatLng(randomLat, randomLng);
 
-    console.log(`Recherche Street View proche de ${baseLocation.name} (${randomLat}, ${randomLng})`);
+        console.log(`Recherche Street View proche de ${baseLocation.name} (${randomLat}, ${randomLng})`);
 
-    svService.getPanorama(
-        {
-            location: latLng,
-            radius: 5000,
-            source: google.maps.StreetViewSource.OUTDOOR,
-        },
-        (data, status) => {
-            if (status === 'OK' && data && data.location) {
-                if (data.location.pano && data.links.length > 0) {
-                    actualLocation = data.location.latLng;
-                    panorama.setPosition(actualLocation);
+        svService.getPanorama(
+            {
+                location: latLng,
+                radius: 5000,
+                source: google.maps.StreetViewSource.OUTDOOR,
+            },
+            (data, status) => {
+                if (status === 'OK' && data && data.location) {
+                    if (data.location.pano && data.links.length > 0) {
+                        actualLocation = data.location.latLng;
+                        panorama.setPosition(actualLocation);
+                    } else {
+                        console.warn("Street View non valide, nouvel essai...");
+                        getRandomStreetViewLocation('north-america');
+                    }
                 } else {
-                    console.warn("Street View non valide, nouvel essai...");
+                    console.warn("Aucun panorama trouvé, nouvel essai...");
                     getRandomStreetViewLocation('north-america');
                 }
-            } else {
-                console.warn("Aucun panorama trouvé, nouvel essai...");
-                getRandomStreetViewLocation('north-america');
             }
-        }
-    );
-} else {
+        );
+    } else {
         // Autres cas, garder la logique existante
         let filteredLocations;
         let radiusInKm = 1; // Par défaut, le rayon est de 1 km.
