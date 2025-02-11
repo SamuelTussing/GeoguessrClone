@@ -105,7 +105,7 @@ document.getElementById('start-button').addEventListener('click', () => {
     // Gestion des boutons de mode de jeu
     document.getElementById('classique-mode-button').addEventListener('click', () => {
         gameMode = 'classique';
-        showBadgeNotification(["halsacien"]);
+        //showBadgeNotification(["halsacien"]);
         document.getElementById('result').style.display = 'none';
         document.getElementById('mode-title').innerText = 'MODE DE JEU : SOLO CLASSIQUE';
         document.getElementById('start-screen').style.display = 'flex';
