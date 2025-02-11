@@ -494,6 +494,8 @@ function showBadgeNotification(unlockedBadges) {
         return;
     }
 
+    const badgeSound = new Audio("/ckoi.m4a");
+
     unlockedBadges.forEach((badge, index) => {
         setTimeout(() => {
             // Met à jour l'image du badge
@@ -501,6 +503,10 @@ function showBadgeNotification(unlockedBadges) {
 
             // Met à jour le texte du badge
             popuptext.textContent = `🎉 Nouveau badge débloqué : ${badge} !`;
+
+            // Joue le son
+            badgeSound.currentTime = 0; // Réinitialise le son pour éviter les chevauchements
+            badgeSound.play().catch(error => console.error("Erreur lors de la lecture du son :", error));
 
             // Déclenche l'animation
             popupa.classList.remove("activate");
@@ -528,7 +534,7 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
 
     const badgeConditions = [
         { name: "choucroute", score: 25000, location: "Strasbourg", chrono: "1s" },
-        { name: "halsacien", score: 25000, location: "Strasbourg" },
+        { name: "halsacien", score: 5000, location: "Strasbourg" },
         { name: "globetrotter", score: 15000, location: "world" },
         { name: "conqueror", score: 20000, location: "world", chrono: "1s" },
         { name: "croissant", score: 20000, location: "France" },
