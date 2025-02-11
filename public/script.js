@@ -685,32 +685,40 @@ function getRandomStreetViewLocation(locationType) {
             }
         });
     } else if (locationType === 'north-america') {
-        // Générer des coordonnées aléatoires en Amérique du Nord
-        const randomLatLng = getRandomNorthAmericaCoordinates();
-        const latLng = new google.maps.LatLng(randomLatLng.lat, randomLatLng.lng);
+        // Sélectionner un point aléatoire parmi les villes listées
+        const randomIndex = Math.floor(Math.random() * urbanAreas.length);
+        const baseLocation = urbanAreas[randomIndex];
 
-        // Utiliser l'API pour trouver un panorama dans un rayon de 50 km
+        // Ajouter une légère variation pour éviter toujours le même spot exact
+        const randomLat = baseLocation.lat + (Math.random() - 0.5) * 0.09; // ~±5 km (~0.09°)
+        const randomLng = baseLocation.lng + (Math.random() - 0.5) * 0.09;
+        const latLng = new google.maps.LatLng(randomLat, randomLng);
+
+        console.log(`Recherche Street View proche de ${baseLocation.name} (${randomLat}, ${randomLng})`);
+
+        // Utiliser l'API Google Street View pour trouver un panorama
         svService.getPanorama(
             {
                 location: latLng,
-                radius: 50000, // Rayon de recherche
-                source: google.maps.StreetViewSource.OUTDOOR, // Seulement les panoramas pris par Google
+                radius: 5000, // Rayon de 5 km
+                source: google.maps.StreetViewSource.OUTDOOR, // Seulement les panoramas extérieurs
             },
             (data, status) => {
                 if (status === 'OK' && data && data.location) {
                     if (data.location.pano && data.links.length > 0) {
                         actualLocation = data.location.latLng; // Localisation trouvée
                         panorama.setPosition(actualLocation); // Afficher dans Street View
-                        //currentRound++; // Mise à jour du compteur de round
                     } else {
-                        getRandomStreetViewLocation('north-america'); // Réessayer si échec
+                        console.warn("Street View non valide, nouvel essai...");
+                        getRandomStreetViewLocation('north-america'); // Réessayer
                     }
                 } else {
-                    getRandomStreetViewLocation('north-america'); // Réessayer si échec
+                    console.warn("Aucun panorama trouvé, nouvel essai...");
+                    getRandomStreetViewLocation('north-america'); // Réessayer
                 }
             }
         );
-    } else {
+     } else {
         // Autres cas, garder la logique existante
         let filteredLocations;
         let radiusInKm = 1; // Par défaut, le rayon est de 1 km.
