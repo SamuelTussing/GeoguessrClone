@@ -542,6 +542,7 @@ async function endGame() {
 
 function checkAndUnlockBadges(finalScore, location, chronoSelection,newlevel) {
     let unlockedBadges = [];
+    console.log(newlevel);
 
     const badgeConditions = [
         {name : "Scout Novice", valeur: "0"},
