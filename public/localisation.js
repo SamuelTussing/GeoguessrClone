@@ -1453,6 +1453,46 @@ const locations = [
     { lat: 48.583030, lng: 7.752221, continent: 'Europe', pays: 'Fance', ville: 'Strasbourg' }, // Place de l’Université
     { lat: 48.589227, lng: 7.755235, continent: 'Europe', pays: 'Fance', ville: 'Strasbourg' }, // Parc du Contades
     { lat: 48.574329, lng: 7.753062, continent: 'Europe', pays: 'Fance', ville: 'Strasbourg' }, // Maison Kammerzell
+    { lat: 48.586194, lng: 7.747840, continent: 'Europe',  ville: 'Strasbourg' }, // Rue du Bain-aux-Plantes
+    { lat: 48.578930, lng: 7.752245, continent: 'Europe',  ville: 'Strasbourg' }, // Rue de la Division Leclerc
+    { lat: 48.573847, lng: 7.753479, continent: 'Europe',  ville: 'Strasbourg' }, // Rue des Balayeurs
+    { lat: 48.576489, lng: 7.758964, continent: 'Europe',  ville: 'Strasbourg' }, // Rue de Zurich
+    { lat: 48.579312, lng: 7.756870, continent: 'Europe',  ville: 'Strasbourg' }, // Rue de l'Université
+    { lat: 48.582092, lng: 7.754534, continent: 'Europe',  ville: 'Strasbourg' }, // Rue des Juifs
+    { lat: 48.580243, lng: 7.743582, continent: 'Europe',  ville: 'Strasbourg' }, // Rue du Vieux Marché aux Vins
+    { lat: 48.585962, lng: 7.750124, continent: 'Europe', ville: 'Strasbourg' }, // Rue du Fossé-des-Tanneurs
+    { lat: 48.581267, lng: 7.751985, continent: 'Europe',  ville: 'Strasbourg' }, // Rue Sainte-Madeleine
+    { lat: 48.577685, lng: 7.748231, continent: 'Europe', ville: 'Strasbourg' }, // Rue du Jeu-des-Enfants
+    { lat: 48.575143, lng: 7.747029, continent: 'Europe', ville: 'Strasbourg' }, // Rue des Grandes Arcades
+    { lat: 48.576875, lng: 7.753122, continent: 'Europe',  ville: 'Strasbourg' }, // Rue Saint-Nicolas
+    { lat: 48.583410, lng: 7.743312, continent: 'Europe',  ville: 'Strasbourg' }, // Rue du Faubourg-National
+    { lat: 48.578045, lng: 7.743782, continent: 'Europe',  ville: 'Strasbourg' }, // Rue de la 1ère Armée
+    { lat: 48.585024, lng: 7.751689, continent: 'Europe',  ville: 'Strasbourg' }, // Rue Gustave Doré
+    { lat: 48.574236, lng: 7.754302, continent: 'Europe',  ville: 'Strasbourg' }, // Rue des Veaux
+    { lat: 48.579876, lng: 7.749876, continent: 'Europe',  ville: 'Strasbourg' }, // Rue du Dôme
+    { lat: 48.582498, lng: 7.745678, continent: 'Europe',  ville: 'Strasbourg' }, // Rue de la Fonderie
+    { lat: 48.575982, lng: 7.745043, continent: 'Europe',  ville: 'Strasbourg' }, // Rue du Marché
+    { lat: 48.584023, lng: 7.752301, continent: 'Europe',  ville: 'Strasbourg' }, // Rue du Temple Neuf
+    { lat: 48.573105, lng: 7.748653, continent: 'Europe', pays: 'France', ville: 'Strasbourg' }, // Rue Sainte-Hélène
+    { lat: 48.578321, lng: 7.741967, continent: 'Europe', pays: 'France', ville: 'Strasbourg' }, // Rue du Faubourg-de-Pierre
+    { lat: 48.580943, lng: 7.759231, continent: 'Europe', pays: 'France', ville: 'Strasbourg' }, // Rue de l'Académie
+    { lat: 48.576788, lng: 7.741204, continent: 'Europe', pays: 'France', ville: 'Strasbourg' }, // Rue Kageneck
+    { lat: 48.585314, lng: 7.743902, continent: 'Europe', pays: 'France', ville: 'Strasbourg' }, // Rue du Faubourg-National (nord)
+    { lat: 48.579571, lng: 7.746123, continent: 'Europe', pays: 'France', ville: 'Strasbourg' }, // Rue du Travail
+    { lat: 48.571834, lng: 7.752942, continent: 'Europe', pays: 'France', ville: 'Strasbourg' }, // Rue des Bouchers
+    { lat: 48.583942, lng: 7.756213, continent: 'Europe', pays: 'France', ville: 'Strasbourg' }, // Rue de la Mesange
+    { lat: 48.576210, lng: 7.743049, continent: 'Europe', pays: 'France', ville: 'Strasbourg' }, // Rue Kuhn
+    { lat: 48.573671, lng: 7.740867, continent: 'Europe', pays: 'France', ville: 'Strasbourg' }, // Rue Saint-Michel
+    { lat: 48.572132, lng: 7.747380, continent: 'Europe', pays: 'France', ville: 'Strasbourg' }, // Rue du Fossé-des-Tailleurs
+    { lat: 48.575734, lng: 7.756432, continent: 'Europe', pays: 'France', ville: 'Strasbourg' }, // Rue du Renard-Prêchant
+    { lat: 48.581507, lng: 7.742004, continent: 'Europe', pays: 'France', ville: 'Strasbourg' }, // Rue de Molsheim
+    { lat: 48.574802, lng: 7.750945, continent: 'Europe', pays: 'France', ville: 'Strasbourg' }, // Rue du Sanglier
+    { lat: 48.579294, lng: 7.753817, continent: 'Europe', pays: 'France', ville: 'Strasbourg' }, // Rue du Parchemin
+    { lat: 48.582619, lng: 7.749482, continent: 'Europe', pays: 'France', ville: 'Strasbourg' }, // Rue Brûlée
+    { lat: 48.570987, lng: 7.749194, continent: 'Europe', pays: 'France', ville: 'Strasbourg' }, // Rue de la Brigade Alsace-Lorraine
+    { lat: 48.580012, lng: 7.739874, continent: 'Europe', pays: 'France', ville: 'Strasbourg' }, // Rue Georges Wodli
+    { lat: 48.572871, lng: 7.754368, continent: 'Europe', pays: 'France', ville: 'Strasbourg' }, // Rue des Orphelins
+    { lat: 48.584127, lng: 7.747829, continent: 'Europe', pays: 'France', ville: 'Strasbourg' }, // Rue de la Nuée-Bleue
 
     //capitales
     { lat: 48.8571176130146, lng: 2.2953320109276265, continent: 'Europe', pays: 'Frnce', ville: 'Paris', mode: 'Capitales', place: "Tour Eiffel" },

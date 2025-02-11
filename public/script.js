@@ -456,7 +456,7 @@ async function endGame() {
     // Points bonus en fonction du mode de jeu
     const bonusPointsMap = {
         "world": 3000,
-        "Strasbourg": 0,
+        "Strasbourg": 100,
         "France": 1000,
         "europe": 2000,
         "north-america": 2000,
