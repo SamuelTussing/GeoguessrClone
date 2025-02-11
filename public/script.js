@@ -768,7 +768,7 @@ function getRandomStreetViewLocation(locationType) {
         svService.getPanorama(
             {
                 location: latLng,
-                radius: 5000,
+                radius: 500,
                 source: google.maps.StreetViewSource.OUTDOOR,
             },
             (data, status) => {
@@ -797,11 +797,11 @@ function getRandomStreetViewLocation(locationType) {
                 break;
             case 'Capitales':
                 filteredLocations = locations.filter(location => location.mode === 'Capitales');
-                radiusInKm = .2;
+                radiusInKm = .15;
                 break;
             case 'Strasbourg':
                 filteredLocations = locations.filter(location => location.ville === 'Strasbourg');
-                radiusInKm = 0.15; // Rayon 0 pour Strasbourg
+                radiusInKm = 0.30; // Rayon 0 pour Strasbourg
                 break;
             case 'France':
                 filteredLocations = locations.filter(location => location.pays === 'France');
@@ -809,7 +809,7 @@ function getRandomStreetViewLocation(locationType) {
                 break;
             case 'famous':
                 filteredLocations = locations.filter(location => location.mode === 'famous'); 
-                radiusInKm = 0.03; // Rayon 0 pour famous
+                radiusInKm = 0.05; // Rayon 0 pour famous
                 break;
             default:
                 filteredLocations = locations;
@@ -822,7 +822,7 @@ function getRandomStreetViewLocation(locationType) {
         const randomLocation = getRandomLocationWithinRadius(selectedLocation.lat, selectedLocation.lng, radiusInKm);
 
         const latLng = new google.maps.LatLng(randomLocation.lat, randomLocation.lng);
-        svService.getPanorama({ location: latLng, radius: 50000, source: google.maps.StreetViewSource.OUTDOOR }, processSVData);
+        svService.getPanorama({ location: latLng, radius: 500, source: google.maps.StreetViewSource.OUTDOOR }, processSVData);
     }
 }
 function getRandomAfricaCoordinates() {
@@ -859,7 +859,7 @@ function calculateScore(playerLocation) {
     // Calcul du malus basé sur le temps
     let timePenalty = 0;
     if (timeTaken > 15) {
-        timePenalty = Math.floor((timeTaken - 15) * 10);
+        timePenalty = Math.floor((timeTaken - 15) * 8);
     }
 
     // Appliquer le malus au score du round
