@@ -541,21 +541,21 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
     let unlockedBadges = [];
 
     const badgeConditions = [
-        { name: "choucroute", score: 25000, location: "Strasbourg", chrono: "1s" },
-        { name: "halsacien", score: 5000, location: "Strasbourg" },
-        { name: "globetrotter", score: 15000, location: "world" },
-        { name: "conqueror", score: 20000, location: "world", chrono: "1s" },
-        { name: "croissant", score: 20000, location: "France" },
-        { name: "marine", score: 20000, location: "France", chrono: "1s" },
-        { name: "voyageur", score: 20000, location: "europe" },
-        { name: "blietzkrieg", score: 15000, location: "europe", chrono: "1s" },
-        { name: "AIGLE", score: 15000, location: "north-america", chrono: "1s" },
-        { name: "Cow-Boy", score: 15000, location: "north-america" },
-        { name: "pionnier", score: 20000, location: "north-america" },
-        { name: "ARCHEOLOGUE", score: 20000, location: "famous", chrono: "1s" },
-        { name: "REPORTER", score: 15000, location: "famous" },
-        { name: "Duc-de-Agass", score: 15000, location: "Capitales" },
-        { name: "ROUTARD-PRO", score: 20000, location: "Capitales" }
+        { name: "Choucroute", score: 25000, location: "Strasbourg", chrono: "1s" },
+        { name: "Halsacien", score: 5000, location: "Strasbourg" },
+        { name: "Globetrotter", score: 15000, location: "world" },
+        { name: "Conqueror", score: 20000, location: "world", chrono: "1s" },
+        { name: "Croissant", score: 20000, location: "France" },
+        { name: "Marine", score: 20000, location: "France", chrono: "1s" },
+        { name: "Voyageur", score: 20000, location: "europe" },
+        { name: "Blietzkrieg", score: 15000, location: "europe", chrono: "1s" },
+        { name: "Aigle", score: 15000, location: "north-america", chrono: "1s" },
+        { name: "CowBoy", score: 15000, location: "north-america" },
+        { name: "Pionnier", score: 20000, location: "north-america" },
+        { name: "Archeologue", score: 20000, location: "famous", chrono: "1s" },
+        { name: "Reporter", score: 15000, location: "famous" },
+        { name: "DucdeAgass", score: 15000, location: "Capitales" },
+        { name: "RoutardPro", score: 20000, location: "Capitales" }
     ];
 
     badgeConditions.forEach(badge => {
