@@ -105,6 +105,7 @@ document.getElementById('start-button').addEventListener('click', () => {
     // Gestion des boutons de mode de jeu
     document.getElementById('classique-mode-button').addEventListener('click', () => {
         gameMode = 'classique';
+        showBadgeNotification(["Halsacien"]);
         document.getElementById('result').style.display = 'none';
         document.getElementById('mode-title').innerText = 'MODE DE JEU : SOLO CLASSIQUE';
         document.getElementById('start-screen').style.display = 'flex';
@@ -482,50 +483,53 @@ async function endGame() {
     fetchTopScores();
     resetGame();
 }
-function showBadgeNotification(unlockedBadges) {
-    if (!unlockedBadges || unlockedBadges.length === 0) return;
+document.addEventListener("DOMContentLoaded", () => {
+    function showBadgeNotification(unlockedBadges) {
+        if (!unlockedBadges || unlockedBadges.length === 0) return;
 
-    const popupa = document.getElementById("popupbadgemain");
-    const popupimg = document.getElementById("popupbadgeimg");
-    const popuptext = document.getElementById("popupbadgetitre"); // Ajoute un élément texte si nécessaire
+        // Récupération correcte des éléments
+        const popupa = document.getElementById("popupbadgemain");
+        const popupimg = document.getElementById("popupbadgeimg");
+        const popuptitre = document.getElementById("popupbadgetitre"); // Titre du badge
+        const popuptext = document.getElementById("popupbadgetxt"); // Texte du badge
 
-    if (!popupa || !popupimg || !popuptext) {
-        console.error("Les éléments du popup de badge sont introuvables !");
-        return;
-    }
+        if (!popupa || !popupimg || !popuptitre || !popuptext) {
+            console.error("Les éléments du popup de badge sont introuvables !");
+            return;
+        }
 
-    const badgeSound = new Audio("/ckoi.m4a");
+        const badgeSound = new Audio("/ckoi.m4a");
 
-    unlockedBadges.forEach((badge, index) => {
-        setTimeout(() => {
-            // Met à jour l'image du badge
-            popupimg.src = `/assets/badges/${badge.toLowerCase().replace(/ /g, "_")}.png`; 
-
-            // Met à jour le texte du badge
-            popuptext.textContent = `🎉 Nouveau badge débloqué : ${badge} !`;
-
-            // Joue le son
-            badgeSound.currentTime = 0; // Réinitialise le son pour éviter les chevauchements
-            badgeSound.play().catch(error => console.error("Erreur lors de la lecture du son :", error));
-
-            // Déclenche l'animation
-            popupa.classList.remove("activate");
-            popupimg.classList.remove("rotation");
-
+        unlockedBadges.forEach((badge, index) => {
             setTimeout(() => {
-                popupa.classList.add("activate");
-                popupimg.classList.add("rotation");
-            }, 10);
+                // Met à jour l'image, le titre et le texte du badge
+                popupimg.src = `/assets/badges/${badge.toLowerCase().replace(/ /g, "_")}.png`;
+                popuptitre.textContent = "🎖️ Nouveau badge débloqué !";
+                popuptext.textContent = badge;
 
-            // Masquer après 2.5s
-            setTimeout(() => {
+                // Joue le son
+                badgeSound.currentTime = 0;
+                badgeSound.play().catch(error => console.error("Erreur lors de la lecture du son :", error));
+
+                // Déclenche l'animation
                 popupa.classList.remove("activate");
                 popupimg.classList.remove("rotation");
-            }, 2500);
 
-        }, index * 3000); // Affiche les badges un par un avec un délai de 3s entre chaque
-    });
-}
+                setTimeout(() => {
+                    popupa.classList.add("activate");
+                    popupimg.classList.add("rotation");
+                }, 10);
+
+                // Masquer après 2.5s
+                setTimeout(() => {
+                    popupa.classList.remove("activate");
+                    popupimg.classList.remove("rotation");
+                }, 2500);
+
+            }, index * 3000);
+        });
+    }
+});
 
 
 
@@ -1473,29 +1477,4 @@ document.getElementById("arrowbadge").addEventListener("click", async (e) => {
 });
 
 
-document.addEventListener("DOMContentLoaded", () => {
-    const popupa = document.getElementById("popupbadgemain");
-    const popupimg = document.getElementById("popupbadgeimg");
-    const buttonn = document.getElementById("classique-mode-button");
-
-    buttonn.addEventListener("click", () => {
-        if (!popupa) return;
-
-        // Réinitialise la position pour permettre le redéclenchement de l'animation
-        popupa.classList.remove("activate");
-        popupimg.classList.remove("rotation");
-
-        // Petite pause pour forcer le navigateur à appliquer le retrait avant d'ajouter à nouveau la classe
-        setTimeout(() => {
-            popupa.classList.add("activate");
-            popupimg.classList.add("rotation");
-        }, 10); 
-
-        // Supprime la classe après 5.5s (2s delay + 0.5s slide + 3s affichage + 0.5s retour)
-        setTimeout(() => {
-            popupa.classList.remove("activate");
-            popupimg.classList.remove("rotation");
-        }, 2500);
-    });
-});
 
