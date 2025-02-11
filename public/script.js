@@ -540,10 +540,22 @@ async function endGame() {
 
 
 
-function checkAndUnlockBadges(finalScore, location, chronoSelection) {
+function checkAndUnlockBadges(finalScore, location, chronoSelection,newlevel) {
     let unlockedBadges = [];
 
     const badgeConditions = [
+        {name : "Scout Novice", valeur: "0"},
+        {name : "Eclaireur Novice",  valeur: "5"},
+        {name : "Voyageur Curieux",  valeur: "10"},
+        {name : "Aventurier",  valeur: "20"},
+        {name : "Explorateur Intrépide",  valeur: "30"},
+        {name : "Découvreur Persévérant",  valeur: "40"},
+        {name : "Pionnier Légendaire",  valeur: "50"},
+        {name : "Marcheur des Confins",  valeur: "60"},
+        {name : "Conquérant des Horizons",  valeur: "70"},
+        {name : "Maître Voyageur", valeur: "80"},
+        {name : "Seigneur de l'Inconnu", valeur: "90"},
+        {name : "Légende des Mondes Perdus", valeur: "100"},
         { name: "Choucroute", score: 25000, location: "Strasbourg", chrono: "1s" },
         { name: "Halsacien", score: 25000, location: "Strasbourg", chrono:"infini"},
         { name: "Globetrotter", score: 15000, location: "world", chrono:"infini" },
@@ -562,12 +574,21 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
     ];
 
     badgeConditions.forEach(badge => {
+        // Vérification du score, de la localisation et de chrono
         if (finalScore >= badge.score && location === badge.location) {
             if (!badge.chrono || chronoSelection === badge.chrono) {
                 unlockedBadges.push(badge.name);
             }
         }
+
+        // Ajout de la condition newlevel >= valeur
+        if (newlevel >= badge.valeur) {
+            unlockedBadges.push(badge.name);
+        }
     });
+
+    // Éviter les doublons dans les badges débloqués
+    unlockedBadges = [...new Set(unlockedBadges)];
 
     return unlockedBadges;
 }
