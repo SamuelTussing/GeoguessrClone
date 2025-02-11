@@ -542,7 +542,7 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
 
     const badgeConditions = [
         { name: "Choucroute", score: 25000, location: "Strasbourg", chrono: "1s" },
-        { name: "Halsacien", score: 5000, location: "Strasbourg" },
+        { name: "Halsacien", score: 25000, location: "Strasbourg" },
         { name: "Globetrotter", score: 15000, location: "world" },
         { name: "Conqueror", score: 20000, location: "world", chrono: "1s" },
         { name: "Croissant", score: 20000, location: "France" },
