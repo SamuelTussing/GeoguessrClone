@@ -11,20 +11,19 @@ export default async function handler(req, res) {
 
             const objectId = new ObjectId(userId);
 
-             // Convertir userId en ObjectId
-            const user = await db.collection("users").findOne({ _id: ObjectId });
+            // Convertir userId en ObjectId et récupérer l'utilisateur
+            const user = await db.collection("users").findOne({ _id: objectId });
             if (!user) {
                 console.error("Utilisateur introuvable avec l'ID :", userId);
                 return res.status(404).json({ message: "Utilisateur introuvable" });
             }
             console.log("Utilisateur trouvé :", user.username);
-    
 
-            // Mise à jour des badges
-            let updateBadges = {};
+            // Construire l'objet de mise à jour des badges existants
+            let badgeUpdates = {};
             if (badges && badges.length > 0) {
                 badges.forEach(badge => {
-                    updateBadges[`badges.${badge}`] = true;
+                    badgeUpdates[`badges.${badge}`] = true; // Active chaque badge reçu
                 });
             }
 
@@ -33,27 +32,27 @@ export default async function handler(req, res) {
             const newExperience = (user.experience || 0) + score;
             const newLevel = Math.floor(newExperience / 50000) + 1;
 
-            // Mettre à jour le score et les badges
+            // Mettre à jour l'utilisateur : score, niveau et badges
             await db.collection("users").updateOne(
-                { _id: new ObjectId(userId) },
+                { _id: objectId },
                 { 
                     $set: {
-                        updateBadges,
-                        experience:newExperience,
+                        ...badgeUpdates, // Met à jour uniquement les badges reçus
+                        experience: newExperience,
                         level: newLevel,
                         lastscore: score,
                     },
-                    $push: { scores: { activeBadge, location: locationSelect, score } },// Ajouter le score, la localisation et le badge associé dans l'historique des scores
+                    $push: { scores: { activeBadge, location: locationSelect, score } }, // Ajouter le score à l'historique
                 }
             );
 
-            //MISE A JOUR DES HIGHSCORES
+            // MISE À JOUR DES HIGHSCORES
 
-            //Insere nouveau scores dans tableau scores
+            // Insérer le nouveau score dans la collection "scores"
             const insertResult = await db.collection("scores").insertOne({
                 userId: userId,
                 username: user.username,
-                level : oldLevel,
+                level: oldLevel,
                 score,
                 activeBadge,
                 location: locationSelect, // Stocker la localisation avec le score
@@ -61,32 +60,31 @@ export default async function handler(req, res) {
 
             // Récupérer les 200 meilleurs scores triés par score décroissant
             const topScores = await db.collection("scores")
-            .find({})
-            .sort({ score: -1 })
-            .limit(200)
-            .toArray();
+                .find({})
+                .sort({ score: -1 })
+                .limit(200)
+                .toArray();
 
             console.log("Top scores :", topScores);
 
-            // Supprimer les scores excédentaires s'il y a plus de 10 scores
+            // Supprimer les scores excédentaires s'il y a plus de 200 scores
             const scoreIdsToKeep = topScores.map((s) => s._id);
             const deleteResult = await db.collection("scores").deleteMany({
-            _id: { $nin: scoreIdsToKeep },
+                _id: { $nin: scoreIdsToKeep },
             });
 
             if (deleteResult.deletedCount > 0) {
                 console.log(`Scores supprimés : ${deleteResult.deletedCount}`);
             }
-    
-            console.log("Score inséré :", insertResult);
 
-            console.log("Badges mis à jour :", updateBadges); // DEBUG
+            console.log("Score inséré :", insertResult);
+            console.log("Badges mis à jour :", badgeUpdates); // DEBUG
 
             res.status(200).json({ 
                 message: "Score et badges mis à jour",
                 oldLevel,
                 newLevel
-             });
+            });
 
         } catch (error) {
             console.error("Erreur lors de la mise à jour du score :", error);
