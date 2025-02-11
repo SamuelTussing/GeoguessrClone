@@ -540,8 +540,9 @@ async function endGame() {
 
 
 
-function checkAndUnlockBadges(finalScore, location, chronoSelection,newlevel) {
+function checkAndUnlockBadges(finalScore, location, chronoSelection) {
     let unlockedBadges = [];
+    let newlevel= localStorage.getItem("level")
     console.log(newlevel);
 
     const badgeConditions = [
