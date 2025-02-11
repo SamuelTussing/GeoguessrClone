@@ -542,20 +542,20 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
 
     const badgeConditions = [
         { name: "Choucroute", score: 25000, location: "Strasbourg", chrono: "1s" },
-        { name: "Halsacien", score: 25000, location: "Strasbourg" },
-        { name: "Globetrotter", score: 15000, location: "world" },
+        { name: "Halsacien", score: 25000, location: "Strasbourg", chrono:"infini"},
+        { name: "Globetrotter", score: 15000, location: "world", chrono:"infini" },
         { name: "Conqueror", score: 20000, location: "world", chrono: "1s" },
-        { name: "Croissant", score: 20000, location: "France" },
+        { name: "Croissant", score: 20000, location: "France", chrono:"infini" },
         { name: "Marine", score: 20000, location: "France", chrono: "1s" },
-        { name: "Voyageur", score: 20000, location: "europe" },
+        { name: "Voyageur", score: 20000, location: "europe", chrono:"infini" },
         { name: "Blietzkrieg", score: 15000, location: "europe", chrono: "1s" },
         { name: "Aigle", score: 15000, location: "north-america", chrono: "1s" },
-        { name: "CowBoy", score: 15000, location: "north-america" },
-        { name: "Pionnier", score: 20000, location: "north-america" },
+        { name: "CowBoy", score: 15000, location: "north-america", chrono:"infini" },
+        { name: "Pionnier", score: 20000, location: "north-america", chrono:"infini" },
         { name: "Archeologue", score: 20000, location: "famous", chrono: "1s" },
-        { name: "Reporter", score: 15000, location: "famous" },
-        { name: "DucdeAgass", score: 15000, location: "Capitales" },
-        { name: "RoutardPro", score: 20000, location: "Capitales" }
+        { name: "Reporter", score: 15000, location: "famous", chrono:"infini" },
+        { name: "DucdeAgass", score: 15000, location: "Capitales", chrono:"infini" },
+        { name: "RoutardPro", score: 20000, location: "Capitales", chrono:"infini" }
     ];
 
     badgeConditions.forEach(badge => {
@@ -760,7 +760,7 @@ function getRandomStreetViewLocation(locationType) {
         const randomLng = baseLocation.lng + (Math.random() - 0.5) * 0.09;
         const latLng = new google.maps.LatLng(randomLat, randomLng);
 
-        console.log(`Recherche Street View proche de ${baseLocation.name} (${randomLat}, ${randomLng})`);
+        //console.log(`Recherche Street View proche de ${baseLocation.name} (${randomLat}, ${randomLng})`);
 
         svService.getPanorama(
             {
