@@ -1298,7 +1298,7 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
         });
 
         // Filtrer les badges débloqués en tenant compte des valeurs "true" et "false"
-        const unlockedBadges = Object.keys(userData.badges || {}).filter(badge => userData.badges[badge] === "true").map(badge => String(badge));
+        const unlockedBadges = Object.keys(userData.badges || {}).filter(badge => userData.badges[badge] === true).map(badge => String(badge));
 
         // Log pour vérifier les badges débloqués
         //console.log("Badges débloqués:", unlockedBadges);
@@ -1377,7 +1377,7 @@ document.getElementById("changeBadgeButton").addEventListener("click", async (e)
         }
 
         const userData = await response.json();
-        const unlockedBadges = Object.keys(userData.badges || {}).filter(badge => userData.badges[badge] === "true");
+        const unlockedBadges = Object.keys(userData.badges || {}).filter(badge => userData.badges[badge] === true);
 
         badgeList.forEach((badge, index) => {
             if (unlockedBadges.includes(String(badge.valeur))) {
