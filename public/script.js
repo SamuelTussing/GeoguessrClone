@@ -252,10 +252,13 @@ function startNewRound(locationType) {
     // Réinitialisation selon le mode de jeu
     if (locationType === 'Strasbourg') {
         clearMapStrasbourg(); // Réinitialise et centre sur Strasbourg
+        getRandomStreetViewLocation(locationType);
     } else if (locationType === 'north-america') {
         clearMapNorthAmerica(); // Réinitialise et centre sur les États-Unis
+        getRandomStreetViewLocation(locationType);
     } else {
         clearMap(); // Réinitialise la carte de manière classique
+        getRandomStreetViewLocation(locationType);
     }
 
     updateHeader();
@@ -798,7 +801,7 @@ function getRandomStreetViewLocation(locationType) {
                 break;
             case 'Strasbourg':
                 filteredLocations = locations.filter(location => location.ville === 'Strasbourg');
-                radiusInKm = 0.2; // Rayon 0 pour Strasbourg
+                radiusInKm = 0.15; // Rayon 0 pour Strasbourg
                 break;
             case 'France':
                 filteredLocations = locations.filter(location => location.pays === 'France');
