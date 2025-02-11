@@ -487,7 +487,7 @@ function showBadgeNotification(unlockedBadges) {
 
     const popupa = document.getElementById("popupbadgemain");
     const popupimg = document.getElementById("popupbadgeimg");
-    const popuptext = document.getElementById("popupbadgetext"); // Ajoute un élément texte si nécessaire
+    const popuptext = document.getElementById("popupbadgetxt"); // Ajoute un élément texte si nécessaire
 
     if (!popupa || !popupimg || !popuptext) {
         console.error("Les éléments du popup de badge sont introuvables !");
