@@ -601,7 +601,7 @@ async function checkAndUnlockBadges(finalScore, location, chronoSelection) {
         ];
     
         const badgesecret = [
-            { name: "Rien", score: 100, location: "World", chrono:"infini" },
+            { name: "Rien", score: 100, location: "Strasbourg", chrono:"infini" },
             { name: "Accompli", score: totalBadges, location: "World", chrono:"infini" },
         ]
     
