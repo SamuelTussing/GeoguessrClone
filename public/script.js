@@ -547,6 +547,7 @@ async function checkAndUnlockBadges(finalScore, location, chronoSelection) {
     console.log(badgeList)
     console.log(badgeList.length)
     console.log(finalScore)
+    console.log(chronoSelection)
     
 
     try {
@@ -616,15 +617,10 @@ async function checkAndUnlockBadges(finalScore, location, chronoSelection) {
 
         // Vérifier les badges normaux
         badgeConditions.forEach(badge => {
-            if (badge.score !== undefined && finalScore >= badge.score && location === badge.location) {
-                if (!badge.chrono || chronoSelection === badge.chrono) {
+            if (finalScore >= badge.score && location === badge.location && chronoSelection === badge.chrono) {
                     unlockedBadges.push(badge.name);
-                }
             }
         });
-
-        // Éviter les doublons dans les badges débloqués
-        unlockedBadges = [...new Set(unlockedBadges)];
 
         return unlockedBadges;
     } catch (error) {
