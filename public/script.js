@@ -601,32 +601,37 @@ async function checkAndUnlockBadges(finalScore, location, chronoSelection) {
         ];
     
         const badgesecret = [
-            { name: "Rien", score: 100, location: "Strasbourg", chrono:"infini" },
+            { name: "Rien", score: 110, location: "Strasbourg", chrono:"infini" },
             { name: "Accompli", score: totalBadges, location: "World", chrono:"infini" },
         ]
     
         // Vérifier les badges secrets
         badgesecret.forEach(badge => {
             if ( finalScore <= badge.score && location === badge.location) {
-                unlockedBadges.push(badge.name);           
+                if (!badge.chrono || chronoSelection === badge.chrono) {
+                    unlockedBadges.push(badge.name);
+                }          
             }
             if (badge.score === unlockedCount) {
                 unlockedBadges.push(badge.name);
             }
         });
 
-        // Vérifier les badges normaux
         badgeConditions.forEach(badge => {
-            if (finalScore >= badge.score && location === badge.location && chronoSelection === badge.chrono) {
+            if (finalScore >= badge.score && location === badge.location) {
+                if (!badge.chrono || chronoSelection === badge.chrono) {
                     unlockedBadges.push(badge.name);
+                }
             }
         });
 
         return unlockedBadges;
+
     } catch (error) {
         console.error("Erreur lors du chargement des badges :", error);
         return [];
     }
+    console.log(unlockedBadges)
 
     
 
