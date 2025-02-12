@@ -546,6 +546,7 @@ async function checkAndUnlockBadges(finalScore, location, chronoSelection) {
     console.log(userId)
     console.log(badgeList)
     console.log(badgeList.length)
+    console.log(finalScore)
     
 
     try {
@@ -605,10 +606,8 @@ async function checkAndUnlockBadges(finalScore, location, chronoSelection) {
     
         // Vérifier les badges secrets
         badgesecret.forEach(badge => {
-            if (badge.score && finalScore <= badge.score) {
-                if (!badge.chrono || chronoSelection === badge.chrono) {
-                    unlockedBadges.push(badge.name);
-                }
+            if ( finalScore <= badge.score && location === badge.location) {
+                unlockedBadges.push(badge.name);           
             }
             if (badge.score === unlockedCount) {
                 unlockedBadges.push(badge.name);
