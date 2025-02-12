@@ -1,4 +1,6 @@
 let map, panorama, polyline;
+
+let distanceKilometrique = 0;
 //import axios from 'axios';
 let playerMarker, actualMarker;
 let actualLocation;
@@ -559,17 +561,23 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
         { name: "Archeologue", score: 20000, location: "famous", chrono: "1s" },
         { name: "Reporter", score: 15000, location: "famous", chrono:"infini" },
         { name: "DucdeAgass", score: 15000, location: "Capitales", chrono:"infini" },
-        { name: "Rien", score: 150, location: "Capitales", chrono:"infini" },
         { name: "RoutardPro", score: 20000, location: "Capitales", chrono:"infini" }
     ];
 
     const badgeExtras=[
-        { name: "Rien", score: 150, location: "Capitales", chrono:"infini" },
+        { name: "Rien", score: distanceKilometrique, location: "world", chrono:"1s" },
         { name: "Accompli", score: 20000, location: "Capitales", chrono:"infini" }
     ]
 
     badgeConditions.forEach(badge => {
         if (finalScore >= badge.score && location === badge.location) {
+            if (!badge.chrono || chronoSelection === badge.chrono) {
+                unlockedBadges.push(badge.name);
+            }
+        }
+    });
+    badgeExtras.forEach(badge => {
+        if (badge.score >= 50000 && location === badge.location) {
             if (!badge.chrono || chronoSelection === badge.chrono) {
                 unlockedBadges.push(badge.name);
             }
@@ -845,7 +853,6 @@ function getRandomAfricaCoordinates() {
     return { lat: randomLat, lng: randomLng };
 }
 
-
 function calculateScore(playerLocation) {
     const distanceInMeters = google.maps.geometry.spherical.computeDistanceBetween(playerLocation, actualLocation);
     let roundScore;
@@ -858,7 +865,9 @@ function calculateScore(playerLocation) {
     } else {
         const distanceInKm = distanceInMeters / 1000;
         roundScore = Math.max(0, 5000 - 1995 - Math.floor(distanceInKm - 2));
+        distanceKilometrique = distanceInKm;
     }
+    console.log(distanceKilometrique)
 
     // Calcul du temps pris pour le round
     const roundEndTime = Date.now();
