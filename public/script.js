@@ -865,7 +865,7 @@ function calculateScore(playerLocation) {
     } else {
         const distanceInKm = distanceInMeters / 1000;
         roundScore = Math.max(0, 5000 - 1995 - Math.floor(distanceInKm - 2));
-        distanceKilometrique = distanceInKm;
+        distanceKilometrique = distanceKilometrique+distanceInKm;
     }
 
     // Calcul du temps pris pour le round
