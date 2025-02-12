@@ -278,7 +278,7 @@ function startNewRound(locationType) {
 
     const preCountdownInterval = setInterval(() => {
         preCountdown -= 1;
-        console.log(preCountdown);
+        //console.log(preCountdown);
         preparationtimer.textContent = `Préparation... ${preCountdown}s`;
 
         if (preCountdown <= 1) {
@@ -543,7 +543,9 @@ async function endGame() {
 
 async function checkAndUnlockBadges(finalScore, location, chronoSelection) {
     let newlevel = parseInt(localStorage.getItem("level"), 10) || 0; // Par défaut à 0 si non défini
-    let unlockedBadges = [];
+    console.log(userId)
+    console.log(badgeList)
+    console.log(badgeList.length)
     
 
     try {
@@ -619,10 +621,6 @@ async function checkAndUnlockBadges(finalScore, location, chronoSelection) {
                 if (!badge.chrono || chronoSelection === badge.chrono) {
                     unlockedBadges.push(badge.name);
                 }
-            }
-
-            if (badge.valeur !== undefined && newlevel >= badge.valeur) {
-                unlockedBadges.push(badge.name);
             }
         });
 
