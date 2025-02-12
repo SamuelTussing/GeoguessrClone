@@ -26,5 +26,6 @@ const badgeList = [
     {badgeName : "Archéologue", badgesrc:"./badge/Archeologue.png", badgeDesc:"Réaliser un score de 20000 points sur Famous en mode 1s", valeur: "Archeologue"},
     {badgeName : "Reporter", badgesrc:"./badge/Reporter.png", badgeDesc:"Réaliser un score de 15000 points sur Famous", valeur: "Reporter"},
     {badgeName : "Duc-de-Agass", badgesrc:"./badge/DucdeAgass.png", badgeDesc:"Réaliser un score de 15000 points sur Capitales", valeur: "DucdeAgass"},
-    {badgeName : "Routard Pro", badgesrc:"./badge/RoutardPro.png", badgeDesc:"Réaliser un score de 20000 points sur Capitales", valeur: "RoutardPro"}
+    {badgeName : "Routard Pro", badgesrc:"./badge/RoutardPro.png", badgeDesc:"Réaliser un score de 20000 points sur Capitales", valeur: "RoutardPro"},
+    {badgeName : "Rien", badgesrc:"./badge/Rien.png", badgeDesc:"????", valeur: "Rien"}
 ]

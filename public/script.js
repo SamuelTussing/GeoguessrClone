@@ -575,6 +575,18 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
         { name: "RoutardPro", score: 20000, location: "Capitales", chrono:"infini" }
     ];
 
+    const badgesecret = [
+        { name: "Rien", score: 100, location: "World", chrono:"infini" }
+    ]
+
+    badgesecret.forEach(badge => {
+        // Vérification du score, de la localisation et de chrono
+        if (finalScore <= badge.score) {
+            if (!badge.chrono || chronoSelection === badge.chrono) {
+                unlockedBadges.push(badge.name);
+            }
+        }})
+
     badgeConditions.forEach(badge => {
         // Vérification du score, de la localisation et de chrono
         if (finalScore >= badge.score && location === badge.location) {
