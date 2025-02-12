@@ -1575,6 +1575,19 @@ const locations = [
     { lat: -4.038333, lng: 15.302241, continent: 'Afrique', pays: 'République Démocratique du Congo', ville: 'Kinshasa', mode: 'Capitales', place: "Place de l'Indépendance" },
     { lat: 9.05785, lng: 7.49508, continent: 'Afrique', pays: 'Sierra Leone', ville: 'Freetown', mode: 'Capitales', place: "Lumley Beach" },
     { lat: 19.020833, lng: 47.9297, continent: 'Afrique', pays: 'Bénin', ville: 'Porto-Novo', mode: 'Capitales', place: "Parc de la Marina" },
+
+    //LATINA
+    { lat: 41.37798665761736, lng:2.191614906228045, continent: 'Europe', pays: 'Espagne', ville: 'Barcelone', mode: 'latina'},
+    { lat: 40.41668554985743, lng:-3.7038847437544034, continent: 'Europe', pays: 'Espagne', ville: 'Madrid', mode: 'latina'},
+    { lat: 36.716595277398724, lng: -4.41157985705478, continent: 'Europe', pays: 'Espagne', ville: 'Malaga', mode: 'latina'},
+    { lat: 37.39011747523774, lng:-5.993213923278668, continent: 'Europe', pays: 'Espagne', ville: 'Seville', mode: 'latina'},
+    { lat: 37.25705851928097, lng:-6.951597469540261, continent: 'Europe', pays: 'Espagne', ville: 'Huelva', mode: 'latina'},
+    { lat: 3.449811135446534,   lng:-76.52905171465001, continent: 'Amerique du sud', pays: 'Colombie', ville: 'Cali', mode: 'latina'},
+    { lat: -0.2529740964814912,  lng:-79.17166338898858,  continent: 'Amerique du sud', pays: 'Equateur', ville: 'Santo Domingo', mode: 'latina'},
+    { lat: 39.572792797394115,  lng:2.651440464632107, continent: 'Europe', pays: 'Espagne', ville: 'Palma', mode: 'latina'},
+    { lat: 38.90943754019809,  lng:1.4376269329719011, continent: 'Europe', pays: 'Espagne', ville: 'Ibiza', mode: 'latina'},
+    { lat: -13.51704756646557,  lng:-71.97803796789294, continent: 'Europe', pays: 'Espagne', ville: 'Ibiza', mode: 'latina'},
+
  
 
 

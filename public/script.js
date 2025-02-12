@@ -542,8 +542,9 @@ async function endGame() {
 
 
 async function checkAndUnlockBadges(finalScore, location, chronoSelection) {
-    let newlevel= localStorage.getItem("level")
+    let newlevel = parseInt(localStorage.getItem("level"), 10) || 0; // Par défaut à 0 si non défini
     let unlockedBadges = [];
+    
 
     try {
         // Récupérer les badges de l'utilisateur via l'API
@@ -566,18 +567,18 @@ async function checkAndUnlockBadges(finalScore, location, chronoSelection) {
         console.log(unlockedCount)
 
         const badgeConditions = [
-            {name : "0", valeur: "0"},
-            {name : "5",  valeur: "5"},
-            {name : "10",  valeur: "10"},
-            {name : "20",  valeur: "20"},
-            {name : "30",  valeur: "30"},
-            {name : "40",  valeur: "40"},
-            {name : "50",  valeur: "50"},
-            {name : "60",  valeur: "60"},
-            {name : "70",  valeur: "70"},
-            {name : "80", valeur: "80"},
-            {name : "90", valeur: "90"},
-            {name : "100", valeur: "100"},
+            {name : "0", valeur: "0", location: null, chrono: null},
+            {name : "5",  valeur: "5", location: null, chrono: null},
+            {name : "10",  valeur: "10", location: null, chrono: null},
+            {name : "20",  valeur: "20", location: null, chrono: null},
+            {name : "30",  valeur: "30", location: null, chrono: null},
+            {name : "40",  valeur: "40", location: null, chrono: null},
+            {name : "50",  valeur: "50", location: null, chrono: null},
+            {name : "60",  valeur: "60", location: null, chrono: null},
+            {name : "70",  valeur: "70", location: null, chrono: null},
+            {name : "80", valeur: "80", location: null, chrono: null},
+            {name : "90", valeur: "90", location: null, chrono: null},
+            {name : "100", valeur: "100", location: null, chrono: null},
             { name: "Choucroute", score: 25000, location: "Strasbourg", chrono: "1s" },
             { name: "Halsacien", score: 25000, location: "Strasbourg", chrono:"infini"},
             { name: "Globetrotter", score: 15000, location: "world", chrono:"infini" },
@@ -600,36 +601,38 @@ async function checkAndUnlockBadges(finalScore, location, chronoSelection) {
             { name: "Accompli", score: totalBadges, location: "World", chrono:"infini" },
         ]
     
+        // Vérifier les badges secrets
         badgesecret.forEach(badge => {
-            // Vérification du score, de la localisation et de chrono
-            if (finalScore <= badge.score || badge.score === unlockedCount) {
-                if (!badge.chrono || chronoSelection === badge.chrono) {
-                    unlockedBadges.push(badge.name);
-                }
-            }})
-    
-        badgeConditions.forEach(badge => {
-            // Vérification du score, de la localisation et de chrono
-            if (finalScore >= badge.score && location === badge.location) {
+            if (badge.score && finalScore <= badge.score) {
                 if (!badge.chrono || chronoSelection === badge.chrono) {
                     unlockedBadges.push(badge.name);
                 }
             }
-    
-            // Ajout de la condition newlevel >= valeur
-            if (newlevel >= badge.valeur) {
+            if (badge.score === unlockedCount) {
                 unlockedBadges.push(badge.name);
             }
         });
-    
+
+        // Vérifier les badges normaux
+        badgeConditions.forEach(badge => {
+            if (badge.score !== undefined && finalScore >= badge.score && location === badge.location) {
+                if (!badge.chrono || chronoSelection === badge.chrono) {
+                    unlockedBadges.push(badge.name);
+                }
+            }
+
+            if (badge.valeur !== undefined && newlevel >= badge.valeur) {
+                unlockedBadges.push(badge.name);
+            }
+        });
+
         // Éviter les doublons dans les badges débloqués
         unlockedBadges = [...new Set(unlockedBadges)];
-    
+
         return unlockedBadges;
-
-
-    }catch (error) {
-        console.error("Erreur lors du chargement du badge actif :", error);
+    } catch (error) {
+        console.error("Erreur lors du chargement des badges :", error);
+        return [];
     }
 
     
