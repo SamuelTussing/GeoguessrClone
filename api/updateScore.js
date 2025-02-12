@@ -29,29 +29,10 @@ export default async function handler(req, res) {
                 });
             }
 
-
             // Calculer le niveau et l'expérience
             const oldLevel = user.level || 1;
-            const currentExperience = user.experience || 0;
-            const newExperience = currentExperience + score;
-
-            // Calcul du seuil d'XP nécessaire pour passer au niveau suivant
-            const xpThreshold = Math.floor(50000 * (oldLevel / 2));
-
-            let newLevel = oldLevel;
-            let remainingExperience = newExperience;
-
-            // Vérifier si l'utilisateur dépasse le seuil d'XP pour monter de niveau
-            while (remainingExperience >= xpThreshold) {
-                remainingExperience -= xpThreshold; // Retirer l'XP nécessaire pour ce niveau
-                newLevel += 1; // Monter d'un niveau
-                // Recalculer le seuil pour le niveau suivant
-                const nextThreshold = Math.floor(50000 * (newLevel / 2));
-            }
-
-            // Mettre à jour l'utilisateur avec les nouvelles valeurs
-            LevelUp = newLevel;
-            user.experience = remainingExperience; // Reste d'XP pour le niveau actuel
+            const newExperience = (user.experience || 0) + score;
+            const newLevel = Math.floor(newExperience / 50000) + 1;
 
             // Mettre à jour l'utilisateur
             await db.collection("users").updateOne(
@@ -59,7 +40,7 @@ export default async function handler(req, res) {
                 { 
                     $set: {
                         experience: newExperience,
-                        level: LevelUp,
+                        level: newLevel,
                         lastscore: score,
                         ...badgeUpdates, // Mise à jour des badges débloqués
                     },

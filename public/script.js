@@ -540,71 +540,99 @@ async function endGame() {
 
 
 
-function checkAndUnlockBadges(finalScore, location, chronoSelection) {
+
+async function checkAndUnlockBadges(finalScore, location, chronoSelection) {
+
+    try {
+        // Récupérer les badges de l'utilisateur via l'API
+        const response = await fetch(`/api/getUserBadges?userId=${userId}`);
+        if (!response.ok) {
+            throw new Error("Erreur API");
+        }
+
+        const userData = await response.json();
+
+        // Récupérer les badges débloqués
+        const unlockedBadges = Object.keys(userData.badges || {})
+            .filter(badge => userData.badges[badge] === true)
+            .map(badge => String(badge));
+
+        // Mettre à jour le nombre total de badges
+        const totalBadges = badgeList.length;
+        const unlockedCount = unlockedBadges.length;
+        console.log(totalBadges)
+        console.log(unlockedCount)
+
+        const badgeConditions = [
+            {name : "0", valeur: "0"},
+            {name : "5",  valeur: "5"},
+            {name : "10",  valeur: "10"},
+            {name : "20",  valeur: "20"},
+            {name : "30",  valeur: "30"},
+            {name : "40",  valeur: "40"},
+            {name : "50",  valeur: "50"},
+            {name : "60",  valeur: "60"},
+            {name : "70",  valeur: "70"},
+            {name : "80", valeur: "80"},
+            {name : "90", valeur: "90"},
+            {name : "100", valeur: "100"},
+            { name: "Choucroute", score: 25000, location: "Strasbourg", chrono: "1s" },
+            { name: "Halsacien", score: 25000, location: "Strasbourg", chrono:"infini"},
+            { name: "Globetrotter", score: 15000, location: "world", chrono:"infini" },
+            { name: "Conqueror", score: 20000, location: "world", chrono: "1s" },
+            { name: "Croissant", score: 20000, location: "France", chrono:"infini" },
+            { name: "Marine", score: 20000, location: "France", chrono: "1s" },
+            { name: "Voyageur", score: 20000, location: "europe", chrono:"infini" },
+            { name: "Blietzkrieg", score: 15000, location: "europe", chrono: "1s" },
+            { name: "Aigle", score: 15000, location: "north-america", chrono: "1s" },
+            { name: "CowBoy", score: 15000, location: "north-america", chrono:"infini" },
+            { name: "Pionnier", score: 20000, location: "north-america", chrono:"infini" },
+            { name: "Archeologue", score: 20000, location: "famous", chrono: "1s" },
+            { name: "Reporter", score: 15000, location: "famous", chrono:"infini" },
+            { name: "DucdeAgass", score: 15000, location: "Capitales", chrono:"infini" },
+            { name: "RoutardPro", score: 20000, location: "Capitales", chrono:"infini" }
+        ];
+    
+        const badgesecret = [
+            { name: "Rien", score: 100, location: "World", chrono:"infini" },
+            { name: "Accompli", score: totalBadges, location: "World", chrono:"infini" },
+        ]
+    
+        badgesecret.forEach(badge => {
+            // Vérification du score, de la localisation et de chrono
+            if (finalScore <= badge.score || badge.score === unlockedCount) {
+                if (!badge.chrono || chronoSelection === badge.chrono) {
+                    unlockedBadges.push(badge.name);
+                }
+            }})
+    
+        badgeConditions.forEach(badge => {
+            // Vérification du score, de la localisation et de chrono
+            if (finalScore >= badge.score && location === badge.location) {
+                if (!badge.chrono || chronoSelection === badge.chrono) {
+                    unlockedBadges.push(badge.name);
+                }
+            }
+    
+            // Ajout de la condition newlevel >= valeur
+            if (newlevel >= badge.valeur) {
+                unlockedBadges.push(badge.name);
+            }
+        });
+    
+        // Éviter les doublons dans les badges débloqués
+        unlockedBadges = [...new Set(unlockedBadges)];
+    
+        return unlockedBadges;
+
+
+    }catch (error) {
+        console.error("Erreur lors du chargement du badge actif :", error);
+    }
     let unlockedBadges = [];
     let newlevel= localStorage.getItem("level")
     console.log(newlevel);
 
-    const badgeConditions = [
-        {name : "0", valeur: "0"},
-        {name : "5",  valeur: "5"},
-        {name : "10",  valeur: "10"},
-        {name : "20",  valeur: "20"},
-        {name : "30",  valeur: "30"},
-        {name : "40",  valeur: "40"},
-        {name : "50",  valeur: "50"},
-        {name : "60",  valeur: "60"},
-        {name : "70",  valeur: "70"},
-        {name : "80", valeur: "80"},
-        {name : "90", valeur: "90"},
-        {name : "100", valeur: "100"},
-        { name: "Choucroute", score: 25000, location: "Strasbourg", chrono: "1s" },
-        { name: "Halsacien", score: 25000, location: "Strasbourg", chrono:"infini"},
-        { name: "Globetrotter", score: 15000, location: "world", chrono:"infini" },
-        { name: "Conqueror", score: 20000, location: "world", chrono: "1s" },
-        { name: "Croissant", score: 20000, location: "France", chrono:"infini" },
-        { name: "Marine", score: 20000, location: "France", chrono: "1s" },
-        { name: "Voyageur", score: 20000, location: "europe", chrono:"infini" },
-        { name: "Blietzkrieg", score: 15000, location: "europe", chrono: "1s" },
-        { name: "Aigle", score: 15000, location: "north-america", chrono: "1s" },
-        { name: "CowBoy", score: 15000, location: "north-america", chrono:"infini" },
-        { name: "Pionnier", score: 20000, location: "north-america", chrono:"infini" },
-        { name: "Archeologue", score: 20000, location: "famous", chrono: "1s" },
-        { name: "Reporter", score: 15000, location: "famous", chrono:"infini" },
-        { name: "DucdeAgass", score: 15000, location: "Capitales", chrono:"infini" },
-        { name: "RoutardPro", score: 20000, location: "Capitales", chrono:"infini" }
-    ];
-
-    const badgesecret = [
-        { name: "Rien", score: 100, location: "World", chrono:"infini" }
-    ]
-
-    badgesecret.forEach(badge => {
-        // Vérification du score, de la localisation et de chrono
-        if (finalScore <= badge.score) {
-            if (!badge.chrono || chronoSelection === badge.chrono) {
-                unlockedBadges.push(badge.name);
-            }
-        }})
-
-    badgeConditions.forEach(badge => {
-        // Vérification du score, de la localisation et de chrono
-        if (finalScore >= badge.score && location === badge.location) {
-            if (!badge.chrono || chronoSelection === badge.chrono) {
-                unlockedBadges.push(badge.name);
-            }
-        }
-
-        // Ajout de la condition newlevel >= valeur
-        if (newlevel >= badge.valeur) {
-            unlockedBadges.push(badge.name);
-        }
-    });
-
-    // Éviter les doublons dans les badges débloqués
-    unlockedBadges = [...new Set(unlockedBadges)];
-
-    return unlockedBadges;
 }
 
 
@@ -1294,6 +1322,8 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
         // Mettre à jour le nombre total de badges
         const totalBadges = badgeList.length;
         const unlockedCount = unlockedBadges.length;
+        console.log(totalBadges)
+        console.log(unlockedCount)
 
         // Mettre à jour dynamiquement la balise <p> avec la progression
         const badgeProgress = document.getElementById("badgeProgress");
