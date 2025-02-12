@@ -1269,6 +1269,7 @@ timePlusButton.addEventListener("click", () => {
 
 
 //AFFICHAGE DE LA LISTE DE BADGES AVEC BADGE ACQUIS EN VISIBLE
+// AFFICHAGE DE LA LISTE DE BADGES AVEC BADGE ACQUIS EN VISIBLE
 document.getElementById("badgeButton").addEventListener("click", async (e) => {
     e.preventDefault();
 
@@ -1277,26 +1278,28 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
     badgesListContainer.innerHTML = "";
 
     try {
+        // Récupérer les badges de l'utilisateur via l'API
         const response = await fetch(`/api/getUserBadges?userId=${userId}`);
-        
         if (!response.ok) {
             throw new Error("Erreur API");
         }
 
         const userData = await response.json();
 
-        // Vérification de la structure des badges
-        //console.log("Badges de l'utilisateur:", userData.badges);
-        Object.keys(userData.badges || {}).forEach(badge => {
-            console.log(`${badge}: ${userData.badges[badge]}`);
-        });
+        // Récupérer les badges débloqués
+        const unlockedBadges = Object.keys(userData.badges || {})
+            .filter(badge => userData.badges[badge] === true)
+            .map(badge => String(badge));
 
-        // Filtrer les badges débloqués en tenant compte des valeurs "true" et "false"
-        const unlockedBadges = Object.keys(userData.badges || {}).filter(badge => userData.badges[badge] === true).map(badge => String(badge));
+        // Mettre à jour le nombre total de badges
+        const totalBadges = badgeList.length;
+        const unlockedCount = unlockedBadges.length;
 
-        // Log pour vérifier les badges débloqués
-        //console.log("Badges débloqués:", unlockedBadges);
+        // Mettre à jour dynamiquement la balise <p> avec la progression
+        const badgeProgress = document.getElementById("badgeProgress");
+        badgeProgress.textContent = `${unlockedCount}/${totalBadges}`;
 
+        // Affichage des badges
         badgeList.forEach((badge, index) => {
             const badgeSection = document.createElement("button");
             badgeSection.classList.add("badgesection");
@@ -1307,12 +1310,9 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
             badgeImg.height = 200;
             badgeImg.classList.add(`${index}`, "imgtest");
 
-            // Vérification et affichage des classes de badge
             if (unlockedBadges.includes(String(badge.valeur))) {
-                //console.log(`Badge ${badge.valeur} est débloqué.`);
                 badgeImg.classList.add(`badge-${index}`, "valid");
             } else {
-                //console.log(`Badge ${badge.valeur} n'est pas débloqué.`);
                 badgeImg.classList.add(`badge-${index}`, "unvalid");
             }
 
@@ -1324,6 +1324,7 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
         console.error("Erreur lors de la récupération des badges:", error);
     }
 });
+
 
 
 //CHANGEMENT DU BADGE
