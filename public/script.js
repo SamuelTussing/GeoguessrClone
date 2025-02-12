@@ -541,101 +541,44 @@ async function endGame() {
 
 
 
-async function checkAndUnlockBadges(finalScore, location, chronoSelection) {
-    let newlevel = parseInt(localStorage.getItem("level"), 10) || 0; // Par défaut à 0 si non défini
-    console.log(userId)
-    console.log(badgeList)
-    console.log(badgeList.length)
-    console.log(finalScore)
-    console.log(chronoSelection)
-    
+function checkAndUnlockBadges(finalScore, location, chronoSelection) {
+    let unlockedBadges = [];
 
-    try {
-        // Récupérer les badges de l'utilisateur via l'API
-        const response = await fetch(`/api/getUserBadges?userId=${userId}`);
-        if (!response.ok) {
-            throw new Error("Erreur API");
-        }
+    const badgeConditions = [
+        { name: "Choucroute", score: 25000, location: "Strasbourg", chrono: "1s" },
+        { name: "Halsacien", score: 25000, location: "Strasbourg", chrono:"infini"},
+        { name: "Globetrotter", score: 15000, location: "world", chrono:"infini" },
+        { name: "Conqueror", score: 20000, location: "world", chrono: "1s" },
+        { name: "Croissant", score: 20000, location: "France", chrono:"infini" },
+        { name: "Marine", score: 20000, location: "France", chrono: "1s" },
+        { name: "Voyageur", score: 20000, location: "europe", chrono:"infini" },
+        { name: "Blietzkrieg", score: 15000, location: "europe", chrono: "1s" },
+        { name: "Aigle", score: 15000, location: "north-america", chrono: "1s" },
+        { name: "CowBoy", score: 15000, location: "north-america", chrono:"infini" },
+        { name: "Pionnier", score: 20000, location: "north-america", chrono:"infini" },
+        { name: "Archeologue", score: 20000, location: "famous", chrono: "1s" },
+        { name: "Reporter", score: 15000, location: "famous", chrono:"infini" },
+        { name: "DucdeAgass", score: 15000, location: "Capitales", chrono:"infini" },
+        { name: "Rien", score: 150, location: "Capitales", chrono:"infini" },
+        { name: "RoutardPro", score: 20000, location: "Capitales", chrono:"infini" }
+    ];
 
-        const userData = await response.json();
+    const badgeExtras=[
+        { name: "Rien", score: 150, location: "Capitales", chrono:"infini" },
+        { name: "Accompli", score: 20000, location: "Capitales", chrono:"infini" }
+    ]
 
-        // Récupérer les badges débloqués
-        const unlockedBadges = Object.keys(userData.badges || {})
-            .filter(badge => userData.badges[badge] === true)
-            .map(badge => String(badge));
-
-        // Mettre à jour le nombre total de badges
-        const totalBadges = badgeList.length;
-        const unlockedCount = unlockedBadges.length;
-        console.log(totalBadges)
-        console.log(unlockedCount)
-
-        const badgeConditions = [
-            {name : "0", valeur: "0", location: null, chrono: null},
-            {name : "5",  valeur: "5", location: null, chrono: null},
-            {name : "10",  valeur: "10", location: null, chrono: null},
-            {name : "20",  valeur: "20", location: null, chrono: null},
-            {name : "30",  valeur: "30", location: null, chrono: null},
-            {name : "40",  valeur: "40", location: null, chrono: null},
-            {name : "50",  valeur: "50", location: null, chrono: null},
-            {name : "60",  valeur: "60", location: null, chrono: null},
-            {name : "70",  valeur: "70", location: null, chrono: null},
-            {name : "80", valeur: "80", location: null, chrono: null},
-            {name : "90", valeur: "90", location: null, chrono: null},
-            {name : "100", valeur: "100", location: null, chrono: null},
-            { name: "Choucroute", score: 25000, location: "Strasbourg", chrono: "1s" },
-            { name: "Halsacien", score: 25000, location: "Strasbourg", chrono:"infini"},
-            { name: "Globetrotter", score: 15000, location: "world", chrono:"infini" },
-            { name: "Conqueror", score: 20000, location: "world", chrono: "1s" },
-            { name: "Croissant", score: 20000, location: "France", chrono:"infini" },
-            { name: "Marine", score: 20000, location: "France", chrono: "1s" },
-            { name: "Voyageur", score: 20000, location: "europe", chrono:"infini" },
-            { name: "Blietzkrieg", score: 15000, location: "europe", chrono: "1s" },
-            { name: "Aigle", score: 15000, location: "north-america", chrono: "1s" },
-            { name: "CowBoy", score: 15000, location: "north-america", chrono:"infini" },
-            { name: "Pionnier", score: 20000, location: "north-america", chrono:"infini" },
-            { name: "Archeologue", score: 20000, location: "famous", chrono: "1s" },
-            { name: "Reporter", score: 15000, location: "famous", chrono:"infini" },
-            { name: "DucdeAgass", score: 15000, location: "Capitales", chrono:"infini" },
-            { name: "RoutardPro", score: 20000, location: "Capitales", chrono:"infini" }
-        ];
-    
-        const badgesecret = [
-            { name: "Rien", score: 110, location: "Strasbourg", chrono:"infini" },
-            { name: "Accompli", score: totalBadges, location: "World", chrono:"infini" },
-        ]
-    
-        // Vérifier les badges secrets
-        badgesecret.forEach(badge => {
-            if ( finalScore <= badge.score && location === badge.location) {
-                if (!badge.chrono || chronoSelection === badge.chrono) {
-                    unlockedBadges.push(badge.name);
-                }          
-            }
-            if (badge.score === unlockedCount) {
+    badgeConditions.forEach(badge => {
+        if (finalScore >= badge.score && location === badge.location) {
+            if (!badge.chrono || chronoSelection === badge.chrono) {
                 unlockedBadges.push(badge.name);
             }
-        });
+        }
+    });
 
-        badgeConditions.forEach(badge => {
-            if (finalScore >= badge.score && location === badge.location) {
-                if (!badge.chrono || chronoSelection === badge.chrono) {
-                    unlockedBadges.push(badge.name);
-                }
-            }
-        });
-
-        return unlockedBadges;
-
-    } catch (error) {
-        console.error("Erreur lors du chargement des badges :", error);
-        return [];
-    }
-    console.log(unlockedBadges)
-
-    
-
+    return unlockedBadges;
 }
+
 
 
 
