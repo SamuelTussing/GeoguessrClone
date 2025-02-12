@@ -1,6 +1,4 @@
 let map, panorama, polyline;
-
-let distanceKilometrique = 0;
 //import axios from 'axios';
 let playerMarker, actualMarker;
 let actualLocation;
@@ -41,6 +39,7 @@ let timerInterval; // Intervalle pour le compte à rebours
 let timeLeft = roundTimeLimit; // Initialiser globalement avec la limite de temps
 let preCountdown = 5;
 const userId = localStorage.getItem("userId");
+let distanceKilometrique = 0;
 
 // Remplacer ceci par votre vraie clé API
 const googleMapsApiKey = 'AIzaSyAUPG5ygE36Pd45w23U157bjffFqJ0Obcg'; // Remplacez par la clé exacte obtenue depuis Google Cloud Console
@@ -141,6 +140,7 @@ okButton.addEventListener('click', () => {
         alert('Veuillez placer un pin sur la carte.');
         audioPlayer.play(); // Joue le son
     }
+    console.log(distanceKilometrique)
 });
 
 function clearMap() {
@@ -540,7 +540,7 @@ async function endGame() {
 }
 
 
-
+console.log(distanceKilometrique)
 
 
 function checkAndUnlockBadges(finalScore, location, chronoSelection) {
@@ -867,7 +867,6 @@ function calculateScore(playerLocation) {
         roundScore = Math.max(0, 5000 - 1995 - Math.floor(distanceInKm - 2));
         distanceKilometrique = distanceInKm;
     }
-    console.log(distanceKilometrique)
 
     // Calcul du temps pris pour le round
     const roundEndTime = Date.now();
