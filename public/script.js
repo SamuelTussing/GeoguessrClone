@@ -542,6 +542,8 @@ async function endGame() {
 
 
 async function checkAndUnlockBadges(finalScore, location, chronoSelection) {
+    let newlevel= localStorage.getItem("level")
+    let unlockedBadges = [];
 
     try {
         // Récupérer les badges de l'utilisateur via l'API
@@ -629,9 +631,8 @@ async function checkAndUnlockBadges(finalScore, location, chronoSelection) {
     }catch (error) {
         console.error("Erreur lors du chargement du badge actif :", error);
     }
-    let unlockedBadges = [];
-    let newlevel= localStorage.getItem("level")
-    console.log(newlevel);
+
+    
 
 }
 
