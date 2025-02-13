@@ -19,7 +19,7 @@ const badgeList = [
     {badgeName : "Super Croissant", badgesrc:"./badge/Croissant.png", badgeDesc:"Réaliser un score de 20000 points sur France", valeur: "Croissant"},
     {badgeName : "Bleu Marine", badgesrc:"./badge/Marine.png", badgeDesc:"Réaliser un score de 20000 points sur France en en mode 1s", valeur: "Marine"},
     {badgeName : "Voyageur Expert", badgesrc:"./badge/Voyageur.png", badgeDesc:"Réaliser un score de 20000 points sur Europe", valeur: "Voyageur"},
-    {badgeName : "Blietzkrieg", badgesrc:"./badge/Blitzkrieg.png", badgeDesc:"Réaliser un score de 15000 points sur Europe en en mode 1s", valeur: "Blietzkrieg"},
+    {badgeName : "Blitzkrieg", badgesrc:"./badge/Blitzkrieg.png", badgeDesc:"Réaliser un score de 15000 points sur Europe en en mode 1s", valeur: "Blitzkrieg"},
     {badgeName : "Aigle", badgesrc:"./badge/Aigle.png", badgeDesc:"Réaliser un score de 15000 points sur Amérique du Nord en mode 1s", valeur: "Aigle"},
     {badgeName : "Cow-Boy", badgesrc:"./badge/CowBoy.png", badgeDesc:"Réaliser un score de 15000 points sur Amérique du Nord", valeur: "CowBoy"},
     {badgeName : "Pionnier", badgesrc:"./badge/Pionnier.png", badgeDesc:"Réaliser un score de 20000 points sur Amérique du Nord", valeur: "Pionnier"},

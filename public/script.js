@@ -40,7 +40,8 @@ let timeLeft = roundTimeLimit; // Initialiser globalement avec la limite de temp
 let preCountdown = 5;
 const userId = localStorage.getItem("userId");
 let distanceKilometrique = 0;
-
+let badgesAcquis = 0;
+let badgesTotaux=0;
 // Remplacer ceci par votre vraie clé API
 const googleMapsApiKey = 'AIzaSyAUPG5ygE36Pd45w23U157bjffFqJ0Obcg'; // Remplacez par la clé exacte obtenue depuis Google Cloud Console
 
@@ -140,7 +141,7 @@ okButton.addEventListener('click', () => {
         alert('Veuillez placer un pin sur la carte.');
         audioPlayer.play(); // Joue le son
     }
-    console.log(distanceKilometrique)
+   
 });
 
 function clearMap() {
@@ -540,8 +541,6 @@ async function endGame() {
 }
 
 
-console.log(distanceKilometrique)
-
 
 function checkAndUnlockBadges(finalScore, location, chronoSelection) {
     let unlockedBadges = [];
@@ -554,7 +553,7 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
         { name: "Croissant", score: 20000, location: "France", chrono:"infini" },
         { name: "Marine", score: 20000, location: "France", chrono: "1s" },
         { name: "Voyageur", score: 20000, location: "europe", chrono:"infini" },
-        { name: "Blietzkrieg", score: 15000, location: "europe", chrono: "1s" },
+        { name: "Blitzkrieg", score: 15000, location: "europe", chrono: "1s" },
         { name: "Aigle", score: 15000, location: "north-america", chrono: "1s" },
         { name: "CowBoy", score: 15000, location: "north-america", chrono:"infini" },
         { name: "Pionnier", score: 20000, location: "north-america", chrono:"infini" },
@@ -577,9 +576,12 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
         }
     });
     badgeExtras.forEach(badge => {
-        if (badge.score >= 50000 && location === badge.location) {
+        if (badge.score >= 57000 && location === badge.location) {
             if (!badge.chrono || chronoSelection === badge.chrono) {
                 unlockedBadges.push(badge.name);
+            }
+            if(badgesAcquis===badgesTotaux){
+                unlockedBadges.push("Accompli");
             }
         }
     });
@@ -1281,6 +1283,8 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
         // Mettre à jour dynamiquement la balise <p> avec la progression
         const badgeProgress = document.getElementById("badgeProgress");
         badgeProgress.textContent = `${unlockedCount}/${totalBadges}`;
+        badgesAcquis=unlockedCount;
+        badgesTotaux=totalBadges;
 
         // Affichage des badges
         badgeList.forEach((badge, index) => {
