@@ -28,6 +28,6 @@ const badgeList = [
     {badgeName : "Duc-de-Agass", badgesrc:"./badge/DucdeAgass.png", badgeDesc:"Réaliser un score de 15000 points sur Capitales", valeur: "DucdeAgass"},
     {badgeName : "Routard Pro", badgesrc:"./badge/RoutardPro.png", badgeDesc:"Réaliser un score de 20000 points sur Capitales", valeur: "RoutardPro"},
     {badgeName : "Rien", badgesrc:"./badge/Rien.png", badgeDesc:"???", valeur: "Rien"},
-    {badgeName : "Desir", badgesrc:"./badge/Desir.png", badgeDesc:"???", valeur: "Desir"},
+    {badgeName : "Desir", badgesrc:"./badge/Desir.png", badgeDesc:"Réaliser un score finissant par 69", valeur: "Desir"},
     {badgeName : "Accompli", badgesrc:"./badge/Accompli.png", badgeDesc:"Posséder tous les autres badges", valeur: "Accompli"}
 ]
