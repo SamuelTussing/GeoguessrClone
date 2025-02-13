@@ -547,6 +547,17 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
     let unlockedBadges = [];
 
     const badgeConditions = [
+        { name: "5", score: 5, location: "Strasbourg", chrono: "1s" },
+        { name: "10", score: 10, location: "Strasbourg", chrono: "1s" },
+        { name: "20", score: 20, location: "Strasbourg", chrono: "1s" },
+        { name: "30", score: 30, location: "Strasbourg", chrono: "1s" },
+        { name: "40", score: 40, location: "Strasbourg", chrono: "1s" },
+        { name: "50", score: 50, location: "Strasbourg", chrono: "1s" },
+        { name: "60", score: 60, location: "Strasbourg", chrono: "1s" },
+        { name: "70", score: 70, location: "Strasbourg", chrono: "1s" },
+        { name: "80", score: 80, location: "Strasbourg", chrono: "1s" },
+        { name: "90", score: 90, location: "Strasbourg", chrono: "1s" },
+        { name: "100", score: 100, location: "Strasbourg", chrono: "1s" },
         { name: "Choucroute", score: 25000, location: "Strasbourg", chrono: "1s" },
         { name: "Halsacien", score: 25000, location: "Strasbourg", chrono:"infini"},
         { name: "Globetrotter", score: 15000, location: "world", chrono:"infini" },
@@ -573,6 +584,9 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
     badgeConditions.forEach(badge => {
         if (finalScore >= badge.score && location === badge.location) {
             if (!badge.chrono || chronoSelection === badge.chrono) {
+                unlockedBadges.push(badge.name);
+            }
+            if(ActualLevel>=badge.score){
                 unlockedBadges.push(badge.name);
             }
         }
