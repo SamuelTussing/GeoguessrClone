@@ -577,7 +577,7 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
         }
     });
     badgeExtras.forEach(badge => {
-        if (badge.score >= 57000 && location === badge.location) {
+        if (finalScore >= 57000 && location === badge.location) {
             if (!badge.chrono || chronoSelection === badge.chrono) {
                 unlockedBadges.push(badge.name);
             }
