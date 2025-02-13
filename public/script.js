@@ -565,7 +565,7 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
 
     const badgeExtras=[
         { name: "Rien", score: distanceKilometrique, location: "world", chrono:"1s" },
-        {badgeName : "Desir", badgesrc:"./badge/Desir.png", badgeDesc:"69", valeur: "Desir"},
+        {badgeName : "Desir", score: 200000, location: "famous", chrono:"infini"},
         { name: "Accompli", score: 200000, location: "Capitales", chrono:"infini" }
     ]
 
@@ -581,14 +581,15 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
             if (!badge.chrono || chronoSelection === badge.chrono) {
                 unlockedBadges.push(badge.name);
             }
-            if(badgesAcquis===badgesTotaux){
+        }
+        if(badgesAcquis===badgesTotaux){
                 unlockedBadges.push("Accompli");
             }
-            if(finalScore % 100 === 69){
+        if(finalScore % 100 === 69){
                 unlockedBadges.push("Desir");
             }
         }
-    });
+    );
 
     return unlockedBadges;
 }
