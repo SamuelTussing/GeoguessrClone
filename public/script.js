@@ -56,6 +56,7 @@ document.body.appendChild(googleMapsScript);
 
 
 function initMap() {
+    loadUserFromAPI()
     console.log('Google Maps a été chargé avec succès !');
     loadActiveBadge();
     // Initialize the map
@@ -1166,12 +1167,29 @@ async function loadUserFromAPI() {
     try {
         // Effectuer une requête GET pour récupérer les données utilisateur depuis l'API
         const response = await fetch(`/api/getUserBadges?userId=${userId}`);
+
+        const userData = await response.json();
+
+        // Récupérer les badges débloqués
+        const unlockedBadges = Object.keys(userData.badges || {})
+            .filter(badge => userData.badges[badge] === true)
+            .map(badge => String(badge));
+
+        // Mettre à jour le nombre total de badges
+        const totalBadges = badgeList.length;
+        const unlockedCount = unlockedBadges.length;
+        console.log(totalBadges)
+        console.log(unlockedCount)
+
+        // Mettre à jour dynamiquement la balise <p> avec la progression
+        const badgeProgress = document.getElementById("badgeProgress");
+        badgeProgress.textContent = `${unlockedCount}/${totalBadges}`;
+        badgesAcquis=unlockedCount;
+        badgesTotaux=totalBadges;
         
         if (!response.ok) {
             throw new Error("Erreur lors de la récupération des données utilisateur");
         }
-
-        const userData = await response.json();
 
         // Vérifier que les données nécessaires sont présentes
         const { badges, experience, level, username } = userData;
