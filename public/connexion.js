@@ -1,5 +1,3 @@
-
-
 document.getElementById('signup-form').addEventListener('submit', async function (e) {
     e.preventDefault(); // Empêche le comportement par défaut (rechargement de la page)
 
@@ -24,21 +22,22 @@ document.getElementById('signup-form').addEventListener('submit', async function
             body: JSON.stringify({ username, email, password }),
         });
 
+        // Vérifie si la réponse est OK
         if (!response.ok) {
             const errorData = await response.json();
+            console.error("Erreur API reçue :", errorData);
             throw new Error(errorData.error || 'Erreur lors de l\'inscription');
         }
 
         const result = await response.json();
         console.log('Inscription réussie:', result);
 
-        // Stocker le token dans sessionStorage
+        // Stocker les informations utilisateur dans le localStorage
         localStorage.setItem('userId', result.userId);
         localStorage.setItem('authToken', result.token);
         localStorage.setItem('username', result.username);
 
-
-        // Rediriger vers home.html
+        // Rediriger vers la page d'accueil
         window.location.href = 'home.html';
     } catch (error) {
         console.error("Erreur lors de l'inscription:", error);
