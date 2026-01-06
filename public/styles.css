@@ -1,0 +1,1278 @@
+body,html{
+  display: flex;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+h3{
+  font-size: 25px;
+  font-weight: 800;
+}
+#fondplanete{
+  object-fit: cover;
+  object-position: center;
+  height: 90vh;
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+#street-view {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+  }
+
+.popupbadgetxt{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+}
+.popupbadge{
+  display: flex;
+  justify-content: space-around;
+  background-color: #0e566e;
+  align-items: center;
+  width: 25vw;
+  height: auto;
+  position: absolute;
+  top: 100px;
+  padding: 10px 10px 10px 30px;
+  border-radius: 0 25px 25px 0;
+  left: -28vw;
+  z-index: 20;
+  transition: transform 0.8s ease-in-out; /* Animation fluide */
+}
+
+.popupbadge.activate {
+  transform: translateX(28vw); /* Déplacement vers la droite */
+}
+
+
+@keyframes slide-right {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(25vw);
+  }
+}
+@keyframes slide-left {
+  0% {
+    transform: translateX(25vw);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+#popupbadgeimg{
+  transition: transform 0.5s linear 0.5s ; /* Animation fluide */
+}
+
+#popupbadgeimg.rotation {
+  transform: rotateY(360deg); /* Déplacement vers la droite */
+}
+
+
+@keyframes rotate-vert-center {
+  0% {
+    transform: rotateY(0);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+/* Classe pour flouter et obscurcir */
+.blur {
+  filter: blur(50px); /* Applique un flou */
+  pointer-events: none; /* Désactive les interactions */
+}
+.timer2{
+  display: flex;
+  width: 200px;
+  position: absolute;
+    left: 45%;
+    height: 70px;
+    z-index: 5;
+    transform-origin: 50% 50%;
+    color: white;
+    background-color: #0E566E;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+}
+
+  #login-register{
+    display: flex;
+    gap: 30px;
+  }
+
+  /* Styles pour le bandeau en header */
+  #header {
+    background-color: #3d313f; /* Bleu foncé */
+    color: white;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    position: relative;
+    z-index: 3;
+    height: 5%;
+    align-items: center;
+    justify-content: space-around;
+    font-weight: 900;
+    opacity: .85;
+    position: absolute;
+  }
+
+  #header span {
+    margin-right: 20px;
+  }
+
+  .signup-page{
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #514f52ab;
+    border-radius: 38px;
+    width: 640px;
+    margin: 10vh 20px 80px 80vh;
+    height: 75%;
+    backdrop-filter: blur(10px); /* Flou de 10px */
+    -webkit-backdrop-filter: blur(10px); /* Compatibilité avec les anciens navigateurs */
+    overflow-y: auto;
+  }
+  .googlebutton{
+    width: 60%;
+    height: auto;
+    display: flex;
+    border-radius: 15px;
+    background-color: white;
+    color: #000;
+    text-align: center;
+    padding: 20px;
+    font-weight: 500;
+  }
+  .googlebutton:hover{
+    background-color: #0E566E;
+    color: white;
+  }
+
+  #forgotpassword{
+    color: #16D8B3;
+    font-weight: 600;
+    text-decoration: none;
+    margin: 10px;
+  }
+
+  #forgotpassword:hover{
+    color: #1A2F44;
+  }
+
+  #main-game{
+    display: flex;
+    align-items: center;
+    top: 30%;
+    left: 5%;
+  }
+
+
+  .login-page{
+    overflow-y: auto;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #514f52ab;
+    border-radius: 38px;
+    width: 640px;
+    margin: 10vh 20px 50px 80vh;
+    height: auto;
+    backdrop-filter: blur(10px); /* Flou de 10px */
+    -webkit-backdrop-filter: blur(10px); /* Compatibilité avec les anciens navigateurs */
+  }
+  form{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 55%;
+  }
+  input{
+    font-size: 1.25rem;
+    line-height: 1;
+    border-style: none;
+    outline: none;
+    width: 90%;
+    padding: 0.8em 1em;
+    border: 0.25em solid transparent;
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    border-radius: 1.8em;
+    background-size: 200% 100%;
+    transition: background-position 0.8s ease-out;
+  }
+
+label{
+  text-transform: uppercase;
+  font-size: 0.875em;
+  letter-spacing: 0.1em;
+}
+
+#containerlogs{
+  display: flex;
+  overflow: hidden;
+}
+
+#containerlogs img{
+  object-fit: cover;
+  object-position: center;
+  height: 90vh;
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  z-index: 1;
+}
+
+#connexionlink{
+  background-color: #ffffff; /* Couleur de fond grise pour les boutons */
+  color: rgb(0, 0, 0); /* Couleur de texte blanche pour les boutons */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 15px; /* Bords arrondis */
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  text-decoration: none;
+  align-content: center;
+}
+
+#connexionlink:hover{
+  background-color: #0E566E; /* Couleur de fond grise plus sombre au survol */
+  color: white;
+}
+
+.buttonchoice{
+  display: flex;
+  width: 100%;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+  #map-container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: 9%;
+    right: 10px;
+    width: 30%;
+    height: 30%;
+    overflow: hidden;
+    z-index: 5;
+    transition: width 0.3s ease, height 0.3s ease; /* Ajoutez 'ease' ici pour une animation plus fluide */
+    border-radius: 10px;
+    display: none;
+}
+  .gm-iv-address {
+    cursor: crosshair;
+    display: none;
+ }
+ .mapHover {
+  width: 60% !important; /* Utilisez !important pour surcharger les autres styles */
+  height: 70% !important;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+  #map {
+    width: 100%;
+    height: 100%;
+  }
+  #timer{
+    display: flex;
+    height: 50px;
+    width: 200px;
+    color: white;
+    background-color: #0E566E;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+  }
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  #regles{
+    margin-top: 20px;
+    width: 60%;
+    font-style: italic;
+    opacity: .8;
+  }
+  #new-game-button{
+    position: absolute;
+    background: white;
+    padding: 100px;
+    z-index: 3;
+    border: 1px solid black;
+    font-size: 16px;
+    background-color: #768489;
+    width: 300px;
+  }
+ 
+  #ok-button {
+    bottom: 30%;
+    left: 75%;
+    transform: translateX(-50%);
+    display: none;
+    position: absolute;
+    background-color: #768489;
+    width: 400px;
+  }
+  #ok-button:hover{
+    background-color: #16D8B3;
+  }
+
+  #continue-button:hover{
+    background-color: black;
+  }
+  body {
+    font-family: 'Arial Rounded MT Bold', sans-serif; /* Police arrondie */
+    background-color: #05071e; /* Couleur de fond bleu nuit */
+    color: white; /* Couleur de texte blanche */
+  }
+
+  button {
+    background-color: #16D8B3; /* Couleur de fond grise pour les boutons */
+    color: white; /* Couleur de texte blanche pour les boutons */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 15px; /* Bords arrondis */
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    height: 50px;
+  }
+
+  button:hover {
+    background-color: #0E566E; /* Couleur de fond grise plus sombre au survol */
+  }
+
+  #score-banner, #start-screen, #continue-button, #new-game-button, #result {
+    font-size: 18px; /* Taille de police pour les autres éléments */
+    border-radius: 38px; /* Bords arrondis */
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.7); /* Fond semi-transparent */
+    text-align: center;
+  }
+  #continue-button, #ok-button,#score-banner{
+    display: none;
+    font-size: 30px;
+    font-weight: 700;
+  }
+  #continue-button{
+    color: yellow;
+    padding: 10px 20px;
+  }
+
+  #start-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(56, 151, 137, 0.521);
+    backdrop-filter: blur(10px); /* Flou de 10px */
+    -webkit-backdrop-filter: blur(10px); /* Compatibilité avec les anciens navigateurs */
+  }
+
+  #new-game-button {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    z-index: 6;
+  }
+
+  #result {
+    position: absolute;
+    top: 80%;
+    right: 30%;
+    display: none;
+    background-color: red;
+    font-size: 35px;
+  }
+
+  #footer {
+    width: 100%;
+    height: 10%;
+    background-color: #1A2F44;
+    z-index: 3;
+    position: absolute;
+    bottom: 0%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+  }
+  #levelupcontainer {
+    position: absolute;
+    display: none;
+    background-color: #0E566E;
+    width: 100vw;
+    height: 50vh;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 25vh;
+    justify-content: space-evenly;
+    animation: scale-up-hor-center 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+#multicontainer {
+  position: absolute;
+  display: none;
+  background-color: #0E566E;
+  width: 100vw;
+  height: AUTO;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 5vh;
+  justify-content: flex-start;
+  animation: scale-up-hor-center 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  gap: 5vh;
+}
+#joinmulti-form{
+  padding-bottom: 150px;
+}
+#Feu{
+  display: none;
+}
+#Feu:hover{
+  background-color: #16D8B3;
+}
+#lobbycontainer{
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 25vh;
+}
+#playerlist{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #1A2F44;
+  color: white;
+}
+
+#multimenu{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 150px;
+}
+#hostcontainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding-bottom: 20px;
+}
+#roundcontainer{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1a7999;
+  border-radius: 15px;
+  width: 20vw;
+  height: 10vh;
+  gap: 10px;
+}
+#roundtitle{
+  font-size: 20px;
+  font-weight: 700;
+}
+.rounddiv{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  width: 10%;
+  height: 45%;
+  background-color: #0e566e;
+  margin-top: 0px;
+}
+#badgecontainer{
+  position: absolute;
+  display: none;
+  background-color: #0E566E;
+  width: 100vw;
+  height: 100%;
+  align-items: center;
+  flex-direction: column;
+  margin-top: -10vh;
+  justify-content: flex-start;
+  animation: scale-up-hor-center 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  gap: 5vh;
+  z-index: 12;
+  /*padding: 50px;*/
+  top: 15vh;
+  overflow-y: auto;
+}
+#badgeslistcontainer{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1%;
+  flex-wrap: wrap;
+}
+.badgetxt{
+  font-size: 20px;
+  font-weight: 400;
+  color: #747d81;
+  text-align: center;
+  margin: 1%;
+}
+.valid{
+  color: #ffffff;
+  opacity: 1;
+}
+.unvalid{
+  opacity: .5;
+}
+.opacity{
+  opacity: .5;
+}
+#badgetxtcontainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.badgesection{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1vh;
+  width: 15%;
+  background-color: #2a3343;
+  border-radius: 25px;
+  margin-bottom: 1vw;
+  padding: 1vh;
+  height: 40vh;
+}
+.badgesection:hover{
+  background-color: #1a2435;
+
+}
+#badgecontainer span{
+  font-size: 5vh;
+  font-weight: 700;
+  }
+  #arrowbadgecontainer{
+    display: flex;
+    justify-content: flex-start;
+    width: 90%;
+  }
+#comptecontainer{
+  position: absolute;
+    display: none;
+    background-color: #0E566E;
+    width: 100vw;
+    height: AUTO;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 5vh;
+    justify-content: flex-start;
+    animation: scale-up-hor-center 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+    gap: 5vh;
+    z-index: 10;
+    padding: 50px;
+    top: 15vh;
+}
+#comptecontainer span{
+font-size: 5vh;
+font-weight: 700;
+}
+#arrowcontainer{
+  display: flex;
+  justify-content: flex-start;
+  width: 90%;
+}
+
+#infocomptecontainer{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-start;
+  justify-content: center;
+  width: 50%;
+}
+
+#information{
+  background-color: #1a7999;
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+
+#infosperso{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+#infosperso span{
+  font-size: 2.5vh;
+}
+
+@keyframes scale-up-hor-center {
+  0% {
+    transform: scaleX(0.4);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+.multititle{
+  font-size: 96px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+#hostbutton{
+  width: 10vw;
+}
+#hostbutton:hover{
+  background-color: #0d9b81;
+}
+#joinbutton{
+  width: 10vw;
+}
+#joinbutton:hover{
+  background-color: #0d9b81;
+}
+#closemulti{
+  display: flex;
+  justify-content: flex-start;
+  width: 90%;
+  margin-top: 2%;
+}
+
+  .leveluptitle{
+    font-size: 96px;
+    font-weight: 800;
+    color: #ffffff;
+    animation: scale-up-ver-bottom 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) 600ms both;
+  }
+  @keyframes scale-up-ver-bottom {
+    0% {
+      transform: scaleY(0.4);
+      transform-origin: 0% 100%;
+      opacity: 0;
+    }
+    100% {
+      transform: scaleY(1);
+      transform-origin: 0% 100%;
+      opacity: 1;
+    }
+  }
+
+#levelupanimation{
+  display: flex;
+  font-size: 24px;
+  font-weight: 600;
+  gap: 10px;
+  animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) 1s both;
+}
+@keyframes scale-up-center {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+#levelfillbarre{
+  width: 30vw;
+  background-color: white;
+  border-radius: 20px;
+}
+
+.progress2 {
+  padding: 6px;
+  width: 30vw;
+  border-radius: 30px;
+  background: rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25),
+    0 1px rgba(255, 255, 255, 0.08);
+}
+
+.progress-bar2 {
+  height: 18px;
+  border-radius: 30px;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.05)
+  );
+  transition: 1s linear;
+  transition-property: width, background-color;
+}
+
+.progress-moved .progress-bar2 {
+  width: 100%;
+  background-color: #ef476f;
+  animation: progressAnimation 4s;
+}
+
+@keyframes progressAnimation {
+  0% {
+    width: 0%;
+    background-color: #f9bcca;
+  }
+  40% {
+    width: 0%;
+    background-color: #f9bcca;
+  }
+  100% {
+    width: 100%;
+    background-color: #ef476f;
+  }
+}
+
+#Nextbutton{
+  animation: scale-up-center 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) 4s both;
+}
+
+  #compass {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    width: 70px;
+    height: 70px;
+    z-index: 5;
+    transform-origin: 50% 50%;
+}
+#location-select, #player-input{
+  border-radius: 20px;
+  border: none;
+  padding: 5px 10px;
+  margin: 15px;
+}
+#badgeButton{
+  color: #43a6b1;
+  font-weight: 700;
+  background-color: white;
+}
+#start-button {
+  color: #43a6b1;
+  font-weight: 700;
+  background-color: white;
+}
+#homepage{
+  display: flex;
+    align-items: center;
+    justify-content: space-around;
+    height: 80%;
+    width: 100%;
+    margin: 60px;
+    gap: 50px;
+
+}
+#gamemodetitle{
+  text-transform: uppercase;
+    font-size: 0.875em;
+    letter-spacing: 0.1em;
+}
+.chronoContainer{
+  display: flex;
+  gap: 10px;
+  margin: 10px;
+}
+#classement-button{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.chronodiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 43px;
+  width: 43px;
+  background-color: #171717;
+  color: white;
+  border-radius: 22px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.chronodiv:hover {
+  background-color: #16D8B3;
+}
+
+.chronodiv.active {
+  background-color: #16D8B3;
+  border-radius: 22px;
+}
+
+.chronodiv img {
+  display: inline-block;
+}
+#game-choice{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+.classementcontainer{
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  z-index: 100;
+  height: 100%;
+  width: 90%;
+  background-color: #1b4c60af;
+  backdrop-filter: blur(10px); /* Flou de 10px */
+  -webkit-backdrop-filter: blur(10px); /* Compatibilité avec les anciens navigateurs */
+  overflow-y: auto;
+}
+
+.classementheader{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 5%;
+}
+#playerbadge{
+  height: 100%;
+}
+
+#leveluptitlediv{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#infocomptemaindiv{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 30vh;
+  width: 100%;
+}
+#infocompteBadge{
+  height: 100%;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.classement-section{
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.classementcontainer h2{
+  display: flex;
+  justify-content: center;
+  font-size: 35px;
+}
+.classement-list-main{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  gap: 10px;
+}
+
+.classement-list{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  gap: 10px;
+}
+.classement-item{
+  background-color: grey;
+  padding: 10px;
+  border-radius: 30px;
+}
+.position-1{
+  font-size: 20px;
+  color: gold;
+}
+.classement-item img {
+  margin-right: 10px; /* Ajoute un espace entre l'image et le texte */
+  vertical-align: middle; /* Aligne l'image avec le texte */
+}
+.position-2{
+  font-size: 18px;
+  color: #c1c1c1;
+}
+.position-3{
+  font-size: 15px;
+  color: #d37777;
+  margin-bottom: 20px;
+}
+
+/* Styles pour chaque colonne */
+.column {
+  flex: 1; /* Chaque colonne prend un espace égal */
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fafafa;
+}
+
+.column h3 {
+  margin-bottom: 10px;
+  font-size: 18px;
+  color: #333;
+  text-align: center;
+}
+.hidden{
+  display: none;
+}
+
+.column ul {
+  list-style: none; /* Supprime les puces des listes */
+  padding: 0;
+}
+
+.column ul li {
+  margin: 5px 0;
+  padding: 5px;
+  background-color: #e9ecef;
+  border-radius: 3px;
+  font-size: 14px;
+  color: #555;
+}
+
+#classique-mode-button, #chrono-mode-button, #flags-mode-button{
+  background-color: #6d6d6d75;
+  border-radius: 35px;
+  font-size: 50px;
+  font-weight: 700;
+  font-style: italic;
+  height: auto;
+  width: 100%;
+}
+#classique-mode-button:hover{
+  background-color:rgba(67, 166, 177, 0.479);
+}
+#chrono-mode-button:hover{
+  background-color:rgba(67, 166, 177, 0.479);
+}
+#flags-mode-button:hover{
+  background-color:rgba(67, 166, 177, 0.479);
+}
+#timer-display{
+  display: block;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+/* Effet blur sur tout l'écran */
+.badgedetailcontainerblur {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.5); /* Assombrit légèrement l'arrière-plan */
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+.visible{
+  display: flex;
+  z-index: 15;
+}
+
+/* Conteneur centré */
+.badgedetailcontainer {
+  width: 30%;
+  height: 50vh;
+  background: #1A2F44;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Image à l'intérieur du conteneur */
+.badgedetailcontainerimg {
+  width: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+/* Infos du badge */
+.badgedetailcontainerinfo {
+  text-align: center;
+}
+
+/* Texte à l'intérieur du conteneur */
+.badgedetailcontainertext {
+  font-size: 16px;
+  color: white;
+  margin-top: 10px;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+.popup-content {
+  background-color: #357f78;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 400px;
+  position: relative;
+}
+
+.popup-content h2 {
+  text-align: center;
+}
+
+.popup-content input[type="text"],
+.popup-content input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.popup-content button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.popup-content button:hover {
+  opacity: 0.8;
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+#country-flag{
+  height: 400px;
+}
+#FinFlag{
+  display: none;
+  background-color: #1a7999;
+  color: white;
+}
+#FlagsHighScore{
+  height: 50vh;
+  width: 60vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #101e2c;
+  color: white;
+}
+#FlagContainer li{
+  font-size: 25px;
+}
+#FlagContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+#flag-game{
+  display: flex;
+    height: 80vh;
+    width: 100vw;
+    position: absolute;
+    background-color: #1A2F44;
+  flex-direction: column;
+  align-items: center;
+}
+.country-button, #next-button{
+  background-color: rgba(0, 0, 0, 0.7);
+  font-size: 18px; /* Taille de police pour les autres éléments */
+  border-radius: 10px; /* Bords arrondis */
+  padding: 15px;
+  border: 1px solid black;
+}
+#next-button:hover{
+  background-color: #606060;
+}
+#resultat, #score-drapeau{
+  font-size: 20px;
+  font-weight: 600;
+  margin: 10px;
+}
+#dataContainer{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5%;
+  align-items: flex-start;
+  justify-content: center;
+}
+@media screen and (max-width : 768px) {
+  #game-choice button{
+    font-size: 20px;
+  }
+  #homepage{
+    overflow-y: auto;
+  }
+  .classement-section {
+    width: 27%;
+  }
+  #country-options{
+    flex-direction: column;
+  }
+  #flag-game{
+    flex-direction: row;
+  }
+  #country-flag {
+    height: 200px;
+}
+#FlagsHighScore {
+  height: auto;
+}
+}
+
+
+@media screen and (max-width : 768px) {
+  #header{
+    height: 5vh;
+  }
+  #containerlogs {
+    display: flex;
+    overflow: hidden;
+    height: auto;
+    margin-top: 5vh;
+    overflow-y: auto;
+}
+#containerlogs img {
+  height: 85vh;
+}
+.login-page{
+  width: 100vw;
+  margin: 10px 50px;
+  height: auto;
+  justify-content: center;
+}
+.signup-page{
+  width:100vw;
+  margin: 5vw;
+  height: auto;
+}
+.buttonchoice{
+  flex-direction: column;
+}
+#homepage{
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-top: 50px;
+  height: auto;
+  position: relative;
+  right: 50px;
+  overflow-y: auto;
+  margin: 0;
+}
+#main-game{
+  display: flex;
+  align-items: center;
+  height: 85vh;
+  margin-top: 5vh;
+  width: 100vw;
+}
+  #game-choice{
+    gap:0;
+    margin-bottom: 50px;
+    position: relative;
+    top: 50px;
+  }
+.map-container{
+    width: 50%;
+    height: 25%;
+}
+#compass{
+    top:100px;
+  }
+  #game-choice button{
+    font-size: 20px;
+  }
+  #mode-title{
+    font-size: 20px;
+  }
+  #infocomptemaindiv{
+    flex-direction: column;
+  }
+  #comptecontainer{
+    padding: 0;
+    height: 100vh;
+    margin: 0;
+    top: 5vh;
+    gap: 15vh;
+    overflow-y: auto;
+  }
+  .classement-section{
+    width: auto ;
+  }
+  .classementcontainer{
+    padding-top: 7vh;
+  }
+}

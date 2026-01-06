@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="./styles.css" rel="stylesheet" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon freeguessr.png">
+    <title>Freeguessr</title>
+</head>
+<body>
+    <audio id="audioPlayer" src="son.m4a"></audio>
+    <div id="header">
+        <img src="./logo freeguessr.png" id="logo" width="10%"/>
+        <span id="player-name"></span>
+        <span id="round-info"></span>
+        <span id="current-score"></span>
+    </div>
+
+<div id="containerlogs">
+    <img src="./fond-planete.jpg" alt="image">
+    <!-- Formulaire d'inscription -->
+    <div class="signup-page">
+        <h1>Inscription</h1>
+        <button class="googlebutton" id="googlebutton"> Continuer avec Google</button>
+        <br>
+        <p>OU</p>
+        <form id="signup-form">
+            <label for="signup-username">Nom d'utilisateur :</label>
+            <input type="text" id="signup-username" name="username" required>
+            <br>
+            <label for="signup-email">Adresse email :</label>
+            <input type="email" id="signup-email" name="email" required>
+            <br>
+            <label for="signup-password">Mot de passe :</label>
+            <input type="password" id="signup-password" name="password" required>
+            <br>
+            <div class="buttonchoice">
+                <button type="submit">Créer un compte</button>
+                <a id="connexionlink" href="login.html">J'ai déjà un compte</a>
+            </div>
+            
+        </form>
+        <div id="signup-error" style="color: red; display: none;"></div>
+    </div>
+
+</div>
+
+    <div id="footer">
+        <h2 id="nameplace"></h2>
+        <div id="score-banner">Score: 0 (Distance: 0 km)</div>
+        <button id="continue-button">Continuer</button>
+        <button id="ok-button">Deviner</button> 
+        <div id="timer-display"></div>
+    </div> 
+    <script src="./script.js"></script>
+    <script src="/connexion.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</body>
+</html>

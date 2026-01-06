@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="./styles.css" rel="stylesheet" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon freeguessr.png">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <title>Freeguessr</title>
+</head>
+<body>
+    <audio id="audioPlayer" src="son.m4a"></audio>
+    <img id="fondplanete" src="./fondplanete2.jpg" alt="image">
+    <div id="header">
+        <img src="./logo freeguessr.png" id="logo" width="10%"/>
+        <span id="player-name"></span>
+        <span id="round-info"></span>
+        <span id="current-score"></span>
+    </div>
+    <div class="popupbadge" id="popupbadgemain">
+        <div class="popupbadgetxt">
+            <h3 class="popupbadgetitre" id="popupbadgetitre"></h3>
+            <span class="popupbadgetxt" id="popupbadgetxt"></span>
+        </div>
+        <img id="popupbadgeimg" src="./badge/Pionnier.png" alt="badge unlock" height="100px"/>
+    </div>
+
+<div div id="main-game">
+    <div id="street-view" >
+        <img id="compass" src="compass.png" alt="Compass">
+    </div>
+    <div id="timer2" class="timer2 hidden"></div>
+    <div class="classementcontainer hidden">
+        <div class="classementheader">
+            <img id="arrow" src="./arrow.png" alt="back" height="30px">
+        </div>
+        <h2>Classement</h2>
+            <!-- Conteneur pour d'autres données si besoin -->
+            <div id="dataContainer"></div>
+        </div>
+        
+</div>
+    <div id="homepage">
+        
+        <div id="game-choice">
+            <button id="classique-mode-button">SOLO CLASSIQUE</button>
+            <button id="chrono-mode-button">MULTIJOUEUR</button>
+            <button id="flags-mode-button">SOLO DRAPEAUX</button>
+            <button id="clear-storage-button">Mon compte</button>
+            <button id="classement-button"><img src="./couronne.png" alt="" width="30px">Classement</button>
+        </div>
+
+        <div id="start-screen">
+            <h1 id="mode-title">MODE DE JEU</h1>
+            <label for="location-select">Choisissez une région :</label>
+            <select id="location-select">
+                <option value="world">Monde</option>
+                <option value="Strasbourg">Strasbourg</option>
+                <option value="France">France</option>
+                <option value="europe">Europe</option>
+                <option value="north-america">Amérique du Nord</option>
+                <option value="famous">famous</option>
+                <option value="Capitales">Capitales</option>
+            </select>
+            <span id="gamemodetitle">CHRONO</span>
+            <div class="chronoContainer">
+                <div id="chronodiv-infini" class="chronodiv" data-chrono="infini">
+                    <img src="./chronoinfini.png" alt="infini" width="30px">
+                </div>
+                <div id="chronodiv-1s" class="chronodiv" data-chrono="1s">
+                    <img src="./chrono1s.png" alt="1s" width="30px">
+                </div>
+                <div id="chronodiv-10s" class="chronodiv" data-chrono="10s">
+                    <img src="./chrono10s.png" alt="10s" width="30px">
+                </div>
+                <div id="chronodiv-30s" class="chronodiv" data-chrono="30s">
+                    <img src="./chrono30s.png" alt="30s" width="30px">
+                </div>
+            </div>
+            <span>DEPLACEMENTS</span>
+            <div class="chronoContainer">
+                <div id="chronodiv-fixe" class="chronodiv" data-mode="fixe">
+                    <img src="./persodebout.png" alt="fixe" width="30px">
+                </div>
+                <div id="chronodiv-mouvement" class="chronodiv" data-mode="mouvement">
+                    <img src="./persomarche.png" alt="mouvement" width="30px">
+                </div>
+            </div>
+            <button id="start-button">C'EST PARTI !</button>
+            <span id="regles">Essayez de réaliser le plus gros score en trouvant 5 localisations sur Google Maps</span>
+    <div id="region-select" style="display: none;">
+        <label for="region">Choisissez une région:</label>
+        <select id="region">
+            <option value="world">Monde</option>
+            <option value="famous">Lieux connus</option>
+            <option value="americas">Amérique</option>
+            <option value="europe">Europe</option>
+            <option value="asia">Asie</option>
+            <option value="africa">Afrique</option>
+            <option value="oceania">Océanie</option>
+        </select>
+        <button id="start-flag-game-button">Commencer le jeu</button>
+    </div>
+        </div>
+
+        <div id="flag-game" style="display: none;">
+            <img id="country-flag" src="" alt="Drapeau">
+            <span id="resultat"></span> <!-- Fixed ID here -->
+            <div id="country-options">
+                <button class="country-button"></button>
+                <button class="country-button"></button>
+                <button class="country-button"></button>
+                <button class="country-button"></button>
+            </div>
+            <button id="next-button" style="display: none;">Suivant</button>
+            <span id="score-drapeau">Score : 0</span> <!-- Initial score set to 0 -->
+            <span id="timerflag">10</span>
+            <button id="FinFlag">Menu Principal</button>
+            <div id="message"></div>
+            <div id="FlagsHighScore">
+                <h3>HIGHSCORE</h3>
+                <div id="FlagContainer"></div>
+            </div>
+        </div>
+        
+        
+    </div>
+
+    
+    <div id="map-container">
+        <div id="timer"></div>
+        <div id="map"></div>
+    </div>
+    <button id="new-game-button">Nouvelle partie</button>
+    <div id="result">Total Score: 0</div>
+</div>
+<div id="levelupcontainer">
+    <div id="leveluptitlediv">
+        <img id="levelupbadge" src="#" alt="badge" height="150px"/>
+        <span class="leveluptitle">LEVEL UP</span>
+    </div>
+    <div id="levelupanimation">
+        <span id="oldlevel">Niv.1</span>
+        <div class="progress2 progress-moved">
+            <div class="progress-bar2">
+            </div>
+          </div>
+        <span id="newlevel">Niv.2</span>
+    </div>
+    <button id="Nextbutton">Suivant</button>
+
+</div>
+<div class="badgedetailcontainerblur">
+    <div class="badgedetailcontainer">
+        <img class="badgedetailcontainerimg" src="./badge/Choucroute.png" alt="badgeimg"/>
+        <div class="badgedetailcontainerinfo">
+            <h3 class="badgedetailcontainertitle">CHOUCROUTE SUPRÊME</h3>
+            <p class="badgedetailcontainertext">25 000 points en mode Strasbourg en 1s</p>
+        </div>
+    </div>
+</div>
+<div id="badgecontainer">
+    <div id="arrowbadgecontainer">
+        <img id="arrowbadge" src="./arrow.png" alt="back" height="30px">
+    </div>
+    <span>BADGES</span>
+    <p id="badgeProgress"></p>
+    <div id="badgeslistcontainer">
+
+    </div>
+</div>
+
+<div id="comptecontainer">
+    <div id="arrowbadgecontainer">
+        <img id="arrowcompte" src="./arrow.png" alt="back" height="30px">
+    </div>
+    <span>MON COMPTE</span>
+    <div id="infocomptemaindiv">
+        <div id="infocompteBadge">
+            <img src="#" id="playerbadge" alt="playerbadge"/>
+            <button id="changeBadgeButton">Changer le Badge</button>
+        </div>
+        <div id="infocomptecontainer">
+            <div id="infosperso">
+                <span id="informationID">Username : Chargement...</span>
+                <span id="informationName">Username : Chargement...</span>
+                <span id="informationLvl">Chargement...</span>
+                <span id="informationXP">Chargement...</span>
+                <button id="badgeButton">Badges</button>
+            </div>
+            <ul id="scoreList"></ul>
+        </div>
+    </div>
+</div>
+
+<div id="multicontainer">
+    <div id="closemulti">
+        <img id="arrowbackmulti" src="./arrow.png" alt="back" height="30px">
+    </div>
+    <span class="multititle">MULTIJOUEUR</span>
+    <div id="multimenu">
+        <button id="hostbutton">Host</button>
+        <button id="joinbutton">Join</button>
+    </div>
+    <form id="joinmulti-form" method="POST">
+        <label for="joinroomcode">Identifiant de partie :</label>
+        <input type="text" id="roomcode" required>
+        <button id="joinroom">Rejoindre</button>
+    </form>
+    <div id="hostcontainer">
+        <div id="roundcontainer">
+            <span id="roundtitle">ROUNDS :</span>
+            <button class="rounddiv roundbutton" id="moins">-</button>
+            <div class="rounddiv" id="roundnumber">5</div>
+            <button class="rounddiv" id="plus">+</button>
+        </div>
+        <div id="roundcontainer">
+            <span id="roundtitle">DUREE :</span>
+            <button class="rounddiv roundbutton" id="tempsmoins">-</button>
+            <div class="rounddiv" id="roundtimer">50</div>
+            <span>SEC</span>
+            <button class="rounddiv" id="tempsplus">+</button>
+        </div>
+        <div id="roundcontainer">
+            <label for="location-select">CARTE :</label>
+            <select id="location-select">
+                <option value="world">Monde</option>
+                <option value="Strasbourg">Strasbourg</option>
+                <option value="France">France</option>
+                <option value="europe">Europe</option>
+                <option value="north-america">Amérique du Nord</option>
+                <option value="south-america">Amérique du Sud</option>
+                <option value="africa">Afrique</option>
+                <option value="asia-oceania">Asie / Océanie</option>
+                <option value="famous">famous</option>
+                <option value="Capitales">Capitales</option>
+            </select>
+        </div>
+        <button id="hostroom">Héberger</button>
+        <button id="Feu">Lancer partie</button>
+    </div>
+    <div id="lobbycontainer">
+        <span>Joueurs en ligne</span>
+        <div id="playerlist"></div>
+    </div>
+    
+
+</div>
+    <div id="footer">
+        <h2 id="nameplace"></h2>
+        <div id="score-banner">Score: 0 (Distance: 0 km)</div>
+        <button id="continue-button">Continuer</button>
+        <button id="ok-button">Deviner</button> 
+        <div id="timer-display"></div>
+    </div> 
+    <script src="./script.js" defer></script>
+    <script src="" id="google-maps-script" async defer></script>
+    <script src="./localisation.js"></script>
+    <script src="badgeList.js"></script>
+    <script src="./flagsdata.js"></script>
+    <script src="./flags.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</script>
+</body>
+</html>
