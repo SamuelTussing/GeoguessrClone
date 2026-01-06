@@ -12,7 +12,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Connexion à MongoDB Atlas
+<<<<<<< HEAD
 const uri = 'mongodb+srv://samueltussiing_db_user:zE6Igl74a71ioJ4f@cluster0.u6lrhiw.mongodb.net/?appName=Cluster0';
+=======
+const uri = 'mongodb+srv://smltussing:<password>@samueltussing.o80ybpr.mongodb.net/?retryWrites=true&w=majority&appName=SamuelTussing';
+>>>>>>> e032150b11b8746747bb1bd0645b60b1ca6e472b
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('Connected to MongoDB Atlas'))
     .catch(error => console.error('Error connecting to MongoDB Atlas:', error));
