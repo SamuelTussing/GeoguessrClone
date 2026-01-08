@@ -576,7 +576,7 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
     ];
 
     const badgeExtras=[
-        { name: "Rien", score: distanceKilometrique, location: "world", chrono:"1s" },
+        { name: "Rien", score: 1, location: "world", chrono:"1s" },
         {badgeName : "Desir", score: 200000, location: "famous", chrono:"infini"},
         { name: "Accompli", score: 200000, location: "Capitales", chrono:"infini" }
     ]
@@ -597,7 +597,7 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
                 unlockedBadges.push(badge.name);
             }
         }
-        if(badgesAcquis===badgesTotaux){
+        if(badgesAcquis===badgesTotaux-1){
                 unlockedBadges.push("Accompli");
             }
         if(finalScore % 100 === 69){
@@ -832,6 +832,10 @@ function getRandomStreetViewLocation(locationType) {
         switch (locationType) {
             case 'europe':
                 filteredLocations = locations.filter(location => location.continent === 'Europe');
+                break;
+            case 'Australie':
+                filteredLocations = locations.filter(location => location.continent === 'Australie');
+                radiusInKm = 2;
                 break;
             case 'Capitales':
                 filteredLocations = locations.filter(location => location.mode === 'Capitales');
