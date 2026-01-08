@@ -9,7 +9,7 @@ export default async function handler(req, res) {
             // Liste des localisations à récupérer
             const locations = [
                 "world", "Strasbourg", "France", "europe", "north-america",
-                "famous", "Capitales"
+                "famous", "Capitales","Australie"
             ];
 
             let topScoresByLocation = {};
