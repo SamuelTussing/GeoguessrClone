@@ -834,7 +834,7 @@ function getRandomStreetViewLocation(locationType) {
                 filteredLocations = locations.filter(location => location.continent === 'Europe');
                 break;
             case 'Australie':
-                filteredLocations = locations.filter(location => location.continent === 'Australie');
+                filteredLocations = locations.filter(location => location.pays === 'Australie');
                 radiusInKm = 2;
                 break;
             case 'Capitales':
