@@ -108,6 +108,7 @@ document.getElementById('start-button').addEventListener('click', () => {
     // Gestion des boutons de mode de jeu
     document.getElementById('classique-mode-button').addEventListener('click', () => {
         gameMode = 'classique';
+        resetGame();
         //showBadgeNotification(["halsacien"]);
         document.getElementById('result').style.display = 'none';
         document.getElementById('mode-title').innerText = 'MODE DE JEU : SOLO CLASSIQUE';
@@ -466,6 +467,7 @@ async function endGame() {
         "north-america": 2000,
         "famous": 1000,
         "Capitales": 1000,
+        "Australie": 2000,
     };
 
     const bonusPoints = bonusPointsMap[locationType] || 0;
