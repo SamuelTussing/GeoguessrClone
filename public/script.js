@@ -53,6 +53,18 @@ googleMapsScript.defer = true;
 document.body.appendChild(googleMapsScript);
 
 
+// Add input animations
+const inputs = document.querySelectorAll("input")
+inputs.forEach((input) => {
+  input.addEventListener("focus", function () {
+    this.parentElement.style.transform = "scale(1.01)"
+  })
+
+  input.addEventListener("blur", function () {
+    this.parentElement.style.transform = "scale(1)"
+  })
+})
+
 
 
 function initMap() {
