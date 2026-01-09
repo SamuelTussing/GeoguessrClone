@@ -73,8 +73,8 @@ body {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  width: 600px;
-  height: 600px;
+  width: 100vw;
+  height: 100vh;
   background-image: url("/fond-planete.jpg");
   background-size: contain;
   background-repeat: no-repeat;
