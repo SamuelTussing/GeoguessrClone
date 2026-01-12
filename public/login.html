@@ -2,6 +2,7 @@
 <html>
 <head>
     <link href="./styles.css" rel="stylesheet" type="text/css" />
+    <link href="./login-styles.css" rel="stylesheet" type="text/css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="./favicon freeguessr.png">
     <title>Freeguessr</title>
@@ -15,26 +16,42 @@
         <span id="current-score"></span>
     </div>
 
-<div id="containerlogs">
-    <img src="./fond-planete.jpg" alt="image">
+<main class="main-content">
+    <div class="background-image">
+        <img src="./fond-planete.jpg" alt="image">
+    </div>
+
 <!-- Formulaire de connexion -->
-<div class="login-page">  
-    <h1>Connexion</h1>
-    <form id="login-form" method="POST">
-        <label for="login-email">Adresse email :</label>
-        <input type="email" id="login-email" name="email" required>
-        <br>
-        <label for="login-password">Mot de passe :</label>
-        <input type="password" id="login-password" name="password" required>
-        <br>
-        <button type="submit">Connexion</button>
+<div class="form-container">  
+    <div class="form-card">
+        <h1 class="form-title">Connexion</h1>
+    
+        <form id="login-form" method="POST" class="login-form">
+            <div>
+                <label for="login-email">Adresse email :</label>
+                <input
+                type="email"
+                id="login-email"
+                name="email"
+                required>
+            </div>
+            <div class="form-group">
+                <label for="login-password">Mot de passe :</label>
+                <input 
+                type="password"
+                id="login-password"
+                name="password"
+                required>
+            </div>
+
+        <button type="submit" class="btn-primary">Connexion</button>
     </form>
     <div id="login-error" style="color: red; display: none;"></div>
-    <a id="forgotpassword" href="#">Mot de passe oublié</a>
+    <a id="forgotpassword" class="forgot-password" href="#">Mot de passe oublié</a>
+    </div>
 </div>
 
-
-</div>
+</main>
 
     <div id="footer">
         <h2 id="nameplace"></h2>
