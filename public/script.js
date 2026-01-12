@@ -590,34 +590,52 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
 
     const badgeExtras=[
         { name: "Rien", score: 1, location: "world", chrono:"1s" },
-        {badgeName : "Desir", score: 200000, location: "famous", chrono:"infini"},
+        {name : "Desir", score: 200000, location: "famous", chrono:"infini"},
         { name: "Accompli", score: 200000, location: "Capitales", chrono:"infini" }
     ]
 
     badgeConditions.forEach(badge => {
-        if (finalScore >= badge.score && location === badge.location) {
-            if (!badge.chrono || chronoSelection === badge.chrono) {
+
+        // 🎖️ Badges de niveau
+        if (badge.newLevel && ActualLevel >= badge.newLevel) {
+            if (!unlockedBadges.includes(badge.name)) {
                 unlockedBadges.push(badge.name);
             }
-            if(ActualLevel>=badge.score){
+            return;
+        }
+
+        // 🎯 Badges score / lieu / chrono
+        if (
+            badge.score &&
+            finalScore >= badge.score &&
+            location === badge.location &&
+            (!badge.chrono || badge.chrono === chronoSelection)
+        ) {
+            if (!unlockedBadges.includes(badge.name)) {
                 unlockedBadges.push(badge.name);
             }
         }
     });
+
     badgeExtras.forEach(badge => {
-        if (finalScore >= 57000 && location === badge.location) {
-            if (!badge.chrono || chronoSelection === badge.chrono) {
+        if (
+            finalScore >= badge.score &&
+            location === badge.location &&
+            (!badge.chrono || badge.chrono === chronoSelection)
+        ) {
+            if (!unlockedBadges.includes(badge.name)) {
                 unlockedBadges.push(badge.name);
             }
         }
-        if(badgesAcquis===badgesTotaux-1){
-                unlockedBadges.push("Accompli");
-            }
-        if(finalScore % 100 === 69){
-                unlockedBadges.push("Desir");
-            }
-        }
-    );
+    });
+
+    if (badgesAcquis === badgesTotaux - 1) {
+        unlockedBadges.push("Accompli");
+    }
+
+    if (finalScore % 100 === 69) {
+        unlockedBadges.push("Desir");
+    }
 
     return unlockedBadges;
 }
