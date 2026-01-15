@@ -1,0 +1,7 @@
+[
+    { "lat": 48.8566, "lng": 2.3522, "mode": "campagne", "level": "1", "continent": "Europe", "pays": "France", "ville": "Paris" },
+    { "lat": 51.5074, "lng": -0.1278, "mode": "campagne", "level": "2", "continent": "Europe", "pays": "Royaume-Uni", "ville": "Londres" },
+    { "lat": 40.7128, "lng": -74.0060, "mode": "campagne", "level": "3", "continent": "Amérique du Nord", "pays": "USA", "ville": "New York" },
+    { "lat": -33.8688, "lng": 151.2093, "mode": "campagne", "level": "4", "continent": "Océanie", "pays": "Australie", "ville": "Sydney" },
+    { "lat": 35.6895, "lng": 139.6917, "mode": "campagne", "level": "5", "continent": "Asie", "pays": "Japon", "ville": "Tokyo" }
+]

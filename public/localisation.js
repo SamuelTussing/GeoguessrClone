@@ -1826,3 +1826,4 @@ const locations = [
     { lat: 51.51372999680392, lng:  -0.10036435807844586, continent: 'Europe', pays: 'Royaume-Unis', ville: 'Londres', mode: 'famous', place: "Cathedral Saint Paul" },
 
 ]
+

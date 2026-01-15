@@ -103,12 +103,24 @@ function initMap() {
 
 // Initialisation du jeu lorsque le bouton "Lancer une partie" est cliqué
 document.getElementById('start-button').addEventListener('click', () => {
-    // Récupérer le nom du joueur depuis le localStorage
-
-    // Maintenant, vous pouvez utiliser playerName et passer à la suite
-    getLocationType();
-    const locationType = document.getElementById('location-select').value;
+    // Masquer l'écran de démarrage
     document.getElementById('start-screen').style.display = 'none';
+
+    // Récupérer le type de localisation sélectionné
+    const locationType = document.getElementById('location-select').value;
+
+    // Déterminer le mode de jeu et appeler la bonne fonction
+    if (gameMode === 'classique') {
+        const locationType = document.getElementById('location-select').value;
+        getLocationType();
+         
+         document.getElementById('start-screen').style.display = 'none';
+        startNewRound(locationType);
+    } else if (gameMode === 'campagne') {
+        getLocationTypeCampagne()
+    }
+
+    // Lancer le tour avec la localisation choisie
     startNewRound(locationType);
 });
 
@@ -145,21 +157,26 @@ function updateCompass(heading) {
 }
 
 // OK button event
-okButton.addEventListener('click', () => {
-    if (playerMarker) {
-        clearInterval(timerInterval); // Arrêter le chronomètre en mode chrono
-        calculateScore(playerMarker.getPosition());
-        placeActualMarker(actualLocation);
-        drawLine(playerMarker.getPosition(), actualLocation);
-        okButton.style.display = 'none';
-        continueButton.style.display = 'block';
-        document.getElementById('map-container').style.width = '50%';
-        document.getElementById('map-container').style.height = '75%';
-    } else {
+okButton.addEventListener('click', async () => {
+    if (!playerMarker) {
         alert('Veuillez placer un pin sur la carte.');
-        audioPlayer.play(); // Joue le son
+        audioPlayer.play();
+        return;
     }
-   
+
+    clearInterval(timerInterval); // Arrêter le chrono en mode chrono
+    placeActualMarker(actualLocation);
+    drawLine(playerMarker.getPosition(), actualLocation);
+    okButton.style.display = 'none';
+    continueButton.style.display = 'block';
+    document.getElementById('map-container').style.width = '50%';
+    document.getElementById('map-container').style.height = '75%';
+
+    if (gameMode === 'campagne') {
+        await calculateScoreCampagne(playerMarker.getPosition());
+    } else {
+        calculateScore(playerMarker.getPosition());
+    }
 });
 
 function clearMap() {
@@ -265,23 +282,73 @@ newGameButton.addEventListener('click', () => {
     result.textContent = `Total Score: 0`;
 });
 
-function startNewRound(locationType) {
+async function startNewRound(locationType) {
     streetViewElement.classList.add('blur'); // Ajouter le flou streetview
     roundStartTime = Date.now(); // Enregistre l'heure de début du round
-    let preCountdown = 5
+    let preCountdown = 5;
 
-    // Réinitialisation selon le mode de jeu
-    if (locationType === 'Strasbourg') {
-        clearMapStrasbourg(); // Réinitialise et centre sur Strasbourg
-        getRandomStreetViewLocation(locationType);
-    } else if (locationType === 'north-america') {
-        clearMapNorthAmerica(); // Réinitialise et centre sur les États-Unis
-        getRandomStreetViewLocation(locationType);
-    } else {
-        clearMap(); // Réinitialise la carte de manière classique
-        getRandomStreetViewLocation(locationType);
+    let chosenLocation = null;
+
+    if (gameMode === 'campagne') {
+        // 🔥 Mode Campagne : récupérer le niveau du joueur et choisir une localisation
+        const userId = localStorage.getItem("userId");
+        if (!userId) {
+            console.error("Aucun ID utilisateur trouvé dans le localStorage");
+            return;
+        }
+
+        try {
+            // Récupérer le niveau de campagne
+            const res = await fetch(`/api/user?userId=${userId}&action=info`, {
+                headers: { Authorization: `Bearer votre_token_securise` }
+            });
+
+            if (!res.ok) throw new Error("Impossible de récupérer le niveau campagne");
+
+            const data = await res.json();
+            const campagneLevel = data.campagneLevel;
+
+            // Charger le JSON des localisations campagne
+            const locationsResponse = await fetch('/path/to/campagneLocations.json');
+            const locations = await locationsResponse.json();
+
+            // Filtrer les lieux correspondant au niveau du joueur
+            const possibleLocations = locations.filter(loc =>
+                loc.mode === 'campagne' && Number(loc.level) === Number(campagneLevel)
+            );
+
+            if (!possibleLocations.length) {
+                console.warn("Aucune localisation disponible pour ce niveau de campagne");
+                return;
+            }
+
+            // Choisir une localisation au hasard parmi celles disponibles
+            chosenLocation = possibleLocations[Math.floor(Math.random() * possibleLocations.length)];
+            console.log("Localisation campagne choisie :", chosenLocation);
+
+        } catch (error) {
+            console.error("Erreur lors de la récupération du niveau campagne ou des localisations :", error);
+            return;
+        }
     }
 
+    // 🔹 Réinitialisation de la carte selon le mode classique ou campagne
+    if (gameMode === 'classique') {
+        if (locationType === 'Strasbourg') {
+            clearMapStrasbourg();
+        } else if (locationType === 'north-america') {
+            clearMapNorthAmerica();
+        } else {
+            clearMap();
+        }
+        getRandomStreetViewLocation(locationType);
+    } else if (gameMode === 'campagne' && chosenLocation) {
+        clearMap(); // Réinitialiser la carte
+        // Initialiser Street View sur la localisation campagne choisie
+        setStreetViewLocation(chosenLocation.lat, chosenLocation.lng);
+    }
+
+    // 🔹 UI
     updateHeader();
     document.getElementById('street-view').style.display = 'block';
     document.getElementById('map-container').style.display = 'block';
@@ -291,41 +358,36 @@ function startNewRound(locationType) {
     nameplace.style.display = 'none';
     document.getElementById('map-container').style.width = '15%';
     document.getElementById('map-container').style.height = '30%';
-    getRandomStreetViewLocation(locationType);
 
-    // Ajouter un timer de pré-compte à rebours (par exemple, 5 secondes)
-    preparationtimer.classList.remove("hidden"); //Reveler le compte a rebourd
-    preparationtimer.textContent = `Préparation... ${preCountdown}s`; // Affiche le pré-compte à rebours
+    // 🔹 Pré-compte à rebours
+    preparationtimer.classList.remove("hidden");
+    preparationtimer.textContent = `Préparation... ${preCountdown}s`;
 
     const preCountdownInterval = setInterval(() => {
         preCountdown -= 1;
-        //console.log(preCountdown);
         preparationtimer.textContent = `Préparation... ${preCountdown}s`;
 
         if (preCountdown <= 1) {
             clearInterval(preCountdownInterval);
-            preparationtimer.classList.add("hidden"); //Cacher le compte a rebourd
-            streetViewElement.classList.remove('blur'); // Enlever le flou de streetview
+            preparationtimer.classList.add("hidden");
+            streetViewElement.classList.remove('blur');
             startMainTimer();
-            let preCountdown = 5
-
         }
     }, 1000);
 
-    // GESTION DES MARQUEURS DE CARTES
+    // 🔹 Réinitialisation des marqueurs
     currentRound++;
-    if (playerMarker) {
-        playerMarker.setMap(null); // Supprimer le marqueur du joueur de la carte
-        playerMarker = null; // Réinitialiser le marqueur du joueur pour la nouvelle manche
-    }
-    if (actualMarker) {
-        actualMarker.setMap(null); // Supprimer le marqueur de l'emplacement réel de la carte
-        actualMarker = null; // Réinitialiser le marqueur réel pour la nouvelle manche
-    }
-    if (polyline) {
-        polyline.setMap(null); // Supprimer la polyline de la carte
-        polyline = null; // Réinitialiser la polyline pour la nouvelle manche
-    }
+    if (playerMarker) { playerMarker.setMap(null); playerMarker = null; }
+    if (actualMarker) { actualMarker.setMap(null); actualMarker = null; }
+    if (polyline) { polyline.setMap(null); polyline = null; }
+}
+
+function setStreetViewLocation(lat, lng) {
+    const sv = new google.maps.StreetViewPanorama(
+        document.getElementById('street-view'),
+        { position: { lat, lng }, pov: { heading: 0, pitch: 0 }, zoom: 1 }
+    );
+    streetViewElement.streetView = sv;
 }
 
 
@@ -659,6 +721,7 @@ function resetGame() {
     document.getElementById('map-container').style.display = 'none';
     document.getElementById('timer-display').style.display = 'none';
     document.getElementById('ok-button').style.display = 'none';
+    document.getElementById("location-select").innerText ="";
     totalScore = 0;
     attempts = 0;
     currentRound = 0;
@@ -1572,7 +1635,6 @@ document.getElementById('campagnemode-button').addEventListener('click', async (
     document.getElementById("niveaucampagnespan").style.display = "inline";
     document.getElementById('mode-title').innerText = 'MODE DE JEU : Campagne';
     document.getElementById('start-screen').style.display = 'flex';
-
     document.getElementById('location-select').style.display = 'none';
     document.getElementById('gametitle').style.display = 'none';
     document.getElementById('chrono').style.display = 'none';
@@ -1612,3 +1674,164 @@ try {
 }
 });
 
+
+
+async function getLocationTypeCampagne() {
+    const userId = localStorage.getItem("userId");
+    if (!userId) return;
+
+    try {
+        // 🔥 Récupération du niveau campagne
+        const res = await fetch(`/api/user?userId=${userId}&action=info`, {
+            headers: { Authorization: `Bearer votre_token_securise` }
+        });
+
+        if (!res.ok) throw new Error("Impossible de récupérer le niveau campagne");
+
+        const data = await res.json();
+        const campagneLevel = data.campagneLevel;
+
+        // 🔥 Charger le JSON des localisations campagne
+        const locationsResponse = await fetch('/campagneLocations.json');
+        const locations = await locationsResponse.json();
+
+        // 🔹 Filtrer les lieux correspondant au niveau du joueur
+        const possibleLocations = locations.filter(loc => 
+            loc.mode === 'campagne' && Number(loc.level) === Number(campagneLevel)
+        );
+
+        if (!possibleLocations.length) {
+            console.warn("Aucune localisation disponible pour ce niveau de campagne");
+            return null;
+        }
+
+        // 🔹 Choisir une localisation au hasard parmi celles disponibles
+        const chosenLocation = possibleLocations[Math.floor(Math.random() * possibleLocations.length)];
+
+        console.log("Localisation campagne choisie :", chosenLocation);
+
+        return chosenLocation; // {lat, lng, mode, level, continent, pays, ville}
+
+    } catch (error) {
+        console.error("Erreur lors de la récupération du niveau campagne ou des localisations :", error);
+    }
+}
+
+async function checkCampagneScore(playerScore) {
+    const userId = localStorage.getItem("userId");
+    if (!userId) return;
+
+    // Si le joueur a marqué >= 3500 points
+    if (playerScore >= 3500) {
+        try {
+            const res = await fetch('/api/user', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer votre_token_securise`
+                },
+                body: JSON.stringify({
+                    action: 'increaseCampagneLevel',
+                    userId: userId,
+                    newLevel: currentCampagneLevel + 1 // currentCampagneLevel doit être récupéré du round
+                })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                console.log("Niveau campagne augmenté :", data);
+                alert("Félicitations ! Vous passez au niveau suivant !");
+            } else {
+                console.warn("Impossible d'augmenter le niveau :", data.message);
+            }
+
+        } catch (error) {
+            console.error("Erreur lors de la montée de niveau :", error);
+        }
+    } else {
+        alert("Score insuffisant, vous restez au même niveau !");
+    }
+}
+
+
+async function calculateScoreCampagne(playerLocation) {
+    if (!actualLocation) return;
+
+    const distanceInMeters = google.maps.geometry.spherical.computeDistanceBetween(playerLocation, actualLocation);
+    let roundScore;
+
+    // 🔹 Calcul du score basé sur la distance
+    if (distanceInMeters <= 5) {
+        roundScore = 5000;
+    } else if (distanceInMeters <= 2000) {
+        roundScore = Math.max(0, 5000 - Math.floor(distanceInMeters - 5));
+    } else {
+        const distanceInKm = distanceInMeters / 1000;
+        roundScore = Math.max(0, 5000 - 1995 - Math.floor(distanceInKm - 2));
+    }
+
+    // 🔹 Calcul du temps pris pour le round
+    const roundEndTime = Date.now();
+    const timeTaken = (roundEndTime - roundStartTime) / 1000; // Temps en secondes
+
+    // 🔹 Malus basé sur le temps (optionnel, peut être ignoré si tu veux)
+    let timePenalty = 0;
+    if (timeTaken > 15) {
+        timePenalty = Math.floor((timeTaken - 15) * 8);
+    }
+
+    roundScore = Math.max(0, roundScore - timePenalty);
+
+    // 🔹 Mettre à jour le score total pour affichage (facultatif)
+    totalScore += roundScore;
+    attempts++;
+
+    const distanceText = distanceInMeters < 1000
+        ? `${distanceInMeters.toFixed(0)} m`
+        : `${(distanceInMeters / 1000).toFixed(2)} km`;
+
+    // 🔹 Affichage spécifique au mode campagne
+    scoreBanner.textContent = `Score: ${roundScore} (Distance: ${distanceText}, Temps: ${timeTaken.toFixed(1)}s, Malus: ${timePenalty} pts)`;
+    scoreBanner.style.display = 'block';
+    nameplace.style.display = 'block';
+
+    if (currentPlaceName) {
+        nameplace.textContent = currentPlaceName;
+    } else {
+        nameplace.textContent = "";
+    }
+
+    resultElement.textContent = `Total Score: ${totalScore}`;
+
+    // 🔹 Vérifier si le joueur passe au niveau suivant
+    const userId = localStorage.getItem("userId");
+    if (roundScore >= 3500 && userId) {
+        try {
+            const res = await fetch('/api/user', {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer votre_token_securise`
+                },
+                body: JSON.stringify({
+                    action: 'increaseCampagneLevel',
+                    userId: userId,
+                    newLevel: currentCampagneLevel + 1
+                })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                alert("Félicitations ! Vous passez au niveau suivant !");
+                currentCampagneLevel += 1; // mettre à jour localement
+            } else {
+                console.warn("Impossible d'augmenter le niveau :", data.message);
+            }
+
+        } catch (error) {
+            console.error("Erreur lors de la montée de niveau :", error);
+        }
+    } else if (roundScore < 3500) {
+        alert("Score insuffisant, vous restez au même niveau !");
+    }
+}
