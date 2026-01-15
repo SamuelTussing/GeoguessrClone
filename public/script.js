@@ -501,17 +501,22 @@ async function endGame() {
     }
 
     // 🔥 Récupération du badge actif
-    let activeBadge = null;
-    try {
-        const badgeResponse = await fetch(`/api/getActiveBadge?userId=${userId}`);
-        if (!badgeResponse.ok) throw new Error("Erreur API getActiveBadge");
+let activeBadge = null;
 
-        const badgeData = await badgeResponse.json();
-        activeBadge = badgeData.activeBadge || null; // Assurez-vous que le badge est bien défini
+try {
+    const badgeResponse = await fetch(`/api/user?userId=${userId}&action=activeBadge`, {
+        headers: { Authorization: "Bearer votre_token_securise" }
+    });
 
-    } catch (error) {
-        console.error("Erreur lors du chargement du badge actif :", error);
-    }
+    if (!badgeResponse.ok) throw new Error("Erreur API getActiveBadge");
+
+    const badgeData = await badgeResponse.json();
+    activeBadge = badgeData.activeBadge || null; // Assurez-vous que le badge est bien défini
+
+} catch (error) {
+    console.error("Erreur lors du chargement du badge actif :", error);
+}
+
 
     // Vérification des badges à débloquer
     const unlockedBadges = checkAndUnlockBadges(finalScore, locationType, chronoSelection);
@@ -1397,8 +1402,17 @@ let ActiveBadge = "5"; // Exemple, initialiser avec un badge par défaut
 
 // Récupération et affichage du badge actif au chargement de la page
 async function loadActiveBadge() {
+    const userId = localStorage.getItem("userId"); // Récupérer l'ID utilisateur depuis le localStorage
+    if (!userId) {
+        console.error("Aucun ID utilisateur trouvé dans le localStorage");
+        return;
+    }
+
     try {
-        const response = await fetch(`/api/getActiveBadge?userId=${userId}`);
+        // 🔹 Fetch vers la nouvelle API fusionnée
+        const response = await fetch(`/api/user?userId=${userId}&action=activeBadge`, {
+            headers: { Authorization: "Bearer votre_token_securise" }
+        });
 
         if (!response.ok) {
             throw new Error("Erreur lors de la récupération du badge actif");
@@ -1407,9 +1421,11 @@ async function loadActiveBadge() {
         const data = await response.json();
 
         if (data.activeBadge) {
-            // Met à jour l'image du badge
-            const activeBadge = badgeList.find(badge => badge.valeur === data.activeBadge);
+            // Trouver le badge correspondant dans badgeList
+            const activeBadge = badgeList.find(badge => String(badge.valeur) === String(data.activeBadge));
+
             if (activeBadge) {
+                // Mettre à jour les images du badge actif
                 document.getElementById("playerbadge").src = activeBadge.badgesrc;
                 document.getElementById("levelupbadge").src = activeBadge.badgesrc;
             }
@@ -1418,6 +1434,7 @@ async function loadActiveBadge() {
         console.error("Erreur lors du chargement du badge actif :", error);
     }
 }
+
 
 // Fonction pour changer et enregistrer le badge actif
 document.getElementById("changeBadgeButton").addEventListener("click", async (e) => {
@@ -1572,24 +1589,26 @@ document.getElementById('campagnemode-button').addEventListener('click', async (
         console.warn("La carte n’est pas encore initialisée.");
     }
 
-    // 🔥 Récupération du niveau campagne
-    try {
-        const res = await fetch(`/api/getUserLevel/${userId}`, {
-            headers: {
-                Authorization: `Bearer votre_token_securise`
-            }
-        });
-
-        if (!res.ok) {
-            throw new Error("Impossible de récupérer le niveau campagne");
+// 🔥 Récupération du niveau campagne
+try {
+    const res = await fetch(`/api/user?userId=${userId}&action=info`, {
+        headers: {
+            Authorization: `Bearer votre_token_securise`
         }
+    });
 
-        const data = await res.json();
-        document.getElementById("niveaucampagnevalue").textContent = data.campagneLevel;
-
-    } catch (error) {
-        console.error(error);
-        document.getElementById("niveaucampagnevalue").textContent = "?";
+    if (!res.ok) {
+        throw new Error("Impossible de récupérer le niveau campagne");
     }
+
+    const data = await res.json();
+
+    // Mettre à jour l'affichage du niveau campagne
+    document.getElementById("niveaucampagnevalue").textContent = data.campagneLevel || "?";
+
+} catch (error) {
+    console.error("Erreur lors de la récupération du niveau campagne :", error);
+    document.getElementById("niveaucampagnevalue").textContent = "?";
+}
 });
 
