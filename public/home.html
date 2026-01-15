@@ -44,7 +44,7 @@
         
         <div id="game-choice">
             <button id="classique-mode-button">SOLO CLASSIQUE</button>
-            <button id="chrono-mode-button">MULTIJOUEUR</button>
+            <button id="campagnemode-button">Campagne</button>
             <button id="flags-mode-button">SOLO DRAPEAUX</button>
             <button id="clear-storage-button">Mon compte</button>
             <button id="classement-button"><img src="./couronne.png" alt="" width="30px">Classement</button>
@@ -52,6 +52,8 @@
 
         <div id="start-screen">
             <h1 id="mode-title">MODE DE JEU</h1>
+            <span id="niveaucampagnespan">Niveau actuel : </span>
+            <span id="niveaucampagnevalue"></span>
             <label for="location-select">Choisissez une région :</label>
             <select id="location-select">
                 <option value="world">Monde</option>
@@ -64,7 +66,7 @@
                 <option value="Capitales">Capitales</option>
             </select>
             <span id="gamemodetitle">CHRONO</span>
-            <div class="chronoContainer">
+            <div class="chronoContainer" id="chrono">
                 <div id="chronodiv-infini" class="chronodiv" data-chrono="infini">
                     <img src="./chronoinfini.png" alt="infini" width="30px">
                 </div>
@@ -78,8 +80,8 @@
                     <img src="./chrono30s.png" alt="30s" width="30px">
                 </div>
             </div>
-            <span>DEPLACEMENTS</span>
-            <div class="chronoContainer">
+            <span id="moveTitle">DEPLACEMENTS</span>
+            <div class="chronoContainer" id="move">
                 <div id="chronodiv-fixe" class="chronodiv" data-mode="fixe">
                     <img src="./persodebout.png" alt="fixe" width="30px">
                 </div>

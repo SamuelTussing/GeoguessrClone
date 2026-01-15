@@ -45,6 +45,7 @@ export default async function handler(req, res) {
             betaTester: false,
             experience: 0, // Initialise à 0
             level: 1, // Niveau initial
+            campagneLevel: 1,
             lastscore: 0, // Score initial
             scores: [], // Liste des meilleurs scores (vide au début)
             activeBadge: "0",

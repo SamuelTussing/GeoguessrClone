@@ -121,11 +121,16 @@ document.getElementById('start-button').addEventListener('click', () => {
     document.getElementById('classique-mode-button').addEventListener('click', () => {
         gameMode = 'classique';
         //showBadgeNotification(["halsacien"]);
+        document.getElementById('niveaucampagnespan').style.display = 'none';
         document.getElementById('result').style.display = 'none';
         document.getElementById('mode-title').innerText = 'MODE DE JEU : SOLO CLASSIQUE';
         document.getElementById('start-screen').style.display = 'flex';
         document.getElementById('location-select').style.display = 'block';
         document.getElementById('start-button').style.display = 'block';
+        document.getElementById("regles").innerText =
+        "Essayez de réaliser le plus gros score. \n" +
+        "en trouvant 5 localisations sur Google Maps.\n" +
+        "Le temps a une incidence sur le score.";
     
         // Ajoutez un message pour indiquer que la carte est en cours de chargement
         if (!map) {
@@ -1259,7 +1264,7 @@ async function loadUserFromAPI() {
 //GESTION MODE MULTI
 
 const multiContainer = document.getElementById("multicontainer");
-const multiplayerMode = document.getElementById("chrono-mode-button");
+const campagneMode = document.getElementById("campagnemode-button");
 const multiMenu = document.getElementById("multimenu");
 const joinmultiform = document.getElementById("joinmulti-form");
 const roundNumber = document.getElementById("roundnumber");
@@ -1535,4 +1540,50 @@ document.getElementById("arrowbadge").addEventListener("click", async (e) => {
 });
 
 
+// MODE CAMPAGNE
+// Gestion du bouton mode campagne
+document.getElementById('campagnemode-button').addEventListener('click', async () => {
+    gameMode = 'campagne';
+
+    document.getElementById('result').style.display = 'none';
+    document.getElementById("niveaucampagnespan").style.display = "inline";
+    document.getElementById('mode-title').innerText = 'MODE DE JEU : Campagne';
+    document.getElementById('start-screen').style.display = 'flex';
+
+    document.getElementById('location-select').style.display = 'none';
+    document.getElementById('gametitle').style.display = 'none';
+    document.getElementById('chrono').style.display = 'none';
+    document.getElementById('move').style.display = 'none';
+    document.getElementById('moveTitle').style.display = 'none';
+    document.getElementById('start-button').style.display = 'block';
+
+    document.getElementById("regles").innerText =
+        "Trouvez la localisation en moins de 2 minutes.\n" +
+        "Le temps que vous prenez n’a aucune incidence sur votre score final.\n" +
+        "Réalisez un score de 3500 pour passer au niveau suivant.";
+
+    if (!map) {
+        console.warn("La carte n’est pas encore initialisée.");
+    }
+
+    // 🔥 Récupération du niveau campagne
+    try {
+        const res = await fetch(`/api/getUserLevel/${userId}`, {
+            headers: {
+                Authorization: `Bearer votre_token_securise`
+            }
+        });
+
+        if (!res.ok) {
+            throw new Error("Impossible de récupérer le niveau campagne");
+        }
+
+        const data = await res.json();
+        document.getElementById("niveaucampagnevalue").textContent = data.campagneLevel;
+
+    } catch (error) {
+        console.error(error);
+        document.getElementById("niveaucampagnevalue").textContent = "?";
+    }
+});
 
