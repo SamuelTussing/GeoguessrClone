@@ -1211,16 +1211,22 @@ document.getElementById('clear-storage-button').addEventListener('click', () => 
 
 // Fonction pour récupérer les données utilisateur depuis l'API et les afficher
 async function loadUserFromAPI() {
-    const userId = localStorage.getItem("userId");  // Récupérer l'ID utilisateur depuis le localStorage
-
+    const userId = localStorage.getItem("userId");
     if (!userId) {
         console.error("Aucun ID utilisateur trouvé dans le localStorage");
         return;
     }
 
     try {
-        // Effectuer une requête GET pour récupérer les données utilisateur depuis l'API
-        const response = await fetch(`/api/getUserBadges?userId=${userId}`);
+        const response = await fetch(`/api/user?userId=${userId}&action=badges`, {
+            headers: {
+                Authorization: "Bearer votre_token_securise"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Erreur lors de la récupération des données utilisateur");
+        }
 
         const userData = await response.json();
 
@@ -1232,23 +1238,15 @@ async function loadUserFromAPI() {
         // Mettre à jour le nombre total de badges
         const totalBadges = badgeList.length;
         const unlockedCount = unlockedBadges.length;
-        console.log(totalBadges)
-        console.log(unlockedCount)
 
         // Mettre à jour dynamiquement la balise <p> avec la progression
         const badgeProgress = document.getElementById("badgeProgress");
         badgeProgress.textContent = `${unlockedCount}/${totalBadges}`;
-        badgesAcquis=unlockedCount;
-        badgesTotaux=totalBadges;
-        
-        if (!response.ok) {
-            throw new Error("Erreur lors de la récupération des données utilisateur");
-        }
-
-        // Vérifier que les données nécessaires sont présentes
-        const { badges, experience, level, username } = userData;
+        badgesAcquis = unlockedCount;
+        badgesTotaux = totalBadges;
 
         // Insérer les informations utilisateur dans le HTML
+        const { badges, experience, level, username } = userData;
         document.getElementById("informationID").textContent = `ID : ${userId}`;
         document.getElementById("informationName").textContent = `Username : ${username}`;
         document.getElementById("informationLvl").textContent = `Niveau : ${level}`;
@@ -1338,8 +1336,11 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
     badgesListContainer.innerHTML = "";
 
     try {
-        // Récupérer les badges de l'utilisateur via l'API
-        const response = await fetch(`/api/getUserBadges?userId=${userId}`);
+        // 🔹 Nouveau fetch vers API fusionnée
+        const response = await fetch(`/api/user?userId=${userId}&action=badges`, {
+            headers: { Authorization: "Bearer votre_token_securise" }
+        });
+
         if (!response.ok) {
             throw new Error("Erreur API");
         }
@@ -1354,14 +1355,11 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
         // Mettre à jour le nombre total de badges
         const totalBadges = badgeList.length;
         const unlockedCount = unlockedBadges.length;
-        console.log(totalBadges)
-        console.log(unlockedCount)
 
-        // Mettre à jour dynamiquement la balise <p> avec la progression
         const badgeProgress = document.getElementById("badgeProgress");
         badgeProgress.textContent = `${unlockedCount}/${totalBadges}`;
-        badgesAcquis=unlockedCount;
-        badgesTotaux=totalBadges;
+        badgesAcquis = unlockedCount;
+        badgesTotaux = totalBadges;
 
         // Affichage des badges
         badgeList.forEach((badge, index) => {
@@ -1388,6 +1386,7 @@ document.getElementById("badgeButton").addEventListener("click", async (e) => {
         console.error("Erreur lors de la récupération des badges:", error);
     }
 });
+
 
 
 
@@ -1429,14 +1428,15 @@ document.getElementById("changeBadgeButton").addEventListener("click", async (e)
     badgesListContainer.innerHTML = "";
 
     try {
-        const response = await fetch(`/api/getUserBadges?userId=${userId}`);
-        
-        if (!response.ok) {
-            throw new Error("Erreur API");
-        }
+        // 🔹 fetch badges avec la nouvelle API fusionnée
+        const response = await fetch(`/api/user?userId=${userId}&action=badges`, {
+            headers: { Authorization: "Bearer votre_token_securise" }
+        });
+
+        if (!response.ok) throw new Error("Erreur API");
 
         const userData = await response.json();
-        const unlockedBadges = Object.keys(userData.badges || {}).filter(badge => userData.badges[badge] === true);
+        const unlockedBadges = Object.keys(userData.badges || {}).filter(b => userData.badges[b] === true);
 
         badgeList.forEach((badge, index) => {
             if (unlockedBadges.includes(String(badge.valeur))) {
@@ -1452,20 +1452,25 @@ document.getElementById("changeBadgeButton").addEventListener("click", async (e)
                 badgeSection.appendChild(badgeImg);
                 badgesListContainer.appendChild(badgeSection);
 
-                // Enregistrer le badge choisi
+                // 🔹 cliquer sur un badge pour le définir comme actif
                 badgeSection.addEventListener("click", async () => {
                     document.getElementById("playerbadge").src = badge.badgesrc;
 
                     try {
-                        const saveResponse = await fetch(`/api/setActiveBadge`, {
+                        const saveResponse = await fetch(`/api/user`, {
                             method: "POST",
-                            headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ userId, activeBadge: badge.valeur })
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: "Bearer votre_token_securise"
+                            },
+                            body: JSON.stringify({
+                                action: "setActiveBadge",
+                                userId,
+                                activeBadge: badge.valeur
+                            })
                         });
 
-                        if (!saveResponse.ok) {
-                            throw new Error("Erreur lors de l'enregistrement du badge");
-                        }
+                        if (!saveResponse.ok) throw new Error("Erreur lors de l'enregistrement du badge");
 
                         document.getElementById('badgecontainer').style.display = 'none';
                         console.log("Badge mis à jour");
@@ -1480,6 +1485,7 @@ document.getElementById("changeBadgeButton").addEventListener("click", async (e)
         console.error("Erreur lors de la récupération des badges:", error);
     }
 });
+
 
 // Charger le badge actif au démarrage
 window.addEventListener("load", loadActiveBadge);
