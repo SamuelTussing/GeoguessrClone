@@ -325,6 +325,12 @@ async function startNewRound(locationType) {
             // Choisir une localisation au hasard parmi celles disponibles
             chosenLocation = possibleLocations[Math.floor(Math.random() * possibleLocations.length)];
             console.log("Localisation campagne choisie :", chosenLocation);
+            actualLocation = {
+                lat: chosenLocation.lat,
+                lng: chosenLocation.lng
+            };
+
+currentPlaceName = `${chosenLocation.ville}, ${chosenLocation.pays}`;
 
         } catch (error) {
             console.error("Erreur lors de la récupération du niveau campagne ou des localisations :", error);
