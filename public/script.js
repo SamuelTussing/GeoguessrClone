@@ -2,6 +2,7 @@ let map, panorama, polyline;
 //import axios from 'axios';
 let playerMarker, actualMarker;
 let actualLocation;
+let campagneLevel = 1;
 let scoreBanner = document.getElementById('score-banner');
 let roundStartTime; 
 let closeHighscores = document.getElementById('arrow');
