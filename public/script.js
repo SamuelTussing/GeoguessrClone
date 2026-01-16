@@ -1829,7 +1829,7 @@ async function calculateScoreCampagne(playerLocation) {
             const data = await res.json();
             if (res.ok) {
                 alert("Félicitations ! Vous passez au niveau suivant !");
-                currentCampagneLevel += 1; // mettre à jour localement
+                campagneLevel += 1; // mettre à jour localement
             } else {
                 console.warn("Impossible d'augmenter le niveau :", data.message);
             }
