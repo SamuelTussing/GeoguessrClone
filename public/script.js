@@ -1636,7 +1636,6 @@ document.getElementById('campagnemode-button').addEventListener('click', async (
     document.getElementById('mode-title').innerText = 'MODE DE JEU : Campagne';
     document.getElementById('start-screen').style.display = 'flex';
     document.getElementById('location-select').style.display = 'none';
-    document.getElementById('gametitle').style.display = 'none';
     document.getElementById('chrono').style.display = 'none';
     document.getElementById('move').style.display = 'none';
     document.getElementById('moveTitle').style.display = 'none';
@@ -1816,7 +1815,7 @@ async function calculateScoreCampagne(playerLocation) {
                 body: JSON.stringify({
                     action: 'increaseCampagneLevel',
                     userId: userId,
-                    newLevel: currentCampagneLevel + 1
+                    newLevel: campagneLevel + 1
                 })
             });
 

@@ -1,7 +1,13 @@
 [
-    { "lat": 48.8566, "lng": 2.3522, "mode": "campagne", "level": "1", "continent": "Europe", "pays": "France", "ville": "Paris" },
-    { "lat": 51.5074, "lng": -0.1278, "mode": "campagne", "level": "2", "continent": "Europe", "pays": "Royaume-Uni", "ville": "Londres" },
-    { "lat": 40.7128, "lng": -74.0060, "mode": "campagne", "level": "3", "continent": "Amérique du Nord", "pays": "USA", "ville": "New York" },
-    { "lat": -33.8688, "lng": 151.2093, "mode": "campagne", "level": "4", "continent": "Océanie", "pays": "Australie", "ville": "Sydney" },
-    { "lat": 35.6895, "lng": 139.6917, "mode": "campagne", "level": "5", "continent": "Asie", "pays": "Japon", "ville": "Tokyo" }
+    { "lat": 48.859875, "lng": 2.290782, "mode": "campagne", "level": "1", "continent": "Europe", "pays": "France", "ville": "Paris" },
+    { "lat": 48.87504231494232, "lng": 2.2947510596223437, "mode": "campagne", "level": "1", "continent": "Europe", "pays": "France", "ville": "Paris" },
+    { "lat": 40.689687340292124, "lng": -74.04346112760305, "mode": "campagne", "level": "2", "continent": "Amérique du Nord", "pays": "USA", "ville": "New York" },
+    { "lat": 51.50224296399659, "lng":  -0.13952928015133034, "mode": "campagne", "level": "2", "continent": "Europe", "pays": "Angleterre", "ville": "Londres" },
+    { "lat": 35.63752743807092, "lng": 139.76041813039518, "mode": "campagne", "level": "3", "continent": "Asie", "pays": "Japon", "ville": "Tokyo" },
+    { "lat": 13.74662236850685,  "lng": 100.49078257590278, "mode": "campagne", "level": "3", "continent": "Asie", "pays": "Thailand", "ville": "Bangkok" },
+    { "lat": -33.8527336287305,  "lng":  151.21056369920086, "mode": "campagne", "level": "4", "continent": "Oceanie", "pays": "Australie", "ville": "Sydney" },
+    { "lat": 43.59909194793339,  "lng":  1.4376152366488644 , "mode": "campagne", "level": "4", "continent": "Europe", "pays": "France", "ville": "Toulouse" },
+    { "lat": 41.40269938909098,  "lng":   2.174298307599009, "mode": "campagne", "level": "5", "continent": "Europe", "pays": "Espagne", "ville": "Barcelone" },
+    { "lat": 45.43816066158548,  "lng":  12.3357581913345, "mode": "campagne", "level": "5", "continent": "Europe", "pays": "Italie", "ville": "Venise" }
 ]
+
