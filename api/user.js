@@ -22,10 +22,13 @@ export default async function handler(req, res) {
     // 🔐 Auth
     if (!authMiddleware(req, res)) return;
 
-    const client = await clientPromise;
-    const db = client.db("geoguessr_clone");
-
     try {
+        const client = await clientPromise;
+        const db = client.db("geoguessr_clone");
+
+        /* ===========================
+           🔹 GET REQUESTS
+        ============================ */
         if (req.method === "GET") {
             const { userId, action } = req.query;
 
@@ -46,7 +49,6 @@ export default async function handler(req, res) {
                 return res.status(404).json({ message: "Utilisateur non trouvé" });
             }
 
-            // 🔁 ROUTAGE PAR ACTION
             switch (action) {
                 case "info":
                     return res.status(200).json(user);
@@ -62,44 +64,77 @@ export default async function handler(req, res) {
 
                 case "activeBadge":
                     return res.status(200).json({
-                        activeBadge: user.activeBadge || null,
+                        activeBadge: user.activeBadge || null
                     });
 
                 default:
                     return res.status(400).json({
                         message: "Action invalide",
-                        actionsDisponibles: ["info", "badges", "activeBadge"],
+                        actionsDisponibles: ["info", "badges", "activeBadge"]
                     });
             }
+        }
 
-        } else if (req.method === "POST") {
-            const { action, userId, newLevel } = req.body;
+        /* ===========================
+           🔹 POST REQUESTS
+        ============================ */
+        if (req.method === "POST") {
+            const { action, userId, newLevel, activeBadge } = req.body;
 
+            if (!userId || !ObjectId.isValid(userId)) {
+                return res.status(400).json({ message: "ID utilisateur invalide" });
+            }
+
+            // 🔼 Augmenter le niveau de campagne
             if (action === "increaseCampagneLevel") {
-                if (!userId || !newLevel || !ObjectId.isValid(userId)) {
-                    return res.status(400).json({ message: "ID utilisateur ou niveau invalide" });
+                if (!newLevel) {
+                    return res.status(400).json({ message: "Nouveau niveau manquant" });
                 }
 
-                const result = await db.collection("users").updateOne(
+                await db.collection("users").updateOne(
                     { _id: new ObjectId(userId) },
                     { $set: { campagneLevel: newLevel } }
                 );
 
-                if (result.modifiedCount === 1) {
-                    return res.status(200).json({ message: "Niveau campagne mis à jour" });
-                } else {
-                    return res.status(404).json({ message: "Utilisateur non trouvé ou niveau identique" });
-                }
-            } else {
-                return res.status(400).json({ message: "Action POST invalide", actionsDisponibles: ["increaseCampagneLevel"] });
+                return res.status(200).json({
+                    message: "Niveau campagne mis à jour",
+                    campagneLevel: newLevel
+                });
             }
 
-        } else {
-            return res.status(405).json({ message: "Méthode non autorisée" });
+            // 🏅 Définir le badge actif
+            if (action === "setActiveBadge") {
+                if (!activeBadge) {
+                    return res.status(400).json({ message: "Badge manquant" });
+                }
+
+                await db.collection("users").updateOne(
+                    { _id: new ObjectId(userId) },
+                    { $set: { activeBadge: activeBadge } }
+                );
+
+                return res.status(200).json({
+                    message: "Badge actif mis à jour",
+                    activeBadge
+                });
+            }
+
+            return res.status(400).json({
+                message: "Action POST invalide",
+                actionsDisponibles: ["increaseCampagneLevel", "setActiveBadge"]
+            });
         }
+
+        /* ===========================
+           🔹 MÉTHODE NON AUTORISÉE
+        ============================ */
+        return res.status(405).json({ message: "Méthode non autorisée" });
 
     } catch (error) {
         console.error("Erreur API user :", error);
-        return res.status(500).json({ message: "Erreur serveur", error: error.toString() });
+        return res.status(500).json({
+            message: "Erreur serveur",
+            error: error.toString()
+        });
     }
 }

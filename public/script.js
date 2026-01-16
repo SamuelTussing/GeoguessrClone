@@ -309,7 +309,7 @@ async function startNewRound(locationType) {
             const campagneLevel = data.campagneLevel;
 
             // Charger le JSON des localisations campagne
-            const locationsResponse = await fetch('/path/to/campagneLocations.json');
+            const locationsResponse = await fetch('/campagneLocations.json');
             const locations = await locationsResponse.json();
 
             // Filtrer les lieux correspondant au niveau du joueur
