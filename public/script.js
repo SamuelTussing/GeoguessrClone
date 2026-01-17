@@ -98,6 +98,41 @@ function initMap() {
         updateCompass(panorama.getPov().heading);
     });
 
+function attachCompassListener(panorama) {
+    google.maps.event.clearListeners(panorama, 'pov_changed');
+    google.maps.event.clearListeners(panorama, 'position_changed');
+
+    const update = () => {
+        const pov = panorama.getPov();
+        if (pov) updateCompass(pov.heading);
+    };
+
+    panorama.addListener('pov_changed', update);
+    panorama.addListener('position_changed', update);
+}
+
+
+    panorama = new google.maps.StreetViewPanorama(
+    document.getElementById('street-view'), {
+        position: { lat: 0, lng: 0 },
+        pov: { heading: 165, pitch: 0 },
+        zoom: 1
+    }
+);
+
+attachCompassListener(panorama);
+
+function setStreetViewLocation(lat, lng) {
+    panorama.setPosition({ lat, lng });
+
+    // 🔥 IMPORTANT : réattacher la boussole
+    attachCompassListener(panorama);
+
+    // 🔄 Initialiser la boussole immédiatement
+    updateCompass(panorama.getPov().heading);
+}
+
+
     // Hide the street view and map initially
     document.getElementById('street-view').style.display = 'none';
     document.getElementById('map-container').style.display = 'none';
