@@ -95,22 +95,6 @@ function initMap() {
 
 
 
-function attachCompassListener(panoramaInstance) {
-    if (!panoramaInstance) return;
-
-    // Évite les doublons
-    google.maps.event.clearListeners(panoramaInstance, 'pov_changed');
-
-
-    panoramaInstance.addListener('pov_changed', () => {
-        const pov = panoramaInstance.getPov();
-        if (!pov) return;
-        updateCompass(pov.heading);
-    });
-
-    console.log("🧭 Boussole attachée au panorama");
-}
-
 
 
     panorama = new google.maps.StreetViewPanorama(
@@ -432,7 +416,21 @@ async function startNewRound(locationType) {
     if (actualMarker) { actualMarker.setMap(null); actualMarker = null; }
     if (polyline) { polyline.setMap(null); polyline = null; }
 }
+function attachCompassListener(panoramaInstance) {
+    if (!panoramaInstance) return;
 
+    // Évite les doublons
+    google.maps.event.clearListeners(panoramaInstance, 'pov_changed');
+
+
+    panoramaInstance.addListener('pov_changed', () => {
+        const pov = panoramaInstance.getPov();
+        if (!pov) return;
+        updateCompass(pov.heading);
+    });
+
+    console.log("🧭 Boussole attachée au panorama");
+}
 function setStreetViewLocation(lat, lng) {
     panorama.setPosition({ lat, lng });
 
