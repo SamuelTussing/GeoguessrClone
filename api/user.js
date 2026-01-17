@@ -1,7 +1,9 @@
 import { ObjectId } from "mongodb";
 import clientPromise from "../lib/mongodb";
 
-// 🔐 Middleware auth simple (adaptable JWT)
+/* ===========================
+   🔐 AUTH MIDDLEWARE
+=========================== */
 function authMiddleware(req, res) {
     const token = req.headers.authorization?.split(" ")[1];
 
@@ -18,8 +20,10 @@ function authMiddleware(req, res) {
     return true;
 }
 
+/* ===========================
+   🚀 API HANDLER
+=========================== */
 export default async function handler(req, res) {
-    // 🔐 Auth
     if (!authMiddleware(req, res)) return;
 
     try {
@@ -32,11 +36,7 @@ export default async function handler(req, res) {
         if (req.method === "GET") {
             const { userId, action } = req.query;
 
-            if (!userId) {
-                return res.status(400).json({ message: "ID utilisateur requis" });
-            }
-
-            if (!ObjectId.isValid(userId)) {
+            if (!userId || !ObjectId.isValid(userId)) {
                 return res.status(400).json({ message: "ID utilisateur invalide" });
             }
 
@@ -79,30 +79,51 @@ export default async function handler(req, res) {
            🔹 POST REQUESTS
         ============================ */
         if (req.method === "POST") {
-            const { action, userId, newLevel, activeBadge } = req.body;
+            const { action, userId, activeBadge } = req.body;
 
             if (!userId || !ObjectId.isValid(userId)) {
                 return res.status(400).json({ message: "ID utilisateur invalide" });
             }
 
-            // 🔼 Augmenter le niveau de campagne
+            /* ===========================
+               🔼 INCREMENT CAMPAGNE LEVEL
+            ============================ */
             if (action === "increaseCampagneLevel") {
-                if (!newLevel) {
-                    return res.status(400).json({ message: "Nouveau niveau manquant" });
+                const user = await db.collection("users").findOne(
+                    { _id: new ObjectId(userId) },
+                    { projection: { campagneLevel: 1, lastCampagneSuccess: 1 } }
+                );
+
+                if (!user) {
+                    return res.status(404).json({ message: "Utilisateur non trouvé" });
+                }
+
+                const now = Date.now();
+
+                // ⛔ Anti double incrément (3 secondes)
+                if (user.lastCampagneSuccess && now - user.lastCampagneSuccess < 3000) {
+                    return res.status(200).json({
+                        message: "Niveau déjà incrémenté récemment",
+                        campagneLevel: user.campagneLevel
+                    });
                 }
 
                 await db.collection("users").updateOne(
                     { _id: new ObjectId(userId) },
-                    { $set: { campagneLevel: newLevel } }
+                    {
+                        $inc: { campagneLevel: 1 },
+                        $set: { lastCampagneSuccess: new Date() }
+                    }
                 );
 
                 return res.status(200).json({
-                    message: "Niveau campagne mis à jour",
-                    campagneLevel: newLevel
+                    message: "Niveau campagne incrémenté"
                 });
             }
 
-            // 🏅 Définir le badge actif
+            /* ===========================
+               🏅 SET ACTIVE BADGE
+            ============================ */
             if (action === "setActiveBadge") {
                 if (!activeBadge) {
                     return res.status(400).json({ message: "Badge manquant" });
@@ -110,7 +131,7 @@ export default async function handler(req, res) {
 
                 await db.collection("users").updateOne(
                     { _id: new ObjectId(userId) },
-                    { $set: { activeBadge: activeBadge } }
+                    { $set: { activeBadge } }
                 );
 
                 return res.status(200).json({
@@ -126,7 +147,7 @@ export default async function handler(req, res) {
         }
 
         /* ===========================
-           🔹 MÉTHODE NON AUTORISÉE
+           ❌ METHOD NOT ALLOWED
         ============================ */
         return res.status(405).json({ message: "Méthode non autorisée" });
 

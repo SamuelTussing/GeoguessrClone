@@ -20,7 +20,6 @@
     { "lat": -37.84507756731315, "lng":  144.94283177870918, "mode": "campagne", "level": 7, "continent": "Oceanie", "pays": "Australie", "ville": "Melbourne" },
     { "lat": 48.38424142563139,  "lng":  -4.49664216960927, "mode": "campagne", "level": 7, "continent": "Europe", "pays": "France", "ville": "Brest" },
     { "lat": 19.434842873318537, "lng":  -99.1339028829643, "mode": "campagne", "level": 8, "continent": "Amerique du Nord", "pays": "Mexique", "ville": "Mexico" },
-    { "lat": -13.517024000035073, "lng": -71.97802262923825, "mode": "campagne", "level": 8, "continent": "Amerique du Sud", "pays": "Perou", "ville": "Cuzco" },
     { "lat": 46.873038487446884,"lng":  -71.1976439667049, "mode": "campagne", "level": 9, "continent": "Amerique du Nord", "pays": "Canada", "ville": "Quebec" },
     { "lat": -19.016493280185255, "lng": -65.25032216185325, "mode": "campagne", "level": 9, "continent": "Amerique du Sud", "pays": "Bolivie", "ville": "Sucre" },
     { "lat": 36.15911039032951, "lng": -115.33471779178204, "mode": "campagne", "level": 10, "continent": "Amerique du Nord", "pays": "Etats Unis", "ville": "Las Vegas" },

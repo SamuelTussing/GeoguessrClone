@@ -133,6 +133,7 @@ document.getElementById('start-button').addEventListener('click', () => {
     // Gestion des boutons de mode de jeu
     document.getElementById('classique-mode-button').addEventListener('click', () => {
         gameMode = 'classique';
+        const maxAttempts = 5;
         //showBadgeNotification(["halsacien"]);
         document.getElementById('niveaucampagnespan').style.display = 'none';
         document.getElementById('result').style.display = 'none';
@@ -312,7 +313,8 @@ async function startNewRound(locationType) {
             // Charger le JSON des localisations campagne
             const locationsResponse = await fetch('/campagneLocations.json');
             const locations = await locationsResponse.json();
-
+console.log("campagneLevel utilisé :", campagneLevel, typeof campagneLevel);
+console.log("levels disponibles :", [...new Set(locations.map(l => l.level))]);
             // Filtrer les lieux correspondant au niveau du joueur
             const possibleLocations = locations.filter(loc =>
                 loc.mode === 'campagne' && Number(loc.level) === Number(campagneLevel)
@@ -1637,6 +1639,7 @@ document.getElementById("arrowbadge").addEventListener("click", async (e) => {
 // Gestion du bouton mode campagne
 document.getElementById('campagnemode-button').addEventListener('click', async () => {
     gameMode = 'campagne';
+    const maxAttempts = 500;
 
     document.getElementById('result').style.display = 'none';
     document.getElementById("niveaucampagnespan").style.display = "inline";
@@ -1802,7 +1805,7 @@ async function checkCampagneScore(playerScore) {
                 body: JSON.stringify({
                     action: 'increaseCampagneLevel',
                     userId: userId,
-                    newLevel: currentCampagneLevel + 1 // currentCampagneLevel doit être récupéré du round
+                   //FAUX newLevel: currentCampagneLevel + 1 // currentCampagneLevel doit être récupéré du round
                 })
             });
 
