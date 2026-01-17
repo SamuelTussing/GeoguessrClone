@@ -123,21 +123,6 @@ function attachCompassListener(panoramaInstance) {
 
 attachCompassListener(panorama);
 
-function setStreetViewLocation(lat, lng) {
-    panorama.setPosition({ lat, lng });
-
-    // 🔥 IMPORTANT : réattacher la boussole
-    attachCompassListener(panorama);
-
-        // 🔄 Init immédiate
-    const pov = panorama.getPov();
-    if (pov) {
-        updateCompass(pov.heading);
-    }
-
-    // 🔄 Initialiser la boussole immédiatement
-    updateCompass(panorama.getPov().heading);
-}
 
 
     // Hide the street view and map initially
@@ -448,7 +433,21 @@ async function startNewRound(locationType) {
     if (polyline) { polyline.setMap(null); polyline = null; }
 }
 
+function setStreetViewLocation(lat, lng) {
+    panorama.setPosition({ lat, lng });
 
+    // 🔥 IMPORTANT : réattacher la boussole
+    attachCompassListener(panorama);
+
+        // 🔄 Init immédiate
+    const pov = panorama.getPov();
+    if (pov) {
+        updateCompass(pov.heading);
+    }
+
+    // 🔄 Initialiser la boussole immédiatement
+    updateCompass(panorama.getPov().heading);
+}
 //function setStreetViewLocation(lat, lng) {
 //    const sv = new google.maps.StreetViewPanorama(
 //        document.getElementById('street-view'),
