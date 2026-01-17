@@ -23,5 +23,5 @@
     { "lat": 46.873038487446884,"lng":  -71.1976439667049, "mode": "campagne", "level": 9, "continent": "Amerique du Nord", "pays": "Canada", "ville": "Quebec" },
     { "lat": -19.016493280185255, "lng": -65.25032216185325, "mode": "campagne", "level": 9, "continent": "Amerique du Sud", "pays": "Bolivie", "ville": "Sucre" },
     { "lat": 36.15911039032951, "lng": -115.33471779178204, "mode": "campagne", "level": 10, "continent": "Amerique du Nord", "pays": "Etats Unis", "ville": "Las Vegas" },
-    { "lat": -24.760938999426617, "lng": -65.4478270988714, "mode": "campagne", "level": 10, "continent": "Amerique du Sud", "pays": "Argentine", "ville": "Salta" },
+    { "lat": -24.760938999426617, "lng": -65.4478270988714, "mode": "campagne", "level": 10, "continent": "Amerique du Sud", "pays": "Argentine", "ville": "Salta" }
 ]
