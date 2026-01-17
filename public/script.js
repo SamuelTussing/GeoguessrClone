@@ -946,7 +946,7 @@ const urbanAreas = [
 function getRandomStreetViewLocation(locationType) {
     const svService = new google.maps.StreetViewService();
 
-    function handleSVData(data, status, retryType) {
+        function handleSVData(data, status, retryType) {
         if (status === 'OK' && data && data.location) {
             if (data.location.pano && data.links.length > 0) {
                 actualLocation = data.location.latLng;
@@ -962,73 +962,105 @@ function getRandomStreetViewLocation(locationType) {
     }
 
     if (locationType === 'world') {
-        const randomLat = Math.random() * 180 - 90;
-        const randomLng = Math.random() * 360 - 180;
+        // Générer des coordonnées aléatoires dans le monde entier
+        const randomLat = Math.random() * 180 - 90; // Latitude entre -90 et 90
+        const randomLng = Math.random() * 360 - 180; // Longitude entre -180 et 180
         const latLng = new google.maps.LatLng(randomLat, randomLng);
 
-        svService.getPanorama(
-            { location: latLng, radius: 50000, source: google.maps.StreetViewSource.OUTDOOR },
-            (data, status) => handleSVData(data, status, 'world')
-        );
+        // Utiliser l'API pour trouver un panorama dans un rayon de 50 km
+        svService.getPanorama({ location: latLng, radius: 50000, source: google.maps.StreetViewSource.OUTDOOR, }, (data, status) => {
+            if (status === 'OK' && data && data.location) {
+                if (data.location.pano && data.links.length > 0) {
+                    actualLocation = data.location.latLng;
+                    panorama.setPosition(actualLocation);
+                } else {
+                    getRandomStreetViewLocation('world'); // Réessayer
+                }
+            } else {
+                getRandomStreetViewLocation('world'); // Réessayer
+            }
+        });
     } else if (locationType === 'north-america') {
+        // Vérification que urbanAreas existe bien
         if (!urbanAreas || urbanAreas.length === 0) {
-            console.error("urbanAreas vide !");
+            console.error("La liste urbanAreas est vide ou non définie !");
             return;
         }
 
-        const baseLocation = urbanAreas[Math.floor(Math.random() * urbanAreas.length)];
+        const randomIndex = Math.floor(Math.random() * urbanAreas.length);
+        const baseLocation = urbanAreas[randomIndex];
+
+        // Ajouter une légère variation (~5 km)
         const randomLat = baseLocation.lat + (Math.random() - 0.5) * 0.09;
         const randomLng = baseLocation.lng + (Math.random() - 0.5) * 0.09;
         const latLng = new google.maps.LatLng(randomLat, randomLng);
 
+        //console.log(`Recherche Street View proche de ${baseLocation.name} (${randomLat}, ${randomLng})`);
+
         svService.getPanorama(
-            { location: latLng, radius: 500, source: google.maps.StreetViewSource.OUTDOOR },
-            (data, status) => handleSVData(data, status, 'north-america')
+            {
+                location: latLng,
+                radius: 500,
+                source: google.maps.StreetViewSource.OUTDOOR,
+            },
+            (data, status) => {
+                if (status === 'OK' && data && data.location) {
+                    if (data.location.pano && data.links.length > 0) {
+                        actualLocation = data.location.latLng;
+                        panorama.setPosition(actualLocation);
+                    } else {
+                        console.warn("Street View non valide, nouvel essai...");
+                        getRandomStreetViewLocation('north-america');
+                    }
+                } else {
+                    console.warn("Aucun panorama trouvé, nouvel essai...");
+                    getRandomStreetViewLocation('north-america');
+                }
+            }
         );
     } else {
-        // Autres cas : villes / pays / continents
+        // Autres cas, garder la logique existante
         let filteredLocations;
-        let radiusInKm = 1;
+        let radiusInKm = 1; // Par défaut, le rayon est de 1 km.
 
         switch (locationType) {
             case 'europe':
-                filteredLocations = locations.filter(l => l.continent === 'Europe');
+                filteredLocations = locations.filter(location => location.continent === 'Europe');
                 break;
             case 'Australie':
-                filteredLocations = locations.filter(l => l.pays === 'Australie');
+                filteredLocations = locations.filter(location => location.pays === 'Australie');
                 radiusInKm = 2;
                 break;
             case 'Capitales':
-                filteredLocations = locations.filter(l => l.mode === 'Capitales');
-                radiusInKm = 0.15;
+                filteredLocations = locations.filter(location => location.mode === 'Capitales');
+                radiusInKm = .15;
                 break;
             case 'Strasbourg':
-                filteredLocations = locations.filter(l => l.ville === 'Strasbourg');
-                radiusInKm = 0.3;
+                filteredLocations = locations.filter(location => location.ville === 'Strasbourg');
+                radiusInKm = 0.30; // Rayon 0 pour Strasbourg
                 break;
             case 'France':
-                filteredLocations = locations.filter(l => l.pays === 'France');
+                filteredLocations = locations.filter(location => location.pays === 'France');
                 radiusInKm = 2;
                 break;
             case 'famous':
-                filteredLocations = locations.filter(l => l.mode === 'famous');
-                radiusInKm = 0.05;
+                filteredLocations = locations.filter(location => location.mode === 'famous'); 
+                radiusInKm = 0.05; // Rayon 0 pour famous
                 break;
             default:
                 filteredLocations = locations;
+                break;
         }
 
-        const selectedLocation = filteredLocations[Math.floor(Math.random() * filteredLocations.length)];
+        const randomIndex = Math.floor(Math.random() * filteredLocations.length);
+        const selectedLocation = filteredLocations[randomIndex];
+
         const randomLocation = getRandomLocationWithinRadius(selectedLocation.lat, selectedLocation.lng, radiusInKm);
 
         const latLng = new google.maps.LatLng(randomLocation.lat, randomLocation.lng);
-        svService.getPanorama(
-            { location: latLng, radius: 500, source: google.maps.StreetViewSource.OUTDOOR },
-            (data, status) => handleSVData(data, status, locationType)
-        );
+        svService.getPanorama({ location: latLng, radius: 500, source: google.maps.StreetViewSource.OUTDOOR }, processSVData);
     }
 }
-
 function getRandomAfricaCoordinates() {
     const minLat = -35.0;
     const maxLat = 37.0;
