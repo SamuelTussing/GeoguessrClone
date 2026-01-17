@@ -93,23 +93,24 @@ function initMap() {
             zoom: 1
         });
 
-    // Update compass on Street View heading change
-    panorama.addListener('pov_changed', () => {
-        updateCompass(panorama.getPov().heading);
+
+
+function attachCompassListener(panoramaInstance) {
+    if (!panoramaInstance) return;
+
+    // Évite les doublons
+    google.maps.event.clearListeners(panoramaInstance, 'pov_changed');
+
+
+    panoramaInstance.addListener('pov_changed', () => {
+        const pov = panoramaInstance.getPov();
+        if (!pov) return;
+        updateCompass(pov.heading);
     });
 
-function attachCompassListener(panorama) {
-    google.maps.event.clearListeners(panorama, 'pov_changed');
-    google.maps.event.clearListeners(panorama, 'position_changed');
-
-    const update = () => {
-        const pov = panorama.getPov();
-        if (pov) updateCompass(pov.heading);
-    };
-
-    panorama.addListener('pov_changed', update);
-    panorama.addListener('position_changed', update);
+    console.log("🧭 Boussole attachée au panorama");
 }
+
 
 
     panorama = new google.maps.StreetViewPanorama(
@@ -127,6 +128,12 @@ function setStreetViewLocation(lat, lng) {
 
     // 🔥 IMPORTANT : réattacher la boussole
     attachCompassListener(panorama);
+
+        // 🔄 Init immédiate
+    const pov = panorama.getPov();
+    if (pov) {
+        updateCompass(pov.heading);
+    }
 
     // 🔄 Initialiser la boussole immédiatement
     updateCompass(panorama.getPov().heading);
@@ -442,13 +449,13 @@ async function startNewRound(locationType) {
 }
 
 
-function setStreetViewLocation(lat, lng) {
-    const sv = new google.maps.StreetViewPanorama(
-        document.getElementById('street-view'),
-        { position: { lat, lng }, pov: { heading: 0, pitch: 0 }, zoom: 1 }
-    );
-    streetViewElement.streetView = sv;
-}
+//function setStreetViewLocation(lat, lng) {
+//    const sv = new google.maps.StreetViewPanorama(
+//        document.getElementById('street-view'),
+//        { position: { lat, lng }, pov: { heading: 0, pitch: 0 }, zoom: 1 }
+//    );
+//    streetViewElement.streetView = sv;
+//}
 
 
 // Fonction pour démarrer le chronomètre principal
