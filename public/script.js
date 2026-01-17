@@ -1680,6 +1680,61 @@ try {
 }
 });
 
+function getRandomLocationInRadius(lat, lng, radiusMeters) {
+    const radiusKm = radiusMeters / 1000;
+    const earthRadiusKm = 6371;
+
+    const distance = Math.random() * radiusKm;
+    const angle = Math.random() * 2 * Math.PI;
+
+    const deltaLat = (distance / earthRadiusKm) * (180 / Math.PI);
+    const deltaLng =
+        (distance / earthRadiusKm) * (180 / Math.PI) /
+        Math.cos(lat * Math.PI / 180);
+
+    return {
+        lat: lat + deltaLat * Math.cos(angle),
+        lng: lng + deltaLng * Math.sin(angle)
+    };
+}
+
+async function isStreetViewAvailable(lat, lng) {
+    const googleMapsApiKey = "AIzaSyAUPG5ygE36Pd45w23U157bjffFqJ0Obcg";
+
+    const url = `https://maps.googleapis.com/maps/api/streetview/metadata?location=${lat},${lng}&key=${googleMapsApiKey}`;
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    return data.status === "OK";
+}
+
+async function findValidStreetViewLocation(baseLat, baseLng, radiusMeters, maxAttempts = 15) {
+    for (let i = 0; i < maxAttempts; i++) {
+        const randomPoint = getRandomLocationInRadius(baseLat, baseLng, radiusMeters);
+
+        const isValid = await isStreetViewAvailable(
+            randomPoint.lat,
+            randomPoint.lng
+        );
+
+        if (isValid) {
+            return randomPoint;
+        }
+    }
+
+    console.warn("Aucun point Street View valide trouvé, fallback position de base");
+    return { lat: baseLat, lng: baseLng };
+}
+
+
+function getRadiusByLevel(level) {
+    if (level <= 3) return 20;     // très précis
+    if (level <= 6) return 50;
+    if (level <= 9) return 100;
+    if (level <= 12) return 150;
+    return 250;                   // niveaux élevés = plus large
+}
 
 
 async function getLocationTypeCampagne() {
@@ -1687,7 +1742,6 @@ async function getLocationTypeCampagne() {
     if (!userId) return;
 
     try {
-        // 🔥 Récupération du niveau campagne
         const res = await fetch(`/api/user?userId=${userId}&action=info`, {
             headers: { Authorization: `Bearer votre_token_securise` }
         });
@@ -1695,33 +1749,42 @@ async function getLocationTypeCampagne() {
         if (!res.ok) throw new Error("Impossible de récupérer le niveau campagne");
 
         const data = await res.json();
-        const campagneLevel = data.campagneLevel;
+        const campagneLevel = Number(data.campagneLevel);
 
-        // 🔥 Charger le JSON des localisations campagne
         const locationsResponse = await fetch('/campagneLocations.json');
         const locations = await locationsResponse.json();
 
-        // 🔹 Filtrer les lieux correspondant au niveau du joueur
-        const possibleLocations = locations.filter(loc => 
-            loc.mode === 'campagne' && Number(loc.level) === Number(campagneLevel)
+        const possibleLocations = locations.filter(loc =>
+            loc.mode === 'campagne' && Number(loc.level) === campagneLevel
         );
 
-        if (!possibleLocations.length) {
-            console.warn("Aucune localisation disponible pour ce niveau de campagne");
-            return null;
-        }
+        if (!possibleLocations.length) return null;
 
-        // 🔹 Choisir une localisation au hasard parmi celles disponibles
-        const chosenLocation = possibleLocations[Math.floor(Math.random() * possibleLocations.length)];
+        // 🔹 Base fixe issue du JSON
+        const baseLocation =
+            possibleLocations[Math.floor(Math.random() * possibleLocations.length)];
 
-        console.log("Localisation campagne choisie :", chosenLocation);
+        const radius = getRadiusByLevel(campagneLevel);
 
-        return chosenLocation; // {lat, lng, mode, level, continent, pays, ville}
+        // 🔥 Trouver un point SUR ROUTE
+        const validCoords = await findValidStreetViewLocation(
+            baseLocation.lat,
+            baseLocation.lng,
+            radius
+        );
+
+        return {
+            ...baseLocation,
+            lat: validCoords.lat,
+            lng: validCoords.lng
+        };
 
     } catch (error) {
-        console.error("Erreur lors de la récupération du niveau campagne ou des localisations :", error);
+        console.error("Erreur campagne :", error);
     }
 }
+
+
 
 async function checkCampagneScore(playerScore) {
     const userId = localStorage.getItem("userId");
