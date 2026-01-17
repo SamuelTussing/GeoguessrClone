@@ -138,27 +138,21 @@ function setStreetViewLocation(lat, lng) {
     document.getElementById('map-container').style.display = 'none';
 
 // Initialisation du jeu lorsque le bouton "Lancer une partie" est cliqué
-document.getElementById('start-button').addEventListener('click', () => {
+document.getElementById('start-button').addEventListener('click', async () => {
     // Masquer l'écran de démarrage
     document.getElementById('start-screen').style.display = 'none';
 
-    // Récupérer le type de localisation sélectionné
-    const locationType = document.getElementById('location-select').value;
-
-    // Déterminer le mode de jeu et appeler la bonne fonction
     if (gameMode === 'classique') {
-        const locationType = document.getElementById('location-select').value;
-        getLocationType();
-         
-         document.getElementById('start-screen').style.display = 'none';
-        startNewRound(locationType);
-    } else if (gameMode === 'campagne') {
-        getLocationTypeCampagne()
+        getLocationType(); // met à jour locationType global
+        await startNewRound(locationType);
     }
 
-    // Lancer le tour avec la localisation choisie
-    startNewRound(locationType);
+    if (gameMode === 'campagne') {
+        locationType = 'campagne'; // forcé
+        await startNewRound('campagne');
+    }
 });
+
 
     // Event listener pour cliquer sur la carte et placer le marqueur du joueur
     map.addListener('click', (event) => {
@@ -320,79 +314,95 @@ newGameButton.addEventListener('click', () => {
 });
 
 async function startNewRound(locationType) {
-    streetViewElement.classList.add('blur'); // Ajouter le flou streetview
-    roundStartTime = Date.now(); // Enregistre l'heure de début du round
+    streetViewElement.classList.add('blur');
+    roundStartTime = Date.now();
     let preCountdown = 5;
 
     let chosenLocation = null;
 
+    /* ===========================
+       🔥 MODE CAMPAGNE
+    ============================ */
     if (gameMode === 'campagne') {
-        // 🔥 Mode Campagne : récupérer le niveau du joueur et choisir une localisation
         const userId = localStorage.getItem("userId");
         if (!userId) {
-            console.error("Aucun ID utilisateur trouvé dans le localStorage");
+            console.error("Aucun ID utilisateur trouvé");
             return;
         }
 
         try {
-            // Récupérer le niveau de campagne
             const res = await fetch(`/api/user?userId=${userId}&action=info`, {
                 headers: { Authorization: `Bearer votre_token_securise` }
             });
 
             if (!res.ok) throw new Error("Impossible de récupérer le niveau campagne");
 
-            const data = await res.json();
-            const campagneLevel = data.campagneLevel;
+            const { campagneLevel } = await res.json();
 
-            // Charger le JSON des localisations campagne
+            // Charger les localisations campagne
             const locationsResponse = await fetch('/campagneLocations.json');
             const locations = await locationsResponse.json();
-console.log("campagneLevel utilisé :", campagneLevel, typeof campagneLevel);
-console.log("levels disponibles :", [...new Set(locations.map(l => l.level))]);
-            // Filtrer les lieux correspondant au niveau du joueur
+
+            console.log("campagneLevel utilisé :", campagneLevel);
+            console.log("levels disponibles :", [...new Set(locations.map(l => Number(l.level)))]);
+
+            // 🔒 Filtrage STRICT sur le niveau
             const possibleLocations = locations.filter(loc =>
-                loc.mode === 'campagne' && Number(loc.level) === Number(campagneLevel)
+                loc.mode === 'campagne' &&
+                Number(loc.level) === Number(campagneLevel)
             );
 
             if (!possibleLocations.length) {
-                console.warn("Aucune localisation disponible pour ce niveau de campagne");
+                console.warn(`Aucune localisation pour le niveau ${campagneLevel}`);
                 return;
             }
 
-            // Choisir une localisation au hasard parmi celles disponibles
-            chosenLocation = possibleLocations[Math.floor(Math.random() * possibleLocations.length)];
-            console.log("Localisation campagne choisie :", chosenLocation);
+            // 🎯 Choix aléatoire
+            chosenLocation = possibleLocations[
+                Math.floor(Math.random() * possibleLocations.length)
+            ];
+
             actualLocation = {
                 lat: chosenLocation.lat,
                 lng: chosenLocation.lng
             };
 
-currentPlaceName = `${chosenLocation.ville}, ${chosenLocation.pays}`;
+            currentPlaceName = `${chosenLocation.ville}, ${chosenLocation.pays}`;
+
+            console.log("Localisation campagne choisie :", chosenLocation);
 
         } catch (error) {
-            console.error("Erreur lors de la récupération du niveau campagne ou des localisations :", error);
+            console.error("Erreur mode campagne :", error);
             return;
         }
     }
 
-    // 🔹 Réinitialisation de la carte selon le mode classique ou campagne
+    /* ===========================
+       🗺️ INITIALISATION STREET VIEW
+    ============================ */
+    clearMap();
+
     if (gameMode === 'classique') {
         if (locationType === 'Strasbourg') {
             clearMapStrasbourg();
         } else if (locationType === 'north-america') {
             clearMapNorthAmerica();
-        } else {
-            clearMap();
         }
+
+        // ⚠️ Cette fonction DOIT appeler setStreetViewLocation en interne
         getRandomStreetViewLocation(locationType);
+
     } else if (gameMode === 'campagne' && chosenLocation) {
-        clearMap(); // Réinitialiser la carte
-        // Initialiser Street View sur la localisation campagne choisie
-        setStreetViewLocation(chosenLocation.lat, chosenLocation.lng);
+        // ✅ POINT CLÉ : boussole attachée ici
+        setStreetViewLocation(
+            chosenLocation.lat,
+            chosenLocation.lng
+        );
     }
 
-    // 🔹 UI
+    /* ===========================
+       🎮 UI
+    ============================ */
     updateHeader();
     document.getElementById('street-view').style.display = 'block';
     document.getElementById('map-container').style.display = 'block';
@@ -403,12 +413,14 @@ currentPlaceName = `${chosenLocation.ville}, ${chosenLocation.pays}`;
     document.getElementById('map-container').style.width = '15%';
     document.getElementById('map-container').style.height = '30%';
 
-    // 🔹 Pré-compte à rebours
+    /* ===========================
+       ⏳ PRÉ-COMPTE À REBOURS
+    ============================ */
     preparationtimer.classList.remove("hidden");
     preparationtimer.textContent = `Préparation... ${preCountdown}s`;
 
     const preCountdownInterval = setInterval(() => {
-        preCountdown -= 1;
+        preCountdown--;
         preparationtimer.textContent = `Préparation... ${preCountdown}s`;
 
         if (preCountdown <= 1) {
@@ -419,12 +431,16 @@ currentPlaceName = `${chosenLocation.ville}, ${chosenLocation.pays}`;
         }
     }, 1000);
 
-    // 🔹 Réinitialisation des marqueurs
+    /* ===========================
+       🔄 RESET MARKERS
+    ============================ */
     currentRound++;
+
     if (playerMarker) { playerMarker.setMap(null); playerMarker = null; }
     if (actualMarker) { actualMarker.setMap(null); actualMarker = null; }
     if (polyline) { polyline.setMap(null); polyline = null; }
 }
+
 
 function setStreetViewLocation(lat, lng) {
     const sv = new google.maps.StreetViewPanorama(
@@ -516,10 +532,18 @@ document.addEventListener('DOMContentLoaded', () => {
 let selectedLocation = "world"; // Valeur par défaut
 
 function getLocationType() {
+    // 🔒 Ne rien faire si on est en mode campagne
+    if (gameMode === 'campagne') {
+        locationType = "campagne";
+        return;
+    }
+
     const selectElement = document.getElementById('location-select');
     locationType = selectElement.value;
-    console.log("Location type sélectionné : ", locationType);
+
+    console.log("Location type sélectionné (classique) :", locationType);
 }
+
 
 function locationsave(locationType) {
     selectedLocation = locationType; // Mettre à jour la variable globale
