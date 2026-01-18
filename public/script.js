@@ -557,14 +557,13 @@ function locationsave(locationType) {
 function showBadgeNotification(unlockedBadges) {
     if (!unlockedBadges || unlockedBadges.length === 0) return;
 
-    // Récupération correcte des éléments
     const popupa = document.getElementById("popupbadgemain");
     const popupimg = document.getElementById("popupbadgeimg");
-    const popuptitre = document.getElementById("popupbadgetitre"); // Titre du badge
-    const popuptext = document.getElementById("popupbadgetxt"); // Texte du badge
+    const popuptitre = document.getElementById("popupbadgetitre");
+    const popuptext = document.getElementById("popupbadgetxt");
 
     if (!popupa || !popupimg || !popuptitre || !popuptext) {
-        console.error("Les éléments du popup de badge sont introuvables !");
+        console.error("Popup badge introuvable");
         return;
     }
 
@@ -572,25 +571,28 @@ function showBadgeNotification(unlockedBadges) {
 
     unlockedBadges.forEach((badge, index) => {
         setTimeout(() => {
-            // Met à jour l'image, le titre et le texte du badge
-            popupimg.src = `/badge/${badge.charAt(0).toUpperCase() + badge.slice(1).toLowerCase().replace(/ /g, "_")}.png`;
+
+            // Image du badge
+            popupimg.src = `/badge/${badge.replace(/\s+/g, "_")}.png`;
+
+            // Texte
             popuptitre.textContent = "🎖️ Nouveau badge débloqué !";
             popuptext.textContent = badge;
 
-            // Joue le son
+            // Son
             badgeSound.currentTime = 0;
-            badgeSound.play().catch(error => console.error("Erreur lors de la lecture du son :", error));
+            badgeSound.play().catch(() => {});
 
-            // Déclenche l'animation
+            // Reset animation
             popupa.classList.remove("activate");
             popupimg.classList.remove("rotation");
 
-            setTimeout(() => {
+            requestAnimationFrame(() => {
                 popupa.classList.add("activate");
                 popupimg.classList.add("rotation");
-            }, 10);
+            });
 
-            // Masquer après 2.5s
+            // Fermeture auto
             setTimeout(() => {
                 popupa.classList.remove("activate");
                 popupimg.classList.remove("rotation");
@@ -600,62 +602,78 @@ function showBadgeNotification(unlockedBadges) {
     });
 }
 
+
 // ✅ DOMContentLoaded uniquement pour l'initialisation
 document.addEventListener("DOMContentLoaded", () => {
     console.log("DOM chargé !");
 });
 
 async function endGame() {
-    const locationType = document.getElementById("location-select").value; 
-    locationsave(locationType); 
+    const locationType = document.getElementById("location-select").value;
+    locationsave(locationType);
 
-    // Points bonus en fonction du mode de jeu
+    // Points bonus
     const bonusPointsMap = {
-        "world": 3000,
-        "Strasbourg": 100,
-        "France": 1000,
-        "europe": 2000,
+        world: 3000,
+        Strasbourg: 100,
+        France: 1000,
+        europe: 2000,
         "north-america": 2000,
-        "famous": 1000,
-        "Capitales": 1000,
-        "Australie": 2000,
+        famous: 1000,
+        Capitales: 1000,
+        Australie: 2000,
     };
 
     const bonusPoints = bonusPointsMap[locationType] || 0;
     const finalScore = totalScore + bonusPoints + chronoBonus;
 
     result.textContent = `Jeu terminé ! Votre score total est de : ${finalScore} (Bonus : ${bonusPoints} points)`;
-    document.getElementById("result").style.display = "block";
+    result.style.display = "block";
 
     const userId = localStorage.getItem("userId");
     const token = localStorage.getItem("authToken");
 
     if (!userId || !token) {
-        console.error("Utilisateur non authentifié. Impossible d'enregistrer le score.");
+        console.error("Utilisateur non authentifié.");
         return;
     }
 
-    // 🔥 Récupération du badge actif
-let activeBadge = null;
+    // 🔥 Chargement des badges déjà acquis
+    let badgesAcquis = JSON.parse(localStorage.getItem("badgesAcquis")) || [];
 
-try {
-    const badgeResponse = await fetch(`/api/user?userId=${userId}&action=activeBadge`, {
-        headers: { Authorization: "Bearer votre_token_securise" }
-    });
+    // 🔥 Badge actif
+    let activeBadge = null;
+    try {
+        const badgeResponse = await fetch(`/api/user?userId=${userId}&action=activeBadge`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
 
-    if (!badgeResponse.ok) throw new Error("Erreur API getActiveBadge");
+        if (badgeResponse.ok) {
+            const badgeData = await badgeResponse.json();
+            activeBadge = badgeData.activeBadge || null;
+        }
+    } catch (error) {
+        console.error("Erreur chargement badge actif :", error);
+    }
 
-    const badgeData = await badgeResponse.json();
-    activeBadge = badgeData.activeBadge || null; // Assurez-vous que le badge est bien défini
-
-} catch (error) {
-    console.error("Erreur lors du chargement du badge actif :", error);
-}
-
-
-    // Vérification des badges à débloquer
+    // 🏆 Vérification des badges
     const unlockedBadges = checkAndUnlockBadges(finalScore, locationType, chronoSelection);
 
+    // 🔎 NOUVEAUX badges uniquement
+    const newBadges = unlockedBadges.filter(
+        badge => !badgesAcquis.includes(badge)
+    );
+
+    // 🎉 Popup badges
+    if (newBadges.length > 0) {
+        showBadgeNotification(newBadges);
+    }
+
+    // 💾 Sauvegarde locale
+    badgesAcquis = [...new Set([...badgesAcquis, ...newBadges])];
+    localStorage.setItem("badgesAcquis", JSON.stringify(badgesAcquis));
+
+    // 📡 Envoi API (uniquement nouveaux badges)
     try {
         const response = await fetch("/api/updateScore", {
             method: "POST",
@@ -663,37 +681,38 @@ try {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ userId, score: finalScore, locationSelect: locationType, badges: unlockedBadges, activeBadge: activeBadge }),
+            body: JSON.stringify({
+                userId,
+                score: finalScore,
+                locationSelect: locationType,
+                badges: newBadges,
+                activeBadge
+            }),
         });
 
         const data = await response.json();
 
         if (response.ok) {
-            console.log("Score enregistré avec succès :", data);
+            console.log("Score enregistré :", data);
 
             const { oldLevel, newLevel, experience } = data;
             localStorage.setItem("level", newLevel);
-
             PlayerXP = experience;
 
             if (newLevel > oldLevel) {
                 showLevelUpAnimation(oldLevel, newLevel);
             }
 
-            // Affichage des badges débloqués
-            if (unlockedBadges.length > 0) {
-                //showBadgeNotification(unlockedBadges);
-            }
-
         } else {
-            console.error("Erreur lors de l'enregistrement du score :", data.message);
+            console.error("Erreur API :", data.message);
         }
     } catch (error) {
         console.error("Erreur réseau :", error);
     }
 
-    scoreBanner.style.display = 'none';
-    continueButton.style.display = 'none';
+    // 🧹 Nettoyage UI
+    scoreBanner.style.display = "none";
+    continueButton.style.display = "none";
 
     fetchTopScores();
     resetGame();
@@ -701,11 +720,12 @@ try {
 
 
 
+
 function checkAndUnlockBadges(finalScore, location, chronoSelection) {
     let unlockedBadges = [];
 
     const badgeConditions = [
-        { name: "5", newLevel: 5},
+        { name: "5", newLevel: 5 },
         { name: "10", newLevel: 10 },
         { name: "20", newLevel: 20 },
         { name: "30", newLevel: 30 },
@@ -716,28 +736,28 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
         { name: "80", newLevel: 80 },
         { name: "90", newLevel: 90 },
         { name: "100", newLevel: 100 },
+
         { name: "Choucroute", score: 25000, location: "Strasbourg", chrono: "1s" },
-        { name: "Halsacien", score: 25000, location: "Strasbourg", chrono:"infini"},
-        { name: "Globetrotter", score: 15000, location: "world", chrono:"infini" },
+        { name: "Halsacien", score: 25000, location: "Strasbourg", chrono: "infini" },
+        { name: "Globetrotter", score: 15000, location: "world", chrono: "infini" },
         { name: "Conqueror", score: 20000, location: "world", chrono: "1s" },
-        { name: "Croissant", score: 20000, location: "France", chrono:"infini" },
+        { name: "Croissant", score: 20000, location: "France", chrono: "infini" },
         { name: "Marine", score: 20000, location: "France", chrono: "1s" },
-        { name: "Voyageur", score: 20000, location: "europe", chrono:"infini" },
+        { name: "Voyageur", score: 20000, location: "europe", chrono: "infini" },
         { name: "Blitzkrieg", score: 15000, location: "europe", chrono: "1s" },
         { name: "Aigle", score: 15000, location: "north-america", chrono: "1s" },
-        { name: "CowBoy", score: 15000, location: "north-america", chrono:"infini" },
-        { name: "Pionnier", score: 20000, location: "north-america", chrono:"infini" },
+        { name: "CowBoy", score: 15000, location: "north-america", chrono: "infini" },
+        { name: "Pionnier", score: 20000, location: "north-america", chrono: "infini" },
         { name: "Archeologue", score: 20000, location: "famous", chrono: "1s" },
-        { name: "Reporter", score: 15000, location: "famous", chrono:"infini" },
-        { name: "DucdeAgass", score: 15000, location: "Capitales", chrono:"infini" },
-        { name: "RoutardPro", score: 20000, location: "Capitales", chrono:"infini" }
+        { name: "Reporter", score: 15000, location: "famous", chrono: "infini" },
+        { name: "DucdeAgass", score: 15000, location: "Capitales", chrono: "infini" },
+        { name: "RoutardPro", score: 20000, location: "Capitales", chrono: "infini" }
     ];
 
-    const badgeExtras=[
-        { name: "Rien", score: 1, location: "world", chrono:"1s" },
-        {name : "Desir", score: 200000, location: "famous", chrono:"infini"},
-        { name: "Accompli", score: 200000, location: "Capitales", chrono:"infini" }
-    ]
+    const badgeExtras = [
+        { name: "Rien", score: 1, location: "world", chrono: "1s" },
+        { name: "Desir", score: 200000, location: "famous", chrono: "infini" }
+    ];
 
     badgeConditions.forEach(badge => {
 
@@ -745,7 +765,6 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
         if (badge.newLevel && ActualLevel >= badge.newLevel) {
             if (!unlockedBadges.includes(badge.name)) {
                 unlockedBadges.push(badge.name);
-                showBadgeNotification(badge.name);
             }
             return;
         }
@@ -759,7 +778,6 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
         ) {
             if (!unlockedBadges.includes(badge.name)) {
                 unlockedBadges.push(badge.name);
-                showBadgeNotification(badge.name);
             }
         }
     });
@@ -772,7 +790,6 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
         ) {
             if (!unlockedBadges.includes(badge.name)) {
                 unlockedBadges.push(badge.name);
-                showBadgeNotification(badge.name);
             }
         }
     });
@@ -787,6 +804,7 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
 
     return unlockedBadges;
 }
+
 
 
 
