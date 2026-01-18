@@ -141,6 +141,7 @@ document.getElementById('start-button').addEventListener('click', async () => {
         const maxAttempts = 5;
         //showBadgeNotification(["halsacien"]);
         document.getElementById('niveaucampagnespan').style.display = 'none';
+        document.getElementById('niveaucampagnevalue').style.display = 'none';
         document.getElementById('result').style.display = 'none';
         document.getElementById('mode-title').innerText = 'MODE DE JEU : SOLO CLASSIQUE';
         document.getElementById('start-screen').style.display = 'flex';
@@ -681,7 +682,7 @@ try {
 
             // Affichage des badges débloqués
             if (unlockedBadges.length > 0) {
-                showBadgeNotification(unlockedBadges);
+                //showBadgeNotification(unlockedBadges);
             }
 
         } else {
@@ -744,6 +745,7 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
         if (badge.newLevel && ActualLevel >= badge.newLevel) {
             if (!unlockedBadges.includes(badge.name)) {
                 unlockedBadges.push(badge.name);
+                showBadgeNotification(badge.name);
             }
             return;
         }
@@ -757,6 +759,7 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
         ) {
             if (!unlockedBadges.includes(badge.name)) {
                 unlockedBadges.push(badge.name);
+                showBadgeNotification(badge.name);
             }
         }
     });
@@ -769,6 +772,7 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
         ) {
             if (!unlockedBadges.includes(badge.name)) {
                 unlockedBadges.push(badge.name);
+                showBadgeNotification(badge.name);
             }
         }
     });
@@ -793,7 +797,6 @@ function resetGame() {
     document.getElementById('map-container').style.display = 'none';
     document.getElementById('timer-display').style.display = 'none';
     document.getElementById('ok-button').style.display = 'none';
-    document.getElementById("location-select").innerText ="";
     totalScore = 0;
     attempts = 0;
     currentRound = 0;
