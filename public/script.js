@@ -641,20 +641,6 @@ async function endGame() {
     // 🔥 Chargement des badges déjà acquis
     let badgesAcquis = JSON.parse(localStorage.getItem("badgesAcquis")) || [];
 
-    // 🔥 Badge actif
-    let activeBadge = null;
-    try {
-        const badgeResponse = await fetch(`/api/user?userId=${userId}&action=activeBadge`, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
-
-        if (badgeResponse.ok) {
-            const badgeData = await badgeResponse.json();
-            activeBadge = badgeData.activeBadge || null;
-        }
-    } catch (error) {
-        console.error("Erreur chargement badge actif :", error);
-    }
 
     // 🏆 Vérification des badges
     const unlockedBadges = checkAndUnlockBadges(finalScore, locationType, chronoSelection);
