@@ -2002,7 +2002,7 @@ if (userId) {
             const data = await res.json();
 
             if (res.ok) {
-                alert(`🎉 Félicitations ! Niveau ${campagneLevel + 1} débloqué !`);
+                alert(`🎉 Félicitations ! Niveau débloqué !`);
                 campagneLevel += 1;
             } else {
                 console.warn("Impossible d'augmenter le niveau :", data.message);
