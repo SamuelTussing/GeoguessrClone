@@ -1923,7 +1923,11 @@ async function checkCampagneScore(playerScore) {
         alert("Score insuffisant, vous restez au même niveau !");
     }
 }
-
+function getCampagneScoreThreshold(level) {
+    if (level < 25) return 3000;
+    if (level < 50) return 3500;
+    return 4000;
+}
 
 async function calculateScoreCampagne(playerLocation) {
     if (!actualLocation) return;
@@ -1935,7 +1939,7 @@ async function calculateScoreCampagne(playerLocation) {
     if (distanceInMeters <= 5) {
         roundScore = 5000;
     } else if (distanceInMeters <= 2000) {
-        roundScore = Math.max(0, 5000 - Math.floor(distanceInMeters - 5));
+        roundScore = Math.max(0, 5000 - Math.floor(distanceInMeters - 2));
     } else {
         const distanceInKm = distanceInMeters / 1000;
         roundScore = Math.max(0, 5000 - 1995 - Math.floor(distanceInKm - 2));
@@ -1974,9 +1978,12 @@ async function calculateScoreCampagne(playerLocation) {
 
     resultElement.textContent = `Total Score: ${totalScore}`;
 
-    // 🔹 Vérifier si le joueur passe au niveau suivant
-    const userId = localStorage.getItem("userId");
-    if (roundScore >= 3500 && userId) {
+  // 🔹 Vérifier si le joueur passe au niveau suivant
+const userId = localStorage.getItem("userId");
+const requiredScore = getCampagneScoreThreshold(campagneLevel);
+
+if (userId) {
+    if (roundScore >= requiredScore) {
         try {
             const res = await fetch('/api/user', {
                 method: 'POST',
@@ -1986,15 +1993,16 @@ async function calculateScoreCampagne(playerLocation) {
                 },
                 body: JSON.stringify({
                     action: 'increaseCampagneLevel',
-                    userId: userId,
+                    userId,
                     newLevel: campagneLevel + 1
                 })
             });
 
             const data = await res.json();
+
             if (res.ok) {
-                alert("Félicitations ! Vous passez au niveau suivant !");
-                campagneLevel += 1; // mettre à jour localement
+                alert(`🎉 Félicitations ! Niveau ${campagneLevel + 1} débloqué !`);
+                campagneLevel += 1;
             } else {
                 console.warn("Impossible d'augmenter le niveau :", data.message);
             }
@@ -2002,7 +2010,8 @@ async function calculateScoreCampagne(playerLocation) {
         } catch (error) {
             console.error("Erreur lors de la montée de niveau :", error);
         }
-    } else if (roundScore < 3500) {
-        alert("Score insuffisant, vous restez au même niveau !");
+
+    } else {
+        alert(`❌ Score insuffisant (${roundScore}/${requiredScore} pts)`);
     }
-}
+}}
