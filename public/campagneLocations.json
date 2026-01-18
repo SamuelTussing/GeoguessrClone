@@ -34,5 +34,94 @@
     { "lat": 50.075538, "lng": 14.437800, "mode": "campagne", "level": 13, "continent": "Europe", "pays": "Republique Tcheque", "ville": "Prague" },
     { "lat": -1.292066, "lng": 36.821946, "mode": "campagne", "level": 15, "continent": "Afrique", "pays": "Kenya", "ville": "Nairobi" },
     { "lat": 35.360556, "lng": 138.727778, "mode": "campagne", "level": 15, "continent": "Asie", "pays": "Japon", "ville": "Mont Fuji" },
-    { "lat": 21.422487, "lng": 39.826206, "mode": "campagne", "level": 15, "continent": "Asie", "pays": "Arabie Saoudite", "ville": "La Mecque" }
+    { "lat": 21.422487, "lng": 39.826206, "mode": "campagne", "level": 15, "continent": "Asie", "pays": "Arabie Saoudite", "ville": "La Mecque" },
+
+    { "lat": 48.581577875959375, "lng": 7.750135491676123, "ville": "Strasbourg","level": 16, "mode": "campagne", "place": "Cathédrale de Strasbourg" },
+  { "lat": 49.25458769560739, "lng": 4.0351197101940235, "ville": "Reims", "mode": "campagne", "level": 16, "place": "Cathédrale de Reims" },
+  { "lat": 48.8571176130146, "lng": 2.2953320109276265, "ville": "Paris", "mode": "campagne", "level": 17, "place": "Tour Eiffel" },
+  { "lat": 48.861942564979444, "lng": 2.3346985046579403, "ville": "Paris", "mode": "campagne", "level": 17, "place": "Pyramide du Louvre" },
+  { "lat": 48.85272242726784, "lng": 2.3485357610830757, "ville": "Paris", "mode": "campagne", "level": 17, "place": "Notre-Dame de Paris" },
+  { "lat": 48.8668879533075, "lng": 2.3294993617472644, "ville": "Paris", "mode": "campagne", "level": 18, "place": "Place Vendôme" },
+  { "lat": 48.92431959243519, "lng": 2.362562404954632, "ville": "Paris", "mode": "campagne", "level": 18, "place": "Stade de France" },
+  { "lat": 48.87318472885632, "lng": 2.2953708055406223, "ville": "Paris", "mode": "campagne", "level": 18, "place": "Arc de Triomphe" },
+  { "lat": 48.632681883510635, "lng": -1.509443288823734, "ville": "Le Mont-Saint-Michel", "mode": "campagne","level": 19, "place": "Mont-Saint-Michel" },
+  { "lat": 43.29450047339565, "lng": 5.363692106819324, "ville": "Marseille", "mode": "campagne", "level": 19, "place": "Port de Marseille" },
+  { "lat": 48.803856406550715, "lng": 2.123866518592768, "ville": "Versailles", "mode": "campagne", "level": 19, "place": "Château de Versailles" },
+  { "lat": 43.210343773082386, "lng": 2.358611906840818, "ville": "Carcassonne", "mode": "campagne", "level": 20, "place": "Cité médiévale de Carcassonne" },
+  { "lat": 47.616622432909814, "lng": 1.5165069208518343, "ville": "Chambord", "mode": "campagne","level": 20, "place": "Château de Chambord" },
+  { "lat": 43.94723300826707, "lng": 4.53476171771074, "ville": "Vers-Pont-du-Gard", "mode": "campagne","level": 20, "place": "Pont du Gard" },
+
+  { "lat": 40.79722752877516, "lng": -73.95004661117925, "ville": "New York", "mode": "campagne", "level": 21, "place": "Central Park" },
+  { "lat": 43.080750766610656, "lng": -79.07840320965927, "ville": "Niagara Falls", "mode": "campagne","level": 21, "place": "Chutes du Niagara" },
+  { "lat": 40.69034205584641, "lng": -74.04549005894877, "ville": "New York", "mode": "campagne","level": 21, "place": "Statue de la Liberté" },
+  { "lat": 40.75781654732094, "lng": -73.98568249307924, "ville": "New York", "mode": "campagne","level": 22, "place": "Times Square" },
+  { "lat": 40.74845502151458, "lng": -73.98456228099235, "ville": "New York", "mode": "campagne", "level": 22, "place": "Empire State Building" },
+
+  { "lat": 37.851793169906585, "lng": -119.57291960411746, "ville": "California", "mode": "campagne","level": 22, "place": "Yosemite National Park" },
+  { "lat": 44.42847710721062, "lng": -110.583369356037, "ville": "Yellowstone", "mode": "campagne","level": 22, "place": "Yellowstone National Park" },
+  { "lat": 36.061651913170465, "lng": -112.10796826564248, "ville": "Arizona", "mode": "campagne","level": 23, "place": "Grand Canyon" },
+
+  { "lat": 41.89058335598132, "lng": 12.49445481534246, "ville": "Rome", "mode": "campagne","level": 23, "place": "Colisée" },
+  { "lat": 27.172472887856514, "lng": 78.04231990826052, "ville": "Agra", "mode": "campagne","level": 23, "place": "Taj Mahal" },
+  { "lat": 51.50114583041222, "lng": -0.12418038756444674, "ville": "Londres", "mode": "campagne","level": 24, "place": "Big Ben" },
+  { "lat": -22.952097425746654, "lng": -43.210496238740575, "ville": "Rio de Janeiro", "mode": "campagne","level": 24, "place": "Christ Rédempteur" },
+  { "lat": -13.162770429161524, "lng": -72.54535868408266, "ville": "Machu Picchu", "mode": "campagne","level": 24, "place": "Machu Picchu" },
+
+  { "lat": 39.917017600627545, "lng": 116.3970797690515, "ville": "Beijing", "mode": "campagne","level": 25, "place": "Cité interdite" },
+  { "lat": 29.977847663827493, "lng": 31.13040863396365, "ville": "Gizeh", "mode": "campagne","level": 25, "place": "Pyramides de Gizeh" },
+  { "lat": 25.198327579730428, "lng": 55.272829574473796, "ville": "Dubai", "mode": "campagne","level": 25, "place": "Burj Khalifa" },
+  { "lat": -33.85967002761163, "lng": 151.2214707003714, "ville": "Sydney", "mode": "campagne","level": 25, "place": "Opéra de Sydney" },
+  { "lat": 37.97167233493177, "lng": 23.725965703730793, "ville": "Athènes", "mode": "campagne","level": 26, "place": "Acropole" },
+
+  { "lat": 52.36757279013168, "lng": 4.893795043696823, "ville": "Amsterdam", "mode": "campagne","level": 26, "place": "Amsterdam" },
+  { "lat": 41.40405290096904, "lng": 2.1739003171142888, "ville": "Barcelone", "mode": "campagne","level": 26, "place": "Sagrada Família" },
+  { "lat": 41.41354860332115, "lng": 2.1529335237350296, "ville": "Barcelone", "mode": "campagne","level": 27, "place": "Parc Güell" },
+  { "lat": -16.514639937978984, "lng": -151.75499250357709, "ville": "Bora Bora", "mode": "campagne","level": 27, "place": "Faanui" },
+
+  [
+  { "lat": 48.8571176130146, "lng": 2.2953320109276265, "continent": "Europe", "pays": "France", "ville": "Paris", "level": 27, "mode": "campagne", "place": "Tour Eiffel" },
+  { "lat": 41.902782, "lng": 12.496365, "continent": "Europe", "pays": "Italie", "ville": "Rome", "mode": "campagne","level": 28, "place": "Colisée" },
+  { "lat": 51.507351, "lng": -0.127758, "continent": "Europe", "pays": "Royaume-Uni", "ville": "Londres", "mode": "campagne","level": 28, "place": "Big Ben" },
+  { "lat": 52.520007, "lng": 13.404954, "continent": "Europe", "pays": "Allemagne", "ville": "Berlin", "mode": "campagne","level": 28, "place": "Brandenburger Tor" },
+  { "lat": 40.416775, "lng": -3.70379, "continent": "Europe", "pays": "Espagne", "ville": "Madrid", "mode": "campagne", "level": 29,"place": "Palacio Real" },
+  { "lat": 48.208176, "lng": 16.373819, "continent": "Europe", "pays": "Autriche", "ville": "Vienne", "mode": "campagne","level": 29, "place": "Stephansdom" },
+  { "lat": 50.075538, "lng": 14.4378, "continent": "Europe", "pays": "République Tchèque", "ville": "Prague", "mode": "campagne","level": 29, "place": "Pont Charles" },
+  { "lat": 59.329323, "lng": 18.068581, "continent": "Europe", "pays": "Suède", "ville": "Stockholm", "mode": "campagne","level": 30, "place": "Gamla Stan" },
+  { "lat": 60.169856, "lng": 24.938379, "continent": "Europe", "pays": "Finlande", "ville": "Helsinki", "mode": "campagne", "level": 30, "place": "Cathédrale d'Helsinki" },
+  { "lat": 55.755825, "lng": 37.617298, "continent": "Europe", "pays": "Russie", "ville": "Moscou", "mode": "campagne","level": 30, "place": "Place Rouge" },
+  { "lat": 35.689487, "lng": 139.691711, "continent": "Europe", "pays": "Grèce", "ville": "Athènes", "mode": "campagne","level": 30, "place": "Acropole" },
+  { "lat": 42.697708, "lng": 23.321867, "continent": "Europe", "pays": "Bulgarie", "ville": "Sofia", "mode": "campagne","level": 31, "place": "Cathédrale Alexandre Nevski" },
+  { "lat": 50.85034, "lng": 4.35171, "continent": "Europe", "pays": "Belgique", "ville": "Bruxelles", "mode": "campagne", "level": 31,"place": "Grand-Place" },
+  { "lat": 55.676098, "lng": 12.568337, "continent": "Europe", "pays": "Danemark", "ville": "Copenhague", "mode": "campagne","level": 31, "place": "Nyhavn" },
+  { "lat": 59.436961, "lng": 24.753575, "continent": "Europe", "pays": "Estonie", "ville": "Tallinn", "mode": "campagne","level": 31, "place": "Vieille Ville" },
+  { "lat": 54.687157, "lng": 25.279652, "continent": "Europe", "pays": "Lituanie", "ville": "Vilnius", "mode": "campagne","level": 32, "place": "Cathédrale de Vilnius" },
+  { "lat": 56.949648, "lng": 24.105186, "continent": "Europe", "pays": "Lettonie", "ville": "Riga", "mode": "campagne","level": 32, "place": "Place du Dôme" },
+  { "lat": 47.497913, "lng": 19.040236, "continent": "Europe", "pays": "Hongrie", "ville": "Budapest", "mode": "campagne","level": 32, "place": "Bastion des pêcheurs" },
+  { "lat": 44.817844, "lng": 20.456891, "continent": "Europe", "pays": "Serbie", "ville": "Belgrade", "mode": "campagne","level": 32, "place": "Kalemegdan" },
+  { "lat": 45.815011, "lng": 15.981919, "continent": "Europe", "pays": "Croatie", "ville": "Zagreb", "mode": "campagne","level": 33, "place": "Place Ban Jelačić" },
+  { "lat": 46.056947, "lng": 14.505751, "continent": "Europe", "pays": "Slovénie", "ville": "Ljubljana", "mode": "campagne","level": 33, "place": "Pont des dragons" },
+  { "lat": 48.148596, "lng": 17.107748, "continent": "Europe", "pays": "Slovaquie", "ville": "Bratislava", "mode": "campagne","level": 33, "place": "Château de Bratislava" },
+  { "lat": 41.998129, "lng": 21.425435, "continent": "Europe", "pays": "Macédoine du Nord", "ville": "Skopje", "mode": "campagne","level": 34, "place": "Pont de Pierre" },
+  { "lat": 47.162494, "lng": 27.588834, "continent": "Europe", "pays": "Roumanie", "ville": "Bucarest", "mode": "campagne", "level": 34,"place": "Palais du Parlement" },
+
+  { "lat": 19.432608, "lng": -99.133209, "continent": "Amérique du Nord", "pays": "Mexique", "ville": "Mexico", "mode": "campagne","level": 34, "place": "Zócalo" },
+  { "lat": 38.907192, "lng": -77.036871, "continent": "Amérique du Nord", "pays": "États-Unis", "ville": "Washington D.C.", "mode": "campagne","level": 35, "place": "Capitole des États-Unis" },
+  { "lat": 45.42153, "lng": -75.697193, "continent": "Amérique du Nord", "pays": "Canada", "ville": "Ottawa", "mode": "campagne","level": 35, "place": "Parlement du Canada" },
+
+  { "lat": 4.614507, "lng": -74.072092, "continent": "Amérique du Sud", "pays": "Colombie", "ville": "Bogotá", "mode": "campagne","level": 35, "place": "Plaza de Bolívar" },
+  { "lat": -34.603684, "lng": -58.381559, "continent": "Amérique du Sud", "pays": "Argentine", "ville": "Buenos Aires", "mode": "campagne","level": 35, "place": "Obélisque" },
+  { "lat": -12.046374, "lng": -77.042793, "continent": "Amérique du Sud", "pays": "Pérou", "ville": "Lima", "mode": "campagne","level": 36, "place": "Plaza Mayor de Lima" },
+
+  { "lat": 39.904202, "lng": 116.407394, "continent": "Asie", "pays": "Chine", "ville": "Pékin", "mode": "campagne", "level": 36,"place": "Place Tian'anmen" },
+  { "lat": 28.70406, "lng": 77.102493, "continent": "Asie", "pays": "Inde", "ville": "New Delhi", "mode": "campagne","level": 36, "place": "India Gate" },
+  { "lat": 35.676192, "lng": 139.650311, "continent": "Asie", "pays": "Japon", "ville": "Tokyo", "mode": "campagne","level": 37, "place": "Shibuya Crossing" },
+
+  { "lat": -35.280937, "lng": 149.130009, "continent": "Océanie", "pays": "Australie", "ville": "Canberra", "mode": "campagne","level": 37, "place": "Parliament House" },
+  { "lat": -41.28646, "lng": 174.776236, "continent": "Océanie", "pays": "Nouvelle-Zélande", "ville": "Wellington", "mode": "campagne","level": 37, "place": "Te Papa Museum" },
+
+  { "lat": 30.044419, "lng": 31.235711, "continent": "Afrique", "pays": "Égypte", "ville": "Le Caire", "mode": "campagne","level": 38, "place": "Pyramides de Gizeh" },
+  { "lat": -1.286389, "lng": 36.817223, "continent": "Afrique", "pays": "Kenya", "ville": "Nairobi", "mode": "campagne","level": 38, "place": "Nairobi National Park" }
+]
+
+    
 ]
