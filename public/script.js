@@ -1934,16 +1934,17 @@ async function calculateScoreCampagne(playerLocation) {
 
     const distanceInMeters = google.maps.geometry.spherical.computeDistanceBetween(playerLocation, actualLocation);
     let roundScore;
-
-    // 🔹 Calcul du score basé sur la distance
-    if (distanceInMeters <= 5) {
-        roundScore = 5000;
-    } else if (distanceInMeters <= 2000) {
-        roundScore = Math.max(0, 5000 - Math.floor(distanceInMeters - 2));
-    } else {
-        const distanceInKm = distanceInMeters / 1000;
-        roundScore = Math.max(0, 5000 - 1995 - Math.floor(distanceInKm - 2));
-    }
+penalty = distanceInMeters / 5
+// 🔹 Calcul du score basé sur la distance (moins punitif)
+if (distanceInMeters <= 5) {
+    roundScore = 5000;
+} else if (distanceInMeters < 5000) {
+    const penalty = Math.floor(distanceInMeters / 5);
+    roundScore = Math.max(0, 5000 - penalty);
+} else {
+    // au-delà de 5 km → score plancher
+    roundScore = Math.max(0, 4000 - Math.floor((distanceInMeters - 5000) / 20));
+}
 
     // 🔹 Calcul du temps pris pour le round
     const roundEndTime = Date.now();
