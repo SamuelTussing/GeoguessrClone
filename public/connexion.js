@@ -1,9 +1,9 @@
 document.getElementById('signupForm').addEventListener('submit', async function (e) { 
     e.preventDefault(); // Empêche le comportement par défaut (rechargement de la page)
 
-    const username = document.getElementById('signup-username').value.trim();
-    const email = document.getElementById('signup-email').value.trim();
-    const password = document.getElementById('signup-password').value.trim();
+const username = document.getElementById('username').value.trim();
+const email = document.getElementById('email').value.trim();
+const password = document.getElementById('password').value.trim();
     const errorDiv = document.getElementById('signup-error');
     const audioPlayer = document.getElementById('audioPlayer');
 
