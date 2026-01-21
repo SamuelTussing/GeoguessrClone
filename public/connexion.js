@@ -1,4 +1,4 @@
-document.getElementById('signup-form').addEventListener('submit', async function (e) {
+document.getElementById('signupForm').addEventListener('submit', async function (e) { 
     e.preventDefault(); // Empêche le comportement par défaut (rechargement de la page)
 
     const username = document.getElementById('signup-username').value.trim();
