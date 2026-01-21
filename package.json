@@ -12,6 +12,7 @@
     "socket.io-client": "^4.8.1",
     "uuid": "^9.0.0"
   },
+  "type": "module",
   "name": "freeguessr",
   "version": "1.0.0",
   "description": "\"# Freeguessr\" \r \"# GeoguessrClone\"",
