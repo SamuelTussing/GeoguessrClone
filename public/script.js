@@ -263,15 +263,18 @@ function clearMapNorthAmerica() {
 // Sélectionnez l'élément map-container
 const mapContainer = document.getElementById('map-container');
 
-// Ajoutez un écouteur d'événement pour le survol de la souris
-mapContainer.addEventListener('mouseover', () => {
-    mapContainer.classList.add('mapHover');
-});
+// Vérifie que l'élément existe avant d'exécuter le code
+if (mapContainer) {
+    // Survol de la souris
+    mapContainer.addEventListener('mouseover', () => {
+        mapContainer.classList.add('mapHover');
+    });
 
-// Ajoutez un écouteur d'événement pour la sortie de la souris
-mapContainer.addEventListener('mouseout', () => {
-    mapContainer.classList.remove('mapHover');
-});
+    // Sortie de la souris
+    mapContainer.addEventListener('mouseout', () => {
+        mapContainer.classList.remove('mapHover');
+    });
+}
 
 // Continue button event
 continueButton.addEventListener('click', () => {
