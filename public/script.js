@@ -1918,6 +1918,28 @@ function getCampagneScoreThreshold(level) {
     return 4000;
 }
 
+function showLevelUpAnimationCampagne(campagneLevel) {
+    const levelUpContainer = document.getElementById("levelupcontainer");
+    const oldLevelSpan = document.getElementById("oldlevel");
+    const newLevelSpan = document.getElementById("newlevel");
+    const nextButton = document.getElementById("Nextbutton");
+
+    if (!levelUpContainer || !oldLevelSpan || !newLevelSpan || !nextButton) return;
+
+    loadActiveBadge();
+
+    oldLevelSpan.textContent = `Niv.${campagneLevel}`;
+    newLevelSpan.textContent = `Niv.${campagneLevel + 1}`;
+
+    levelUpContainer.style.display = "flex";
+
+    // 🔒 overwrite au lieu d'add
+    nextButton.onclick = () => {
+        levelUpContainer.style.display = "none";
+    };
+}
+
+
 async function calculateScoreCampagne(playerLocation) {
     if (!actualLocation) return;
 
@@ -1991,8 +2013,10 @@ if (userId) {
             const data = await res.json();
 
             if (res.ok) {
-                alert(`🎉 Félicitations ! Niveau débloqué !`);
+                const oldLevel = campagneLevel;
+                //alert(`🎉 Félicitations ! Niveau débloqué !`);
                 campagneLevel += 1;
+                showLevelUpAnimationCampagne(oldLevel);
             } else {
                 console.warn("Impossible d'augmenter le niveau :", data.message);
             }

@@ -53,7 +53,6 @@ export default async function handler(req, res) {
             token,
         });
     } catch (error) {
-        window.location.href = 'index.html';
         console.error("Erreur lors de l'authentification :", error);
         res.status(500).json({ message: "Erreur interne du serveur" });
     }
