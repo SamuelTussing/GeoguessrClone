@@ -24,6 +24,7 @@ const username = localStorage.getItem('username');
 const ActualLevel = localStorage.getItem('level');
 let PlayerXP = 0;
 let currentRound = 0;
+let activeBadge = null;
 let locationType
 const audioPlayer = document.getElementById('audioPlayer');
 const GoogleButton = document.getElementById('googlebutton');
@@ -614,6 +615,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function endGame() {
     const locationType = document.getElementById("location-select").value;
     locationsave(locationType);
+    loadActiveBadge();
 
     // Points bonus
     const bonusPointsMap = {
@@ -1588,6 +1590,7 @@ async function loadActiveBadge() {
                 // Mettre à jour les images du badge actif
                 document.getElementById("playerbadge").src = activeBadge.badgesrc;
                 document.getElementById("levelupbadge").src = activeBadge.badgesrc;
+                
             }
         }
     } catch (error) {
