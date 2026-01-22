@@ -419,7 +419,68 @@
 { "lat": 56.046467, "lng": 12.694512, "continent": "Europe", "pays": "Suède", "ville": "Helsingborg", "mode": "campagne", "level": 60, "place": "Tour Kärnan" },
 { "lat": 43.848640, "lng": 18.356440, "continent": "Europe", "pays": "Bosnie-Herzégovine", "ville": "Zenica", "mode": "campagne", "level": 60, "place": "Rivière Bosna" },
 { "lat": 46.162758, "lng": 14.571915, "continent": "Europe", "pays": "Slovénie", "ville": "Kranj", "mode": "campagne", "level": 60, "place": "Vieille ville" },
-{ "lat": 67.280355, "lng": 14.404916, "continent": "Europe", "pays": "Norvège", "ville": "Bodø", "mode": "campagne", "level": 60, "place": "Saltstraumen" }
+{ "lat": 67.280355, "lng": 14.404916, "continent": "Europe", "pays": "Norvège", "ville": "Bodø", "mode": "campagne", "level": 60, "place": "Saltstraumen" },
+
+{ "lat": -33.924869, "lng": 18.424055, "continent": "Afrique", "pays": "Afrique du Sud", "ville": "Le Cap", "mode": "campagne", "level": 61, "place": "Table Mountain" },
+{ "lat": -37.813628, "lng": 144.963058, "continent": "Océanie", "pays": "Australie", "ville": "Melbourne", "mode": "campagne", "level": 61, "place": "Federation Square" },
+{ "lat": 19.076090, "lng": 72.877426, "continent": "Asie", "pays": "Inde", "ville": "Mumbai", "mode": "campagne", "level": 61, "place": "Marine Drive" },
+{ "lat": 43.653226, "lng": -79.383184, "continent": "Amérique", "pays": "Canada", "ville": "Toronto", "mode": "campagne", "level": 61, "place": "CN Tower" },
+{ "lat": 6.524379, "lng": 3.379206, "continent": "Afrique", "pays": "Nigéria", "ville": "Lagos", "mode": "campagne", "level": 61, "place": "Victoria Island" },
+
+{ "lat": -26.204103, "lng": 28.047305, "continent": "Afrique", "pays": "Afrique du Sud", "ville": "Johannesburg", "mode": "campagne", "level": 62, "place": "Maboneng" },
+{ "lat": -31.950527, "lng": 115.860457, "continent": "Océanie", "pays": "Australie", "ville": "Perth", "mode": "campagne", "level": 62, "place": "Elizabeth Quay" },
+{ "lat": 12.971599, "lng": 77.594566, "continent": "Asie", "pays": "Inde", "ville": "Bangalore", "mode": "campagne", "level": 62, "place": "Cubbon Park" },
+{ "lat": 49.282729, "lng": -123.120738, "continent": "Amérique", "pays": "Canada", "ville": "Vancouver", "mode": "campagne", "level": 62, "place": "Stanley Park" },
+{ "lat": 10.315699, "lng": 123.885437, "continent": "Asie", "pays": "Philippines", "ville": "Cebu", "mode": "campagne", "level": 62, "place": "Magellan’s Cross" },
+
+{ "lat": -29.858681, "lng": 31.021840, "continent": "Afrique", "pays": "Afrique du Sud", "ville": "Durban", "mode": "campagne", "level": 63, "place": "Golden Mile" },
+{ "lat": -34.928499, "lng": 138.600746, "continent": "Océanie", "pays": "Australie", "ville": "Adélaïde", "mode": "campagne", "level": 63, "place": "Elder Park" },
+{ "lat": 22.572646, "lng": 88.363895, "continent": "Asie", "pays": "Inde", "ville": "Calcutta", "mode": "campagne", "level": 63, "place": "Howrah Bridge" },
+{ "lat": 45.501689, "lng": -73.567256, "continent": "Amérique", "pays": "Canada", "ville": "Montréal", "mode": "campagne", "level": 63, "place": "Vieux-Port" },
+{ "lat": 14.599512, "lng": 120.984222, "continent": "Asie", "pays": "Philippines", "ville": "Manille", "mode": "campagne", "level": 63, "place": "Intramuros" },
+
+{ "lat": -25.747868, "lng": 28.229271, "continent": "Afrique", "pays": "Afrique du Sud", "ville": "Pretoria", "mode": "campagne", "level": 64, "place": "Union Buildings" },
+{ "lat": -35.280937, "lng": 149.130009, "continent": "Océanie", "pays": "Australie", "ville": "Canberra", "mode": "campagne", "level": 64, "place": "Lac Burley Griffin" },
+{ "lat": 26.912434, "lng": 75.787271, "continent": "Asie", "pays": "Inde", "ville": "Jaipur", "mode": "campagne", "level": 64, "place": "Hawa Mahal" },
+{ "lat": 51.044733, "lng": -114.071883, "continent": "Amérique", "pays": "Canada", "ville": "Calgary", "mode": "campagne", "level": 64, "place": "Bow River" },
+{ "lat": 7.377535, "lng": 3.947040, "continent": "Afrique", "pays": "Nigéria", "ville": "Ibadan", "mode": "campagne", "level": 64, "place": "Centre-ville" },
+
+{ "lat": -33.868820, "lng": 151.209296, "continent": "Océanie", "pays": "Australie", "ville": "Sydney", "mode": "campagne", "level": 65, "place": "Opéra de Sydney" },
+{ "lat": 28.704060, "lng": 77.102493, "continent": "Asie", "pays": "Inde", "ville": "Delhi", "mode": "campagne", "level": 65, "place": "India Gate" },
+{ "lat": 19.432608, "lng": -99.133209, "continent": "Amérique", "pays": "Mexique", "ville": "Mexico", "mode": "campagne", "level": 65, "place": "Zócalo" },
+{ "lat": 45.421530, "lng": -75.697193, "continent": "Amérique", "pays": "Canada", "ville": "Ottawa", "mode": "campagne", "level": 65, "place": "Canal Rideau" },
+{ "lat": 9.076479, "lng": 7.398574, "continent": "Afrique", "pays": "Nigéria", "ville": "Abuja", "mode": "campagne", "level": 65, "place": "Aso Rock" },
+
+{ "lat": -32.928272, "lng": 151.781680, "continent": "Océanie", "pays": "Australie", "ville": "Newcastle", "mode": "campagne", "level": 66, "place": "Nobbys Beach" },
+{ "lat": 13.082680, "lng": 80.270718, "continent": "Asie", "pays": "Inde", "ville": "Chennai", "mode": "campagne", "level": 66, "place": "Marina Beach" },
+{ "lat": 20.659699, "lng": -103.349609, "continent": "Amérique", "pays": "Mexique", "ville": "Guadalajara", "mode": "campagne", "level": 66, "place": "Plaza Tapatía" },
+{ "lat": 53.546124, "lng": -113.493823, "continent": "Amérique", "pays": "Canada", "ville": "Edmonton", "mode": "campagne", "level": 66, "place": "River Valley" },
+{ "lat": 11.825138, "lng": 13.150967, "continent": "Afrique", "pays": "Nigéria", "ville": "Maiduguri", "mode": "campagne", "level": 66, "place": "Centre-ville" },
+
+{ "lat": -27.469771, "lng": 153.025124, "continent": "Océanie", "pays": "Australie", "ville": "Brisbane", "mode": "campagne", "level": 67, "place": "South Bank" },
+{ "lat": 17.385044, "lng": 78.486671, "continent": "Asie", "pays": "Inde", "ville": "Hyderabad", "mode": "campagne", "level": 67, "place": "Charminar" },
+{ "lat": 25.686614, "lng": -100.316113, "continent": "Amérique", "pays": "Mexique", "ville": "Monterrey", "mode": "campagne", "level": 67, "place": "Macroplaza" },
+{ "lat": 46.813878, "lng": -71.207981, "continent": "Amérique", "pays": "Canada", "ville": "Québec", "mode": "campagne", "level": 67, "place": "Vieux-Québec" },
+{ "lat": 8.980603, "lng": 7.179590, "continent": "Afrique", "pays": "Nigéria", "ville": "Minna", "mode": "campagne", "level": 67, "place": "Centre-ville" },
+
+{ "lat": -36.848461, "lng": 174.763336, "continent": "Océanie", "pays": "Australie", "ville": "Hobart", "mode": "campagne", "level": 68, "place": "Port d'Hobart" },
+{ "lat": 23.022505, "lng": 72.571362, "continent": "Asie", "pays": "Inde", "ville": "Ahmedabad", "mode": "campagne", "level": 68, "place": "Sabarmati Riverfront" },
+{ "lat": 32.514947, "lng": -117.038247, "continent": "Amérique", "pays": "Mexique", "ville": "Tijuana", "mode": "campagne", "level": 68, "place": "Avenida Revolución" },
+{ "lat": 44.648765, "lng": -63.575239, "continent": "Amérique", "pays": "Canada", "ville": "Halifax", "mode": "campagne", "level": 68, "place": "Waterfront" },
+{ "lat": 4.815554, "lng": 7.049844, "continent": "Afrique", "pays": "Nigéria", "ville": "Port Harcourt", "mode": "campagne", "level": 68, "place": "Port fluvial" },
+
+{ "lat": -42.882137, "lng": 147.327194, "continent": "Océanie", "pays": "Australie", "ville": "Launceston", "mode": "campagne", "level": 69, "place": "Cataract Gorge" },
+{ "lat": 21.170240, "lng": 72.831061, "continent": "Asie", "pays": "Inde", "ville": "Surat", "mode": "campagne", "level": 69, "place": "Centre textile" },
+{ "lat": 16.853109, "lng": -99.823653, "continent": "Amérique", "pays": "Mexique", "ville": "Acapulco", "mode": "campagne", "level": 69, "place": "Baie d'Acapulco" },
+{ "lat": 50.445211, "lng": -104.618896, "continent": "Amérique", "pays": "Canada", "ville": "Regina", "mode": "campagne", "level": 69, "place": "Wascana Centre" },
+{ "lat": 7.250771, "lng": 5.210266, "continent": "Afrique", "pays": "Nigéria", "ville": "Akure", "mode": "campagne", "level": 69, "place": "Centre-ville" },
+
+{ "lat": -35.473469, "lng": 149.012367, "continent": "Océanie", "pays": "Australie", "ville": "Wollongong", "mode": "campagne", "level": 70, "place": "Plage de North Wollongong" },
+{ "lat": 18.520430, "lng": 73.856744, "continent": "Asie", "pays": "Inde", "ville": "Pune", "mode": "campagne", "level": 70, "place": "Shaniwar Wada" },
+{ "lat": 21.161908, "lng": -86.851528, "continent": "Amérique", "pays": "Mexique", "ville": "Cancún", "mode": "campagne", "level": 70, "place": "Zona Hotelera" },
+{ "lat": 48.428421, "lng": -123.365644, "continent": "Amérique", "pays": "Canada", "ville": "Victoria", "mode": "campagne", "level": 70, "place": "Inner Harbour" },
+{ "lat": 5.556020, "lng": 7.036661, "continent": "Afrique", "pays": "Nigéria", "ville": "Owerri", "mode": "campagne", "level": 70, "place": "Centre-ville" }
+
 
 
 
