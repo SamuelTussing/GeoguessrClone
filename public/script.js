@@ -5,6 +5,7 @@ let actualLocation;
 let campagneLevel = 1;
 let scoreBanner = document.getElementById('score-banner');
 let roundStartTime; 
+let gameMode = 'classique';
 let closeHighscores = document.getElementById('arrow');
 let OpenHighscore = document.getElementById('classement-button');
 let highscoresContainer = document.querySelector('.classementcontainer');
@@ -287,6 +288,62 @@ continueButton.addEventListener('click', () => {
     }
 });
 
+
+function getRandomPointAround(lat, lng, radiusMeters) {
+    const radiusInDegrees = radiusMeters / 111320;
+
+    const u = Math.random();
+    const v = Math.random();
+    const w = radiusInDegrees * Math.sqrt(u);
+    const t = 2 * Math.PI * v;
+
+    const deltaLat = w * Math.cos(t);
+    const deltaLng = w * Math.sin(t) / Math.cos(lat * Math.PI / 180);
+
+    return {
+        lat: lat + deltaLat,
+        lng: lng + deltaLng
+    };
+}
+
+function getStreetViewPointAround(lat, lng, radiusMeters, maxAttempts = 10) {
+    return new Promise((resolve, reject) => {
+        const streetViewService = new google.maps.StreetViewService();
+        let attempts = 0;
+
+        const tryRandomPoint = () => {
+            attempts++;
+
+            const randomPoint = getRandomPointAround(lat, lng, radiusMeters);
+
+            streetViewService.getPanorama(
+                {
+                    location: randomPoint,
+                    radius: 30, // rayon de recherche Street View
+                    source: google.maps.StreetViewSource.OUTDOOR
+                },
+                (data, status) => {
+                    if (status === google.maps.StreetViewStatus.OK && data?.location?.latLng) {
+                        const panoLatLng = data.location.latLng;
+                        resolve({
+                            lat: panoLatLng.lat(),
+                            lng: panoLatLng.lng()
+                        });
+                    } else if (attempts < maxAttempts) {
+                        tryRandomPoint();
+                    } else {
+                        reject("Aucune rue Street View trouvée dans le rayon");
+                    }
+                }
+            );
+        };
+
+        tryRandomPoint();
+    });
+}
+
+
+
 // New game button event
 newGameButton.addEventListener('click', () => {
     resetGame();
@@ -343,10 +400,34 @@ async function startNewRound(locationType) {
                 Math.floor(Math.random() * possibleLocations.length)
             ];
 
-            actualLocation = {
-                lat: chosenLocation.lat,
-                lng: chosenLocation.lng
-            };
+
+try {
+    let radius = 0;
+
+    if (campagneLevel > 25 && campagneLevel <= 50) radius = 50;
+    if (campagneLevel > 50) radius = 100;
+
+    if (radius > 0) {
+        actualLocation = await getStreetViewPointAround(
+            chosenLocation.lat,
+            chosenLocation.lng,
+            radius
+        );
+    } else {
+        actualLocation = {
+            lat: chosenLocation.lat,
+            lng: chosenLocation.lng
+        };
+    }
+} catch (err) {
+    console.warn("Fallback position exacte :", err);
+    actualLocation = {
+        lat: chosenLocation.lat,
+        lng: chosenLocation.lng
+    };
+}
+
+
 
             currentPlaceName = `${chosenLocation.ville}, ${chosenLocation.pays}`;
 
