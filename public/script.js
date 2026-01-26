@@ -127,6 +127,7 @@ document.getElementById('start-button').addEventListener('click', async () => {
 
     if (gameMode === 'campagne') {
         locationType = 'campagne'; // forcé
+        const maxAttempts = 500;
         await startNewRound('campagne');
     }
 });
