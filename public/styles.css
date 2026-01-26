@@ -430,6 +430,7 @@ label{
   }
   #levelupcontainer {
     position: absolute;
+    z-index: 5;
     display: none;
     background-color: #0E566E;
     width: 100vw;

@@ -2004,16 +2004,13 @@ function getCampagneScoreThreshold(level) {
 
 function showLevelUpAnimationCampagne(campagneLevel) {
     const levelUpContainer = document.getElementById("levelupcontainer");
-    const oldLevelSpan = document.getElementById("oldlevel");
-    const newLevelSpan = document.getElementById("newlevel");
     const nextButton = document.getElementById("Nextbutton");
 
-    if (!levelUpContainer || !oldLevelSpan || !newLevelSpan || !nextButton) return;
+    if (!levelUpContainer || !nextButton) return;
 
     loadActiveBadge();
 
-    oldLevelSpan.textContent = `Niv.${campagneLevel}`;
-    newLevelSpan.textContent = `Niv.${campagneLevel + 1}`;
+
 
     levelUpContainer.style.display = "flex";
 
