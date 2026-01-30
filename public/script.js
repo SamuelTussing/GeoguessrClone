@@ -739,7 +739,7 @@ async function endGame() {
 
     // 🎉 Popup badges
     if (newBadges.length > 0) {
-        showBadgeNotification(newBadges);
+        //showBadgeNotification(newBadges);
     }
 
     // 💾 Sauvegarde locale
@@ -838,6 +838,7 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
         if (badge.newLevel !== undefined && ActualLevel >= badge.newLevel) {
             if (!unlockedBadges.includes(badge.name)) {
             unlockedBadges.push(badge.name);
+            showBadgeNotification(unlockedBadges);
             console.log("Badge débloqué :", badge.name);
             }
             return;
@@ -852,6 +853,7 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
         ) {
             if (!unlockedBadges.includes(badge.name)) {
                 unlockedBadges.push(badge.name);
+                showBadgeNotification(unlockedBadges);
             }
         }
     });
@@ -864,6 +866,7 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
         ) {
             if (!unlockedBadges.includes(badge.name)) {
                 unlockedBadges.push(badge.name);
+                showBadgeNotification(unlockedBadges);
             }
         }
     });
