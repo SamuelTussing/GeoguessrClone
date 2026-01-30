@@ -833,7 +833,7 @@ function checkAndUnlockBadges(finalScore, location, chronoSelection) {
     ];
 
     badgeConditions.forEach(badge => {
-
+    console.log(ActualLevel)
         // 🎖️ Badges de niveau
         if (badge.newLevel && ActualLevel >= badge.newLevel) {
             if (!unlockedBadges.includes(badge.name)) {
